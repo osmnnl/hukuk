@@ -1,0 +1,147 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url } from "../../lib/url";
+---
+<Base
+  title="Birikim hesabı — bileşik getiri ve reel değer"
+  description="Aylık katkı, süre ve getiri oranını girin: nominal toplamı, enflasyondan arındırılmış reel değeri ve ne kadarının getiriden geldiğini görün."
+  path="/hesap/"
+>
+  <section class="hero" style="padding-bottom:14px">
+    <div class="wrap narrow">
+      <p class="kick">Birikim hesabı</p>
+      <h1>Bu para ne<br />kadar birikir?</h1>
+      <p class="lede">Oranları siz giriyorsunuz — burada güncel faiz ya da enflasyon tahmini yok, olmamalı da. Hesap, girdiğiniz varsayımın sonucunu gösterir.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <div class="panel">
+      <div class="row2">
+        <div class="field">
+          <label for="baslangic">Başlangıç tutarı (₺)</label>
+          <input id="baslangic" type="number" min="0" step="1000" value="0" />
+        </div>
+        <div class="field">
+          <label for="aylik">Aylık katkı (₺)</label>
+          <input id="aylik" type="number" min="0" step="500" value="5000" />
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="yil">Süre (yıl)</label>
+          <input id="yil" type="number" min="1" max="50" step="1" value="10" />
+        </div>
+        <div class="field">
+          <label for="getiri">Yıllık net getiri (%)</label>
+          <input id="getiri" type="number" min="0" max="200" step="1" value="30" />
+          <p class="hint">Vergi ve masraf düşülmüş, elinize geçecek oran.</p>
+        </div>
+      </div>
+      <div class="field">
+        <label for="enflasyon">Yıllık enflasyon varsayımı (%)</label>
+        <input id="enflasyon" type="number" min="0" max="200" step="1" value="25" />
+        <p class="hint">Reel değeri görmek için. Bilmiyorsanız TÜİK'in son on iki aylık oranını kullanın.</p>
+      </div>
+      <div class="field">
+        <label for="artis">Katkıyı her yıl artırayım mı? (%)</label>
+        <input id="artis" type="number" min="0" max="200" step="1" value="0" />
+        <p class="hint">Maaş artışıyla birlikte katkıyı büyütmek, sonucu en çok değiştiren ayardır.</p>
+      </div>
+      <button class="btn" type="button" id="hesapla" style="width:100%">Hesapla</button>
+
+      <div id="sonuc" hidden style="margin-top:22px">
+        <div class="total">
+          <p class="lbl">Süre sonunda birikim</p>
+          <p class="big num" id="toplam"></p>
+          <p class="sub" id="reelAlt"></p>
+        </div>
+        <div class="lines" id="detay"></div>
+        <div id="grafik" class="graf" aria-hidden="true"></div>
+        <p class="gaciklama" id="grafikNot"></p>
+        <div class="tipbox" id="yorum" style="margin-top:14px"></div>
+      </div>
+    </div>
+
+    <section class="sec" style="margin-top:26px">
+      <h2>Reel değer ne demek?</h2>
+      <p>Süre sonundaki tutarı, aynı dönemin enflasyonuyla bugüne indirdiğimizde kalan alım gücüdür.
+      Nominal rakam büyük görünse de asıl soru şudur: <strong>o parayla bugünün parasıyla ne alabilirsiniz?</strong>
+      Getiri enflasyonun altında kaldığında reel değer başlangıçtan küçük çıkar — yani para büyür, alım gücü küçülür.</p>
+    </section>
+    <p class="note">Bu hesap sabit oran varsayımıyla çalışır. Gerçek hayatta getiri ve enflasyon yıldan yıla
+    değişir; sonuç bir tahmin değil, girdiğiniz varsayımın matematiksel karşılığıdır. Yatırım tavsiyesi değildir.</p>
+  </div>
+
+  <style>
+    .graf { display: flex; align-items: flex-end; gap: 3px; height: 120px; margin: 18px 0 6px;
+      padding: 10px; background: var(--panel-2); border-radius: var(--r); border: 1px solid var(--line) }
+    .graf i { flex: 1; border-radius: 2px 2px 0 0; background: var(--accent); min-height: 2px; position: relative }
+    .graf i b { position: absolute; inset: auto 0 0; display: block; background: var(--line-2); border-radius: 2px 2px 0 0 }
+    .gaciklama { font-size: 12.5px; color: var(--ink-3); margin: 0 }
+  </style>
+
+  <script is:inline>
+    const $ = (id) => document.getElementById(id);
+    const tl = (n) => n.toLocaleString("tr-TR", { maximumFractionDigits: 0 }) + " ₺";
+
+    function hesapla() {
+      const b0 = +$("baslangic").value || 0;
+      const aylik0 = +$("aylik").value || 0;
+      const yil = Math.max(1, Math.min(50, +$("yil").value || 1));
+      const g = (+$("getiri").value || 0) / 100;
+      const e = (+$("enflasyon").value || 0) / 100;
+      const artis = (+$("artis").value || 0) / 100;
+
+      const aylikGetiri = Math.pow(1 + g, 1 / 12) - 1;
+      let bakiye = b0, yatirilan = b0, aylik = aylik0, pvKatki = b0;
+      const seri = [];
+
+      for (let y = 0; y < yil; y++) {
+        for (let m = 0; m < 12; m++) {
+          bakiye = bakiye * (1 + aylikGetiri) + aylik;
+          yatirilan += aylik;
+          pvKatki += aylik / Math.pow(1 + e, (y * 12 + m + 1) / 12);
+        }
+        seri.push({ bakiye, yatirilan });
+        aylik = aylik * (1 + artis);
+      }
+
+      const getiriKismi = bakiye - yatirilan;
+      const reel = bakiye / Math.pow(1 + e, yil);
+      const reelYatirilan = pvKatki;
+
+      $("toplam").textContent = tl(bakiye);
+      $("reelAlt").textContent = `bugünün parasıyla ${tl(reel)} değerinde`;
+
+      $("detay").innerHTML = [
+        ["Yatırdığın toplam", tl(yatirilan)],
+        ["Getiriden gelen", tl(getiriKismi)],
+        ["Getirinin payı", `%${((getiriKismi / bakiye) * 100).toLocaleString("tr-TR", { maximumFractionDigits: 1 })}`],
+        ["Reel (bugünkü) değer", tl(reel)],
+        ["Yatırdığının bugünkü değeri", tl(pvKatki)],
+        ["Yıllık reel getiri", `%${(((1 + g) / (1 + e) - 1) * 100).toLocaleString("tr-TR", { maximumFractionDigits: 1 })}`],
+      ].map(([k, v]) => `<div class="line"><span class="k">${k}</span><span class="v">${v}</span></div>`).join("");
+
+      const enb = seri[seri.length - 1].bakiye;
+      $("grafik").innerHTML = seri.map((s) =>
+        `<i style="height:${Math.max(2, (s.bakiye / enb) * 100)}%"><b style="height:${(s.yatirilan / s.bakiye) * 100}%"></b></i>`
+      ).join("");
+      $("grafikNot").textContent = "Her çubuk bir yılı gösterir. Koyu alt kısım yatırdığınız para, üstü getiridir.";
+
+      const reelKazanc = reel - reelYatirilan;
+      $("yorum").innerHTML = g <= e
+        ? `<b>Getiri enflasyonun altında.</b> Bu varsayımla paranız büyüyor ama alım gücü küçülüyor: süre sonunda elinizdeki tutar, bugünün parasıyla ${tl(reel)} ediyor.`
+        : reelKazanc < 0
+          ? `<b>Reel olarak başa baş değil.</b> Yatırdığınız katkıların bugünkü değeri ${tl(pvKatki)}; süre sonunda kalan reel tutar ise ${tl(reel)}. Getiri enflasyonu ancak zar zor karşılıyor.`
+          : `<b>Getirinin payı %${((getiriKismi / bakiye) * 100).toFixed(0)}.</b> Süreyi ${yil} yıldan ${yil + 5} yıla çıkarmak bu payı belirgin biçimde artırır — bileşik etkinin büyük kısmı son yıllarda ortaya çıkar.`;
+
+      $("sonuc").hidden = false;
+    }
+
+    $("hesapla").addEventListener("click", hesapla);
+    ["baslangic", "aylik", "yil", "getiri", "enflasyon", "artis"].forEach((id) =>
+      $(id).addEventListener("keydown", (ev) => { if (ev.key === "Enter") hesapla(); })
+    );
+  </script>
+</Base>

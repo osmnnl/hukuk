@@ -1,0 +1,10 @@
+{
+  "name": "Ne Kadar Birikir?",
+  "tagline": "Bu para <em>ne kadar birikir?</em>",
+  "unit": "birikim sorusu",
+  "verdicts": {
+    "a": { "label": "Dikkat — düşündüğün gibi değil", "short": "DİKKAT" },
+    "b": { "label": "Lehine çalışır", "short": "LEHİNE" },
+    "c": { "label": "Duruma göre değişir", "short": "DEĞİŞKEN" }
+  }
+}

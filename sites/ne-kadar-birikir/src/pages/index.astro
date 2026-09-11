@@ -1,0 +1,60 @@
+---
+import Base from "../layouts/Base.astro";
+import SearchBox from "../components/SearchBox.astro";
+import CaseCard from "../components/CaseCard.astro";
+import { cases, surprising, site } from "../lib/cases";
+import { url, absUrl } from "../lib/url";
+
+const populer = ["bilesik-getiri","reel-getiri","paranin-erimesi","kredi-karti-asgari","acil-durum-fonu","72-kurali"]
+  .map((s) => cases.find((c) => c.slug === s)!);
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "WebSite", "@id": absUrl("/") + "#website", name: site.name, url: absUrl("/"), inLanguage: "tr-TR" },
+    { "@type": "FAQPage", mainEntity: populer.map((c) => ({ "@type": "Question", name: c.question, acceptedAnswer: { "@type": "Answer", text: c.summary } })) },
+  ],
+};
+---
+<Base
+  title="Ne kadar birikir? — bileşik getiri, enflasyon ve reel değer"
+  description="Aylık katkınızın kaç yılda ne kadar edeceğini, enflasyon karşısında ne kadar eridiğini ve getirinin ne kadarının gerçek olduğunu hesaplayın."
+  path="/"
+  jsonLd={jsonLd}
+>
+  <section class="hero">
+    <div class="wrap">
+      <p class="kick">{cases.length} birikim sorusu · iki hesaplayıcı</p>
+      <h1>Bu para<br />ne kadar birikir?</h1>
+      <p class="lede">
+        İki kuvvet aynı anda çalışıyor: <strong>bileşik getiri</strong> lehinize, <strong>enflasyon</strong>
+        aleyhinize. Hangisinin önde olduğunu ancak hesaplayınca görürsünüz.
+      </p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn" href={url("/hesap/")}>Birikimimi hesapla →</a>
+        <a class="btn btn-2" href={url("/erime/")}>Param ne kadar erir?</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:20px"><div class="wrap">
+    <div class="grid g3">
+      <a class="tool" href={url("/hesap/")}><span class="ic">📈</span><span><h3>Birikim hesabı</h3><p>Aylık katkı, süre, getiri → nominal ve reel sonuç.</p></span></a>
+      <a class="tool" href={url("/erime/")}><span class="ic">🕳️</span><span><h3>Erime testi</h3><p>Nakit tutmanın görünmeyen maliyeti.</p></span></a>
+      <a class="tool" href={url("/liste/")}><span class="ic">🧮</span><span><h3>{cases.length} soru</h3><p>Bileşik getiri, enflasyon, borç, araçlar, vergi.</p></span></a>
+    </div>
+  </div></section>
+
+  <section class="block" style="padding-top:6px"><div class="wrap">
+    <div class="head"><h2>Ara</h2></div><SearchBox placeholder="Ara: bileşik faiz, stopaj, BES, acil fon…" />
+  </div></section>
+
+  <section class="block" style="padding-top:10px"><div class="wrap">
+    <div class="head"><h2>En çok sorulanlar</h2><a href={url("/liste/")}>Tümü ({cases.length}) →</a></div>
+    <div class="grid g2">{populer.map((c) => <CaseCard item={c} />)}</div>
+  </div></section>
+
+  <section class="block" style="padding-top:0"><div class="wrap">
+    <div class="head"><h2>Çoğu kişiyi şaşırtan {surprising.length} nokta</h2></div>
+    <div class="grid g2">{surprising.slice(0, 6).map((c) => <CaseCard item={c} hide />)}</div>
+  </div></section>
+</Base>

@@ -1,0 +1,27 @@
+---
+import Base from "../../layouts/Base.astro";
+import { cases, frames, site } from "../../lib/cases";
+---
+<Base title={`Hakkında — ${site.name}`} description="Neden oran tahmini vermiyoruz?" path="/hakkinda/">
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <section class="hero" style="padding:36px 0 6px">
+      <p class="kick">Hakkında</p>
+      <h1 style="font-size:clamp(26px,5.2vw,38px)">Neden faiz oranı yazmıyoruz?</h1>
+      <p class="lede">Çünkü yazdığımız gün doğru olan rakam, birkaç ay sonra yanlış olur ve bu tür bir
+      yanlış doğrudan para kaybettirir.</p>
+    </section>
+    <section class="sec"><h2>Hesaplayıcılar nasıl çalışıyor?</h2>
+      <p>Getiri ve enflasyon oranını <strong>siz</strong> giriyorsunuz; site yalnız matematiği yapıyor.
+      Böylece sonuç bir tahmin değil, sizin varsayımınızın karşılığı oluyor. Güncel oranlar için TÜİK ve
+      TCMB verilerine bakın.</p></section>
+    <section class="sec"><h2>Yatırım tavsiyesi var mı?</h2>
+      <p>Hayır. Burada hangi araca yatırım yapmanız gerektiği söylenmez; araçların nasıl çalıştığı, hangi
+      masrafların getiriyi düşürdüğü ve matematiğin nasıl işlediği anlatılır. Kişiye özel yatırım tavsiyesi
+      yalnız yetkili kuruluşlar tarafından verilebilir.</p></section>
+    <section class="sec"><h2>Kapsam</h2>
+      <p>{cases.length} soru, {Object.keys(frames).length} başlık: {Object.values(frames).map((f: any) => f.topic).join(", ")}.</p></section>
+    <section class="sec" style="border-bottom:0"><h2>Sınırları</h2>
+      <p>Hesaplar sabit oran varsayımıyla çalışır; gerçek hayatta oranlar dalgalanır. Sonuçlar
+      <strong>bilgilendirme amaçlıdır</strong>, yatırım ya da hukuki danışmanlık değildir.</p></section>
+  </div>
+</Base>

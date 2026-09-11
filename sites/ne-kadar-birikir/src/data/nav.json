@@ -1,0 +1,6 @@
+[
+  { "href": "/", "label": "Ana sayfa" },
+  { "href": "/liste/", "label": "Tüm sorular" },
+  { "href": "/hesap/", "label": "Birikim hesabı" },
+  { "href": "/erime/", "label": "Para erime testi" }
+]

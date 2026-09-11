@@ -1,0 +1,80 @@
+{
+  "bilesik": {
+    "topic": "Bileşik getiri ve zaman",
+    "short": "Faizin faizi, 72 kuralı",
+    "basis": [
+      { "law": "6098 sayılı TBK", "article": "m.121", "note": "Faize faiz yürütülmesi kural olarak yasaktır; mevduat ve cari hesaplar istisnadır" },
+      { "law": "6098 sayılı TBK", "article": "m.88", "note": "Sözleşmeyle kararlaştırılacak faiz oranının sınırı" },
+      { "law": "3095 sayılı Kanun", "article": "m.1-2", "note": "Kanuni faiz ve temerrüt faizi" },
+      { "law": "5411 sayılı Bankacılık K.", "article": "m.60", "note": "Mevduatın korunması ve sigorta kapsamı" }
+    ],
+    "explain": "Bileşik getiride kazandıran şey oran değil, süredir: aynı oran on yılda ikiye katlar, otuz yılda çok daha fazlasına çıkar. Bu yüzden erken başlamak, daha yüksek getiri aramaktan çoğu zaman daha etkilidir.",
+    "deadline": "Vadeli hesaplarda vade bozulduğunda kural olarak vade sonu faizi ödenmez; erken çekim getirinin tamamını silebilir.",
+    "where": "Banka (mevduat sözleşmesi), TMSF (mevduat sigortası kapsamı), aracı kurum (yatırım hesapları)."
+  },
+  "enflasyon": {
+    "topic": "Enflasyon ve reel getiri",
+    "short": "Nominal ≠ gerçek",
+    "basis": [
+      { "law": "6098 sayılı TBK", "article": "m.138", "note": "Aşırı ifa güçlüğü ve uyarlama" },
+      { "law": "6098 sayılı TBK", "article": "m.344", "note": "Kira artışında tüketici fiyat endeksi ölçütü" },
+      { "law": "2004 sayılı İİK", "article": "m.134", "note": "Değer tespiti ve güncel bedel" },
+      { "law": "213 sayılı VUK", "article": "mük. m.298", "note": "Enflasyon düzeltmesi" }
+    ],
+    "explain": "Bir yatırımın gerçek getirisi, nominal getiriden enflasyonun düşülmesiyle bulunur. Yüzde kırk kazandıran bir yatırım, enflasyon yüzde altmışsa sizi zenginleştirmez; alım gücünüzü azaltır.",
+    "deadline": "Kira artışında yasal ölçüt, sözleşmenin yenilenme tarihindeki on iki aylık ortalama tüketici fiyat endeksi değişimidir.",
+    "where": "TÜİK (enflasyon verileri), TCMB (faiz ve kur verileri)."
+  },
+  "borc": {
+    "topic": "Borcun diğer yüzü",
+    "short": "Kredi, kart, erken kapama",
+    "basis": [
+      { "law": "6502 sayılı TKHK", "article": "m.31", "note": "Tüketici kredisinde erken ödeme ve indirim hakkı" },
+      { "law": "6502 sayılı TKHK", "article": "m.25", "note": "Sözleşme öncesi bilgilendirme ve cayma hakkı" },
+      { "law": "5464 sayılı Banka Kartları K.", "article": "m.26", "note": "Asgari ödeme tutarı ve akdi faiz" },
+      { "law": "6502 sayılı TKHK", "article": "m.4", "note": "Tüketiciden ek masraf alınamaması" }
+    ],
+    "explain": "Bileşik matematik borçta da çalışır ama bu kez aleyhinize. Kredi kartının asgarisini ödemek, borcu kapatmanın değil büyütmenin yoludur; kredide ise erken ödeme, ödenmemiş faizin bir kısmını siler.",
+    "deadline": "Tüketici kredisinde cayma hakkı, sözleşmenin kurulduğu tarihten itibaren on dört gündür.",
+    "where": "Banka (erken kapama talebi), tüketici hakem heyeti, tüketici mahkemesi."
+  },
+  "araclar": {
+    "topic": "Birikim araçları",
+    "short": "Mevduat, BES, altın, fon",
+    "basis": [
+      { "law": "4632 sayılı BES Kanunu", "article": "m.5", "note": "Devlet katkısı ve hak ediş süreleri" },
+      { "law": "5411 sayılı Bankacılık K.", "article": "m.63", "note": "Sigortaya tabi mevduat" },
+      { "law": "6362 sayılı SPK", "article": "m.52", "note": "Yatırım fonları" },
+      { "law": "193 sayılı GVK", "article": "geç. m.67", "note": "Menkul kıymet gelirlerinde stopaj" }
+    ],
+    "explain": "Her aracın üç boyutu var: getiri, risk ve erişilebilirlik. Getirisi yüksek görünen bir araç, paranıza ihtiyaç duyduğunuz anda erişilemiyorsa ya da vergi ve masraf kalemleri yüksekse, elinize geçen tutar beklediğinizden düşük olur.",
+    "deadline": "Bireysel emeklilikte devlet katkısının tamamına hak kazanmak sistemde belirli bir süre kalmaya bağlıdır; erken çıkışta katkının bir kısmı alınamaz.",
+    "where": "Banka ve aracı kurum, emeklilik şirketi, TMSF (mevduat sigortası), TÜİK ve TCMB (veri)."
+  },
+  "plan": {
+    "topic": "Birikim planı",
+    "short": "Acil fon, hedef, düzen",
+    "basis": [
+      { "law": "6098 sayılı TBK", "article": "m.83", "note": "Para borçlarında ifa" },
+      { "law": "4632 sayılı BES Kanunu", "article": "m.4", "note": "Katkı payı ödemelerine ara verme" },
+      { "law": "6502 sayılı TKHK", "article": "m.30", "note": "Tüketici kredisinde sözleşme şartlarının değiştirilememesi" },
+      { "law": "2004 sayılı İİK", "article": "m.82", "note": "Haczedilemeyen mal ve haklar" }
+    ],
+    "explain": "İyi bir birikim planının ilk maddesi yatırım değil, tampon paradır: acil durum fonu olmayan kişi, ilk aksilikte birikimini bozmak ya da borçlanmak zorunda kalır. Düzenli küçük katkılar, ara sıra yapılan büyük katkılardan daha çok biriktirir.",
+    "deadline": "Katkı payı ödemelerine ara verilmesi mümkündür; ancak ara verilen dönemde devlet katkısı işlemez.",
+    "where": "Banka (otomatik talimat), emeklilik şirketi, işveren (katkı payı kesintisi)."
+  },
+  "vergi": {
+    "topic": "Vergi ve masraflar",
+    "short": "Stopaj, komisyon, makas",
+    "basis": [
+      { "law": "193 sayılı GVK", "article": "geç. m.67", "note": "Mevduat faizi ve menkul kıymet gelirlerinde tevkifat" },
+      { "law": "488 sayılı Damga Vergisi K.", "article": "—", "note": "Sözleşmelerde damga vergisi" },
+      { "law": "6802 sayılı Gider Vergileri K.", "article": "m.28", "note": "Banka ve sigorta muameleleri vergisi" },
+      { "law": "6502 sayılı TKHK", "article": "m.4/3", "note": "Sözleşmede yazılı olmayan masraf alınamaz" }
+    ],
+    "explain": "Getiriyi hesaplarken ilan edilen orana değil, elinize geçen tutara bakın: stopaj, komisyon, fon işletim gideri ve alış-satış makası ilan edilen getiriyi belirgin biçimde aşağı çeker.",
+    "deadline": "Beyana tabi gelirler için yıllık beyanname, kanunda belirtilen dönemde verilir; süresinde verilmezse ceza uygulanır.",
+    "where": "Banka (stopaj kesintisi), vergi dairesi, aracı kurum (masraf tarifesi)."
+  }
+}

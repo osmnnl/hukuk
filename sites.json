@@ -134,5 +134,17 @@
       "Şifre testi",
       "Güvenlik karnesi"
     ]
+  },
+  {
+    "slug": "ne-kadar-birikir",
+    "name": "Ne Kadar Birikir?",
+    "question": "Reel olarak ne kalır?",
+    "blurb": "Bileşik getiri lehine, enflasyon aleyhine çalışır. Hangisinin önde olduğunu hesaplayarak gör.",
+    "icon": "📈",
+    "accent": "#3d6b35",
+    "tools": [
+      "Birikim hesabı",
+      "Erime testi"
+    ]
   }
 ]

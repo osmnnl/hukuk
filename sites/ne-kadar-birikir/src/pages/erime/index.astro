@@ -1,0 +1,109 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url } from "../../lib/url";
+
+const sepet = [
+  { ad: "Ekmek", birim: "adet" },
+  { ad: "Kira", birim: "ay" },
+  { ad: "Benzin", birim: "litre" },
+  { ad: "Kahve", birim: "fincan" },
+];
+---
+<Base
+  title="Para erime testi — bu para kaç yıl sonra ne eder?"
+  description="Bugünkü bir tutarın enflasyon karşısında kaç yılda ne kadar eridiğini görün; nakit tutmanın görünmeyen maliyetini hesaplayın."
+  path="/erime/"
+>
+  <section class="hero" style="padding-bottom:14px">
+    <div class="wrap narrow">
+      <p class="kick">Erime testi</p>
+      <h1>Bu para<br />kaç yıl dayanır?</h1>
+      <p class="lede">Rakam sabit kaldığı için kayıp görünmez. Aynı parayla alabildiklerinizi ölçtüğünüzde erime ortaya çıkar.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <div class="panel">
+      <div class="row2">
+        <div class="field">
+          <label for="tutar">Bugünkü tutar (₺)</label>
+          <input id="tutar" type="number" min="0" step="1000" value="100000" />
+        </div>
+        <div class="field">
+          <label for="enf">Yıllık enflasyon (%)</label>
+          <input id="enf" type="number" min="0" max="300" step="1" value="35" />
+        </div>
+      </div>
+      <div class="field">
+        <label for="getiri">Bu paraya uygulanan yıllık getiri (%)</label>
+        <input id="getiri" type="number" min="0" max="300" step="1" value="0" />
+        <p class="hint">Yastık altında duruyorsa 0 bırakın. Mevduatta ise net (vergi sonrası) oranı yazın.</p>
+      </div>
+      <div class="field">
+        <label for="urun">Bir birimin bugünkü fiyatı (₺) — isteğe bağlı</label>
+        <input id="urun" type="number" min="0" step="1" value="0" />
+        <p class="hint">Ekmek, kira, benzin… Kaç birim alabildiğinizin nasıl değiştiğini gösterir.</p>
+      </div>
+      <button class="btn" type="button" id="hesapla" style="width:100%">Erimeyi göster</button>
+
+      <div id="sonuc" hidden style="margin-top:22px">
+        <div class="total">
+          <p class="lbl" id="lbl">10 yıl sonraki alım gücü</p>
+          <p class="big num" id="deger"></p>
+          <p class="sub" id="alt"></p>
+        </div>
+        <div class="lines" id="tablo"></div>
+        <div class="tipbox" id="yorum" style="margin-top:14px"></div>
+      </div>
+    </div>
+
+    <section class="sec" style="margin-top:26px">
+      <h2>Neden "yarıya inme" hızla oluyor?</h2>
+      <p>Enflasyon da bileşik çalışır. Yüzde 35 enflasyonda para her yıl bir öncekinin üzerine eriyip gider;
+      kabaca <strong>72 / 35 ≈ 2 yılda</strong> alım gücü yarıya iner. Aynı kural, getiri için lehinize
+      işlediği gibi enflasyon için aleyhinize işler.</p>
+    </section>
+    <p class="note">Hesap, girdiğiniz sabit oran varsayımına dayanır ve tahmin içermez. Gerçek enflasyon
+    yıldan yıla değişir; harcama sepetinize göre hissettiğiniz oran genel endeksten farklı olabilir.</p>
+  </div>
+
+  <script is:inline>
+    const $ = (id) => document.getElementById(id);
+    const tl = (n) => n.toLocaleString("tr-TR", { maximumFractionDigits: 0 }) + " ₺";
+
+    function hesapla() {
+      const t = +$("tutar").value || 0;
+      const e = (+$("enf").value || 0) / 100;
+      const g = (+$("getiri").value || 0) / 100;
+      const birim = +$("urun").value || 0;
+      if (!t) { $("tutar").focus(); return; }
+
+      const yillar = [1, 2, 3, 5, 10, 20];
+      const reelOran = (1 + g) / (1 + e);
+      const on = t * Math.pow(reelOran, 10);
+
+      $("lbl").textContent = "10 yıl sonraki alım gücü";
+      $("deger").textContent = tl(on);
+      $("alt").textContent = on < t
+        ? `bugünkü ${tl(t)} ile karşılaştırınca %${(((t - on) / t) * 100).toFixed(0)} kayıp`
+        : `bugünkü ${tl(t)} ile karşılaştırınca %${(((on - t) / t) * 100).toFixed(0)} kazanç`;
+
+      $("tablo").innerHTML = yillar.map((y) => {
+        const reel = t * Math.pow(reelOran, y);
+        const nominal = t * Math.pow(1 + g, y);
+        const adet = birim ? ` · ${Math.floor(reel / birim).toLocaleString("tr-TR")} birim` : "";
+        return `<div class="line"><span class="k"><b>${y} yıl sonra</b><small>hesapta ${tl(nominal)} görünür</small></span><span class="v">${tl(reel)}${adet}</span></div>`;
+      }).join("");
+
+      const yariYil = e > g ? Math.log(0.5) / Math.log(reelOran) : null;
+      $("yorum").innerHTML = yariYil
+        ? `<b>Alım gücü ${yariYil.toLocaleString("tr-TR", { maximumFractionDigits: 1 })} yılda yarıya iner.</b> Getiri enflasyonun altında kaldığı sürece bu erime durmaz; tek çare getiriyi enflasyona yaklaştırmak ya da parayı harcanacak bir değere dönüştürmektir.`
+        : `<b>Bu varsayımla alım gücünüz korunuyor.</b> Getiri enflasyonun üzerinde olduğu için reel değer zamanla artıyor. Getirinin net — yani vergi ve masraf sonrası — olduğundan emin olun.`;
+
+      $("sonuc").hidden = false;
+    }
+
+    $("hesapla").addEventListener("click", hesapla);
+    ["tutar", "enf", "getiri", "urun"].forEach((id) => $(id).addEventListener("keydown", (ev) => { if (ev.key === "Enter") hesapla(); }));
+  </script>
+</Base>
