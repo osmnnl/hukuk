@@ -1,0 +1,80 @@
+{
+  "hukuk": {
+    "topic": "Hukuk davaları",
+    "short": "6100 HMK",
+    "basis": [
+      { "law": "6100 sayılı HMK", "article": "m.30", "note": "Usul ekonomisi: makul sürede yargılama" },
+      { "law": "6100 sayılı HMK", "article": "m.139", "note": "Ön inceleme duruşması" },
+      { "law": "6100 sayılı HMK", "article": "m.341-361", "note": "İstinaf ve temyiz yolları" },
+      { "law": "6100 sayılı HMK", "article": "m.266", "note": "Bilirkişi incelemesi" }
+    ],
+    "explain": "Hukuk davasının süresini üç şey belirler: dosyanın bilirkişiye gidip gitmediği, tanık sayısı ve kanun yolu (istinaf/temyiz) kullanılıp kullanılmadığı. İlk derece kararı, sürecin sonu değil ortasıdır — istinaf ve temyiz süreyi çoğu zaman ikiye katlar.",
+    "deadline": "İstinaf süresi kararın tebliğinden itibaren 2 hafta, temyiz süresi 2 haftadır. Kaçırılırsa karar kesinleşir.",
+    "where": "Görevli mahkeme (asliye hukuk, sulh hukuk, iş, aile, tüketici) → Bölge Adliye Mahkemesi → Yargıtay."
+  },
+  "isci": {
+    "topic": "İş ve tüketici uyuşmazlıkları",
+    "short": "7036 İş Mah. K. · 6502 TKHK",
+    "basis": [
+      { "law": "7036 sayılı İş Mahkemeleri Kanunu", "article": "m.3", "note": "İşe iade ve alacak davalarında zorunlu arabuluculuk" },
+      { "law": "6325 sayılı Arabuluculuk K.", "article": "m.18/A", "note": "Arabuluculuk 3 hafta + 1 hafta uzatma" },
+      { "law": "6502 sayılı TKHK", "article": "m.66-70", "note": "Tüketici hakem heyeti" },
+      { "law": "4857 sayılı İş K.", "article": "m.20", "note": "İşe iade davasında ivedilik" }
+    ],
+    "explain": "Bu uyuşmazlıklarda mahkemeden önce zorunlu bir aşama var: işçilik alacaklarında ve ticari işlerde arabuluculuk, belli tutarın altındaki tüketici işlerinde hakem heyeti. Bu aşama dava süresine eklenir ama atlanırsa dava usulden reddedilir.",
+    "deadline": "Arabuluculuk görüşmeleri 3 hafta içinde tamamlanır, zorunlu hâllerde 1 hafta uzar. Son tutanaktan itibaren 2 hafta içinde dava açılmalıdır.",
+    "where": "Arabuluculuk bürosu (adliye) → iş mahkemesi; tüketici hakem heyeti (kaymakamlık/ticaret il müdürlüğü) → tüketici mahkemesi."
+  },
+  "ceza": {
+    "topic": "Ceza süreçleri",
+    "short": "5271 CMK",
+    "basis": [
+      { "law": "5271 sayılı CMK", "article": "m.160", "note": "Soruşturma evresi ve savcılık" },
+      { "law": "5271 sayılı CMK", "article": "m.172-173", "note": "Kovuşturmaya yer olmadığına dair karar ve itiraz" },
+      { "law": "5271 sayılı CMK", "article": "m.175", "note": "İddianamenin kabulü ile kovuşturma başlar" },
+      { "law": "5271 sayılı CMK", "article": "m.253", "note": "Uzlaştırma" }
+    ],
+    "explain": "Ceza süreci ikiye ayrılır: savcılığın yürüttüğü soruşturma ve mahkemenin yürüttüğü kovuşturma. Şikâyetten sonra dosyanın mahkemeye gitmesi aylar alabilir; iddianame kabul edilmeden duruşma günü verilmez.",
+    "deadline": "Takibi şikâyete bağlı suçlarda şikâyet süresi, fiili ve failini öğrenmeden itibaren 6 aydır. Kovuşturmaya yer olmadığı kararına itiraz süresi 15 gündür.",
+    "where": "Cumhuriyet Başsavcılığı → asliye ceza / ağır ceza mahkemesi → Bölge Adliye Mahkemesi."
+  },
+  "icra": {
+    "topic": "İcra ve tahsilat",
+    "short": "2004 İİK",
+    "basis": [
+      { "law": "2004 sayılı İİK", "article": "m.62", "note": "Ödeme emrine itiraz süresi 7 gün" },
+      { "law": "2004 sayılı İİK", "article": "m.67", "note": "İtirazın iptali davası" },
+      { "law": "2004 sayılı İİK", "article": "m.106-110", "note": "Satış isteme süreleri" },
+      { "law": "2004 sayılı İİK", "article": "m.78", "note": "Haciz isteme süresi" }
+    ],
+    "explain": "İcra takibinin hızı, borçlunun itiraz edip etmemesine bağlıdır. İtiraz yoksa takip haftalar içinde kesinleşir; itiraz varsa dosya duraksar ve süreç bir davaya dönüşür — o noktadan sonra takvim mahkemenin takvimidir.",
+    "deadline": "Ödeme emrine itiraz 7 gün; itirazın iptali davası 1 yıl; haciz isteme süresi kesinleşmeden itibaren 1 yıldır.",
+    "where": "İcra dairesi → icra hukuk mahkemesi (şikâyet, itirazın kaldırılması) veya genel mahkeme (itirazın iptali)."
+  },
+  "idare": {
+    "topic": "Devletle işler ve idari dava",
+    "short": "2577 İYUK · 3071 Dilekçe K.",
+    "basis": [
+      { "law": "2577 sayılı İYUK", "article": "m.7", "note": "Dava açma süresi: idare 60, vergi 30 gün" },
+      { "law": "2577 sayılı İYUK", "article": "m.10-11", "note": "İdareye başvuru ve 30 günlük cevap süresi" },
+      { "law": "4982 sayılı Bilgi Edinme K.", "article": "m.11", "note": "Bilgi edinme başvurusuna 15 iş günü" },
+      { "law": "3071 sayılı Dilekçe Hakkı K.", "article": "m.7", "note": "Dilekçeye 30 gün içinde cevap" }
+    ],
+    "explain": "İdareyle işlerde iki ayrı saat çalışır: idarenin cevap süresi ve sizin dava açma süreniz. İdare susarsa bu bir ret sayılır ve dava süresi o andan işlemeye başlar — cevap beklerken hak düşer.",
+    "deadline": "İdari işleme karşı dava süresi 60 gün (vergide 30 gün); idareye yapılan başvuruya 30 gün içinde cevap verilmezse istek reddedilmiş sayılır.",
+    "where": "İlgili idare → idare mahkemesi / vergi mahkemesi → Bölge İdare Mahkemesi → Danıştay."
+  },
+  "islem": {
+    "topic": "Resmî işlemler ve kurumlar",
+    "short": "Tapu · noter · nüfus · SGK",
+    "basis": [
+      { "law": "4721 sayılı TMK", "article": "m.705", "note": "Taşınmaz mülkiyeti tescille geçer" },
+      { "law": "1512 sayılı Noterlik K.", "article": "m.60", "note": "Noterin yapabileceği işlemler" },
+      { "law": "5490 sayılı Nüfus Hizmetleri K.", "article": "m.36", "note": "Nüfus kayıt düzeltmesi davası" },
+      { "law": "3194 sayılı İmar K.", "article": "m.22", "note": "Yapı ruhsatı başvurusuna 30 gün" }
+    ],
+    "explain": "Resmî işlemlerin çoğu, evrak eksiksizse aynı gün biter; süreyi uzatan şey kuyruk değil eksik belgedir. Mahkeme kararı gerektiren işlemler (isim değişikliği, kayıt düzeltme) ise bu listeden çıkıp dava takvimine girer.",
+    "deadline": "Yapı ruhsatı başvurusu eksiksizse en geç 30 gün içinde sonuçlandırılır; bilgi edinme başvurusu 15 iş günü içinde cevaplanır.",
+    "where": "Tapu müdürlüğü, noter, nüfus müdürlüğü, SGK il müdürlüğü, belediye imar müdürlüğü."
+  }
+}

@@ -86,5 +86,17 @@
       "Şart hesabı",
       "Aylık rehberi"
     ]
+  },
+  {
+    "slug": "ne-kadar-surer",
+    "name": "Ne Kadar Sürer?",
+    "question": "Bu iş ne kadar sürer?",
+    "blurb": "Dava, icra, ruhsat, tapu… Hangi iş ne kadar sürer ve hangi süreyi kaçırırsan hakkın düşer?",
+    "icon": "⏱️",
+    "accent": "#1f4b8f",
+    "tools": [
+      "Tahmin oyunu",
+      "Süre takvimi"
+    ]
   }
 ]

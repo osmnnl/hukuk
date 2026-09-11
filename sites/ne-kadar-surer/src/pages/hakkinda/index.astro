@@ -1,0 +1,29 @@
+---
+import Base from "../../layouts/Base.astro";
+import { cases, frames, site } from "../../lib/cases";
+---
+<Base title={`Hakkında — ${site.name}`} description="Süreler nereden geliyor, ne kadar güvenilir?" path="/hakkinda/">
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <section class="hero" style="padding:36px 0 6px">
+      <p class="kick">Hakkında</p>
+      <h1 style="font-size:clamp(26px,5.2vw,38px)">Bu süreler nereden geliyor?</h1>
+      <p class="lede">İki ayrı kaynaktan: kanunda yazan süreler ve uygulamada gözlenen tipik süreler. İkisi
+      aynı şey değil ve bu sitede ayrı ayrı gösteriliyor.</p>
+    </section>
+    <section class="sec"><h2>Kanuni süre ≠ gerçek süre</h2>
+      <p><strong>Kanuni süreler</strong> — istinaf için 2 hafta, idari dava için 60 gün, bilirkişi raporu için
+      3 ay — kesindir ve kaynağı sayfada yazılıdır. <strong>Yargılama süreleri</strong> ise ortalamadır:
+      mahkemenin iş yüküne, şehre, bilirkişiye ve tarafların tutumuna göre değişir. Bir dosya aynı
+      mahkemede diğerinin iki katı sürebilir.</p></section>
+    <section class="sec"><h2>Neden aralık veriyoruz?</h2>
+      <p>Tek bir rakam vermek daha çekici olurdu ama yanlış olurdu. Aralık, gerçekliğin kendisidir:
+      aynı dava türünde 10 ay da mümkündür 30 ay da. Tahmin oyununda puanı aralığa göre veriyoruz,
+      tek bir sayıya göre değil.</p></section>
+    <section class="sec"><h2>Kapsam</h2>
+      <p>{cases.length} süre sorusu, {Object.keys(frames).length} başlık: {Object.values(frames).map((f: any) => f.topic).join(", ")}.</p></section>
+    <section class="sec" style="border-bottom:0"><h2>Sınırları</h2>
+      <p>Burası <strong>hukuki danışmanlık vermez</strong>. Özellikle hak düşürücü sürelerde hesabı kendi
+      dosyanızdaki tebliğ belgesine göre yapın ve avukatınıza doğrulatın. Bir günlük hata, kazanılmış bir
+      davayı kaybettirebilir.</p></section>
+  </div>
+</Base>

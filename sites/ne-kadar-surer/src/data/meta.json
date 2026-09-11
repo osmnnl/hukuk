@@ -1,0 +1,10 @@
+{
+  "name": "Ne Kadar Sürer?",
+  "tagline": "Bu iş <em>ne kadar sürer?</em>",
+  "unit": "süre sorusu",
+  "verdicts": {
+    "a": { "label": "Kısa — haftalar veya birkaç ay", "short": "KISA" },
+    "b": { "label": "Uzun — yıllarla ölçülür", "short": "UZUN" },
+    "c": { "label": "Değişken — neye bağlı olduğuna göre", "short": "DEĞİŞKEN" }
+  }
+}

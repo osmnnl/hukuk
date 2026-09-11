@@ -1,0 +1,100 @@
+---
+import Base from "../layouts/Base.astro";
+import SearchBox from "../components/SearchBox.astro";
+import CaseCard from "../components/CaseCard.astro";
+import { cases, surprising, site } from "../lib/cases";
+import { url, absUrl } from "../lib/url";
+
+const cetvel = (cases as any[])
+  .filter((c) => Array.isArray(c.months))
+  .sort((a, b) => a.typical - b.typical);
+const enUzun = Math.max(...cetvel.map((c) => c.months[1]));
+const kisa = cetvel.slice(0, 6);
+const uzun = cetvel.slice(-6).reverse();
+const ayYaz = (a: number) => (a === 0 ? "birkaç gün" : a < 12 ? `${a} ay` : a % 12 === 0 ? `${a / 12} yıl` : `${Math.floor(a / 12)},${Math.round((a % 12) / 1.2)} yıl`);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "WebSite", "@id": absUrl("/") + "#website", name: site.name, url: absUrl("/"), inLanguage: "tr-TR" },
+    { "@type": "FAQPage", mainEntity: cetvel.slice(0, 8).map((c) => ({ "@type": "Question", name: c.question, acceptedAnswer: { "@type": "Answer", text: c.summary } })) },
+  ],
+};
+---
+<Base
+  title="Ne kadar sürer? — dava, icra ve resmî işlem süreleri"
+  description="Boşanma, işçilik alacağı, icra takibi, istinaf, tapu, ruhsat… Hangi iş ne kadar sürer, süreyi ne uzatır, hangi süreyi kaçırırsanız hak düşer?"
+  path="/"
+  jsonLd={jsonLd}
+>
+  <section class="hero">
+    <div class="wrap">
+      <p class="kick">{cases.length} süre sorusu · 16 yasal süre · tahmin oyunu</p>
+      <h1>Bu iş<br />ne kadar sürer?</h1>
+      <p class="lede">
+        Hukukta iki tür süre var: <strong>beklediğiniz</strong> süre ve <strong>kaçırırsanız hakkınızı
+        kaybettiğiniz</strong> süre. İkincisi çok daha kısa ve çok daha önemli.
+      </p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn" href={url("/tahmin/")}>Tahmin oyununu oyna →</a>
+        <a class="btn btn-2" href={url("/takvim/")}>Kaç günüm kaldı?</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:24px"><div class="wrap">
+    <div class="head"><h2>Süre cetveli</h2><a href={url("/liste/")}>Tümü ({cases.length}) →</a></div>
+    <div class="grid g2">
+      <div class="card">
+        <h3 style="margin-bottom:12px">Haftalar ve aylar</h3>
+        {kisa.map((c) => (
+          <a class="bar" href={url("/" + c.slug + "/")}>
+            <span class="bt">{c.title.replace(" ne kadar sürer?", "").replace(" ne kadar sürede alınır?", "").replace("?", "")}</span>
+            <span class="btrack"><i style={`left:${(c.months[0] / enUzun) * 100}%;right:${100 - (c.months[1] / enUzun) * 100}%`}></i></span>
+            <span class="bar-num">{ayYaz(c.typical)}</span>
+          </a>
+        ))}
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:12px">Yıllarla ölçülenler</h3>
+        {uzun.map((c) => (
+          <a class="bar" href={url("/" + c.slug + "/")}>
+            <span class="bt">{c.title.replace(" ne kadar sürer?", "").replace("?", "")}</span>
+            <span class="btrack"><i class="lg" style={`left:${(c.months[0] / enUzun) * 100}%;right:${100 - (c.months[1] / enUzun) * 100}%`}></i></span>
+            <span class="bar-num">{ayYaz(c.typical)}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+    <p class="note" style="margin-top:12px">Çubuklar tipik aralığı gösterir; rakam en sık rastlanan süredir.
+    Şehre, mahkemenin iş yüküne ve dosyanın özelliğine göre değişir.</p>
+  </div></section>
+
+  <section class="block" style="padding-top:6px"><div class="wrap">
+    <div class="grid g3">
+      <a class="tool" href={url("/tahmin/")}><span class="ic">🎯</span><span><h3>Tahmin oyunu</h3><p>8 soru — süreleri ne kadar iyi biliyorsun?</p></span></a>
+      <a class="tool" href={url("/takvim/")}><span class="ic">⏳</span><span><h3>Süre takvimi</h3><p>16 yasal süre, son gün hesabıyla.</p></span></a>
+      <a class="tool" href={url("/liste/")}><span class="ic">📋</span><span><h3>{cases.length} süre sorusu</h3><p>Dava, icra, ceza, idare, resmî işlem.</p></span></a>
+    </div>
+  </div></section>
+
+  <section class="block" style="padding-top:0"><div class="wrap">
+    <div class="head"><h2>Ara</h2></div><SearchBox placeholder="Ara: boşanma, icra, istinaf, tapu…" />
+  </div></section>
+
+  <section class="block" style="padding-top:10px"><div class="wrap">
+    <div class="head"><h2>Çoğu kişiyi şaşırtan {surprising.length} süre</h2></div>
+    <div class="grid g2">{surprising.slice(0, 6).map((c) => <CaseCard item={c} hide />)}</div>
+  </div></section>
+
+  <style>
+    .bar { display: grid; grid-template-columns: 1fr; gap: 4px; padding: 9px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit }
+    .bar:last-child { border-bottom: 0 }
+    .bar:hover .bt { color: var(--accent) }
+    .bt { font-size: 14px; font-weight: 600; line-height: 1.3 }
+    .btrack { position: relative; display: block; height: 7px; border-radius: 4px; background: var(--bg-2); overflow: hidden }
+    .btrack i { position: absolute; top: 0; bottom: 0; border-radius: 4px; background: var(--ok); min-width: 4px }
+    .btrack i.lg { background: var(--no) }
+    .bar-num { font-size: 12.5px; color: var(--ink-3); font-family: var(--mono) }
+  </style>
+</Base>

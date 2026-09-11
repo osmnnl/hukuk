@@ -1,0 +1,131 @@
+---
+import Base from "../../layouts/Base.astro";
+import { cases } from "../../lib/cases";
+import { url } from "../../lib/url";
+
+const oyun = cases
+  .filter((c: any) => Array.isArray(c.months))
+  .map((c: any) => ({ slug: c.slug, title: c.title, min: c.months[0], max: c.months[1], typ: c.typical, why: c.summary }));
+---
+<Base
+  title="Tahmin oyunu — bu iş kaç ay sürer?"
+  description="Boşanma, işçilik alacağı, icra, istinaf… Süreyi tahmin edin, gerçeğini görün. Çoğu kişi üçte birini tahmin ediyor."
+  path="/tahmin/"
+>
+  <section class="hero" style="padding-bottom:10px">
+    <div class="wrap narrow">
+      <p class="kick">Tahmin oyunu · {oyun.length} soru</p>
+      <h1>Sence kaç<br />ay sürer?</h1>
+      <p class="lede">Herkes hukuki süreçleri olduğundan kısa tahmin eder. 8 soruda kendi tahmininizi gerçek takvimle karşılaştırın.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <div class="panel" id="oyun">
+      <div class="steps-n" id="adimlar"></div>
+      <p class="kick" id="sayac" style="margin-bottom:6px"></p>
+      <h2 id="soru" style="font-size:clamp(20px,4.4vw,27px);margin:0 0 18px;line-height:1.25"></h2>
+
+      <div class="field" style="margin-bottom:6px">
+        <label for="slider">Tahminin: <b id="tahminLbl" class="num">12 ay</b></label>
+        <input id="slider" type="range" min="0" max="48" step="1" value="12" style="width:100%" />
+        <p class="hint" id="skala">0 = birkaç gün · 48 = dört yıl ve üzeri</p>
+      </div>
+
+      <button class="btn" type="button" id="cevapla" style="width:100%">Cevabı göster</button>
+
+      <div id="sonuc" hidden style="margin-top:20px">
+        <div class="total">
+          <p class="lbl" id="yorum"></p>
+          <p class="big num" id="gercek"></p>
+          <p class="sub" id="fark"></p>
+        </div>
+        <p style="margin:14px 0 0;color:var(--ink-2);line-height:1.6" id="neden"></p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+          <button class="btn" type="button" id="sonraki">Sıradaki soru →</button>
+          <a class="btn btn-2" id="detayLink" href="#">Ayrıntılar</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="bitis" hidden style="margin-top:18px;text-align:center">
+      <p class="kick">Sonuç</p>
+      <p class="big num" id="skor" style="font-size:clamp(34px,9vw,56px);font-weight:800;margin:6px 0"></p>
+      <p id="skorYorum" style="color:var(--ink-2);line-height:1.6;margin:0 0 16px"></p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+        <button class="btn" type="button" id="tekrar">Yeniden oyna</button>
+        <a class="btn btn-2" href={url("/takvim/")}>Süre takvimine bak</a>
+      </div>
+    </div>
+
+    <p class="note">Buradaki süreler ortalama ve tipik değerlerdir; şehre, mahkemenin iş yüküne ve dosyanın
+    özelliğine göre belirgin biçimde değişir. Kesin bir takvim vaadi olarak okunmamalıdır.</p>
+  </div>
+
+  <script is:inline define:vars={{ oyun, base: url("/") }}>
+    const $ = (id) => document.getElementById(id);
+    const TUR = 8;
+    let sorular = [], i = 0, puan = 0, cevaplandi = false;
+
+    const ayYaz = (a) => (a === 0 ? "birkaç gün" : a < 12 ? `${a} ay` : a % 12 === 0 ? `${a / 12} yıl` : `${Math.floor(a / 12)} yıl ${a % 12} ay`);
+
+    function karistir(a) { const b = a.slice(); for (let k = b.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [b[k], b[j]] = [b[j], b[k]]; } return b; }
+
+    function basla() {
+      sorular = karistir(oyun).slice(0, TUR); i = 0; puan = 0;
+      $("bitis").hidden = true; $("oyun").hidden = false;
+      $("adimlar").innerHTML = sorular.map(() => "<i></i>").join("");
+      goster();
+    }
+
+    function goster() {
+      cevaplandi = false;
+      const s = sorular[i];
+      $("sayac").textContent = `Soru ${i + 1} / ${TUR} · puan ${puan}`;
+      $("soru").textContent = s.title;
+      $("slider").value = 12; $("tahminLbl").textContent = "12 ay";
+      $("sonuc").hidden = true;
+      $("cevapla").hidden = false;
+      [...$("adimlar").children].forEach((el, k) => el.classList.toggle("on", k < i));
+    }
+
+    $("slider").addEventListener("input", (e) => { $("tahminLbl").textContent = ayYaz(+e.target.value); });
+
+    $("cevapla").addEventListener("click", () => {
+      if (cevaplandi) return;
+      cevaplandi = true;
+      const s = sorular[i], t = +$("slider").value;
+      const icinde = t >= s.min && t <= s.max;
+      const sapma = icinde ? 0 : t < s.min ? s.min - t : t - s.max;
+      const p = icinde ? 3 : sapma <= 4 ? 2 : sapma <= 10 ? 1 : 0;
+      puan += p;
+
+      $("yorum").textContent = icinde ? "Tam isabet" : t < s.min ? "Olduğundan kısa tahmin ettin" : "Olduğundan uzun tahmin ettin";
+      $("gercek").textContent = s.min === s.max ? ayYaz(s.typ) : `${ayYaz(s.min)} – ${ayYaz(s.max)}`;
+      $("fark").textContent = icinde ? `+${p} puan · tipik süre ${ayYaz(s.typ)}` : `Senin tahminin ${ayYaz(t)} · +${p} puan`;
+      $("neden").textContent = s.why;
+      $("detayLink").href = base + s.slug + "/";
+      $("cevapla").hidden = true;
+      $("sonuc").hidden = false;
+    });
+
+    $("sonraki").addEventListener("click", () => {
+      i++;
+      if (i >= TUR) {
+        $("oyun").hidden = true; $("bitis").hidden = false;
+        $("skor").textContent = `${puan} / ${TUR * 3}`;
+        const o = puan / (TUR * 3);
+        $("skorYorum").textContent = o >= 0.75
+          ? "Süreleri gerçekçi biçimde biliyorsunuz — bu, beklenti yönetiminin yarısı demek."
+          : o >= 0.45
+            ? "Fena değil. Şaşırtan yerler genelde kanun yolları: istinaf ve temyiz çoğu dosyanın süresini ikiye katlıyor."
+            : "Çoğu kişi gibi süreleri olduğundan kısa tahmin ettiniz. Bir davanın süresi ilk derecede bitmiyor — istinafı da takvime ekleyin.";
+        return;
+      }
+      goster();
+    });
+
+    $("tekrar").addEventListener("click", basla);
+    basla();
+  </script>
+</Base>

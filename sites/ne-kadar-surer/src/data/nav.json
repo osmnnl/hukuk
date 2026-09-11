@@ -1,0 +1,6 @@
+[
+  { "href": "/", "label": "Ana sayfa" },
+  { "href": "/liste/", "label": "Tüm süreler" },
+  { "href": "/tahmin/", "label": "Tahmin oyunu" },
+  { "href": "/takvim/", "label": "Süre takvimi" }
+]
