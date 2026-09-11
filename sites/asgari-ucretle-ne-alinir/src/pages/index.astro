@@ -1,0 +1,60 @@
+---
+import Base from "../layouts/Base.astro";
+import SearchBox from "../components/SearchBox.astro";
+import CaseCard from "../components/CaseCard.astro";
+import { cases, surprising, site } from "../lib/cases";
+import { url, absUrl } from "../lib/url";
+
+const populer = ["elden-odeme","ucret-odenmezse","maas-haczi","yemek-yol-asgari","fazla-mesai-ucreti","emeklilikte-asgari-prim"]
+  .map((s) => cases.find((c) => c.slug === s)!);
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "WebSite", "@id": absUrl("/") + "#website", name: site.name, url: absUrl("/"), inLanguage: "tr-TR" },
+    { "@type": "FAQPage", mainEntity: populer.map((c) => ({ "@type": "Question", name: c.question, acceptedAnswer: { "@type": "Answer", text: c.summary } })) },
+  ],
+};
+---
+<Base
+  title="Asgari ücretle ne alınır? — alım gücü ve ücret hakları"
+  description="Maaşınızın kaç ekmek, kaç litre benzin, kaç kira ettiğini hesaplayın; asgari ücret hukukunda haklarınızı öğrenin: kesintiler, mesai, haciz sınırı, elden ödeme."
+  path="/"
+  jsonLd={jsonLd}
+>
+  <section class="hero">
+    <div class="wrap">
+      <p class="kick">{cases.length} soru · sepet testi · zaman makinesi</p>
+      <h1>Asgari ücretle<br />ne alınır?</h1>
+      <p class="lede">
+        Maaşın lira tutarı bir şey anlatmaz. Anlatan şey şu: aynı ekmek için
+        <strong>kaç dakika çalışmanız gerekiyor</strong> — ve bu süre her yıl uzuyor mu?
+      </p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn" href={url("/sepet/")}>Sepetimi hesapla →</a>
+        <a class="btn btn-2" href={url("/zaman/")}>Alım gücüm arttı mı?</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:20px"><div class="wrap">
+    <div class="grid g3">
+      <a class="tool" href={url("/sepet/")}><span class="ic">🧾</span><span><h3>Sepet testi</h3><p>Maaş kaç ekmek, kaç kira, kaç saat eder?</p></span></a>
+      <a class="tool" href={url("/zaman/")}><span class="ic">⏮️</span><span><h3>Zaman makinesi</h3><p>Geçmişle bugünü kendi rakamlarınla karşılaştır.</p></span></a>
+      <a class="tool" href={url("/liste/")}><span class="ic">⚖️</span><span><h3>{cases.length} soru</h3><p>Kesinti, mesai, haciz, elden ödeme, staj.</p></span></a>
+    </div>
+  </div></section>
+
+  <section class="block" style="padding-top:6px"><div class="wrap">
+    <div class="head"><h2>Ara</h2></div><SearchBox placeholder="Ara: bordro, mesai, haciz, staj, işsizlik…" />
+  </div></section>
+
+  <section class="block" style="padding-top:10px"><div class="wrap">
+    <div class="head"><h2>En çok sorulanlar</h2><a href={url("/liste/")}>Tümü ({cases.length}) →</a></div>
+    <div class="grid g2">{populer.map((c) => <CaseCard item={c} />)}</div>
+  </div></section>
+
+  <section class="block" style="padding-top:0"><div class="wrap">
+    <div class="head"><h2>Çoğu kişinin bilmediği {surprising.length} hak</h2></div>
+    <div class="grid g2">{surprising.slice(0, 6).map((c) => <CaseCard item={c} hide />)}</div>
+  </div></section>
+</Base>

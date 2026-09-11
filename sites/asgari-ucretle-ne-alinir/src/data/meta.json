@@ -1,0 +1,10 @@
+{
+  "name": "Asgari Ücretle Ne Alınır?",
+  "tagline": "Asgari ücretle <em>ne alınır?</em>",
+  "unit": "asgari ücret sorusu",
+  "verdicts": {
+    "a": { "label": "Hayır — yapılamaz", "short": "OLMAZ" },
+    "b": { "label": "Evet — hakkın var", "short": "HAKKIN VAR" },
+    "c": { "label": "Duruma göre değişir", "short": "DEĞİŞKEN" }
+  }
+}

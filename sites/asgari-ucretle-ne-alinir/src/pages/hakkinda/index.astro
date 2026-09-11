@@ -1,0 +1,28 @@
+---
+import Base from "../../layouts/Base.astro";
+import { cases, frames, site } from "../../lib/cases";
+---
+<Base title={`Hakkında — ${site.name}`} description="Neden güncel rakam yazmıyoruz?" path="/hakkinda/">
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <section class="hero" style="padding:36px 0 6px">
+      <p class="kick">Hakkında</p>
+      <h1 style="font-size:clamp(26px,5.2vw,38px)">Neden güncel asgari ücret yazmıyoruz?</h1>
+      <p class="lede">Çünkü rakam yılda en az bir kez değişiyor ve eski bir rakamla yapılan hesap,
+      insanları yanlış karara götürür.</p>
+    </section>
+    <section class="sec"><h2>Bunun yerine ne yapıyoruz?</h2>
+      <p>Maaşı ve fiyatları <strong>siz</strong> giriyorsunuz; site yalnız oranı ve çalışma süresi
+      karşılığını hesaplıyor. Böylece sonuç her zaman güncel kalıyor ve bulunduğunuz şehrin fiyatlarını
+      yansıtıyor.</p></section>
+    <section class="sec"><h2>Hukuki kısım ne kadar güncel?</h2>
+      <p>Kanun maddeleri ve haklar, tutarlardan çok daha yavaş değişir. Bu yüzden burada oranlar değil
+      <strong>kurallar</strong> anlatılıyor: hangi kesinti yapılır, hangi hak ne zaman doğar, hangi sınır
+      aşılamaz. Tutar gerektiren yerlerde kaynağın kendisine yönlendiriyoruz.</p></section>
+    <section class="sec"><h2>Kapsam</h2>
+      <p>{cases.length} soru, {Object.keys(frames).length} başlık: {Object.values(frames).map((f: any) => f.topic).join(", ")}.</p></section>
+    <section class="sec" style="border-bottom:0"><h2>Sınırları</h2>
+      <p>Burada yazanlar <strong>hukuki danışmanlık değildir</strong>. Ücret alacağı davalarında
+      zamanaşımı süreleri işler; hakkınızın zedelendiğini düşünüyorsanız ALO 170'e başvurabilir veya bir
+      avukata danışabilirsiniz.</p></section>
+  </div>
+</Base>

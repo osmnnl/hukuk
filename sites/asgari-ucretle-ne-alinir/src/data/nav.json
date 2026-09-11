@@ -1,0 +1,6 @@
+[
+  { "href": "/", "label": "Ana sayfa" },
+  { "href": "/liste/", "label": "Tüm sorular" },
+  { "href": "/sepet/", "label": "Sepet testi" },
+  { "href": "/zaman/", "label": "Zaman makinesi" }
+]

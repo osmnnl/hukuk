@@ -1,0 +1,80 @@
+{
+  "tespit": {
+    "topic": "Asgari ücretin belirlenmesi",
+    "short": "4857 İş K. m.39",
+    "basis": [
+      { "law": "4857 sayılı İş Kanunu", "article": "m.39", "note": "Asgari Ücret Tespit Komisyonu ve belirleme usulü" },
+      { "law": "4857 sayılı İş Kanunu", "article": "m.32", "note": "Ücretin ödenmesi" },
+      { "law": "2709 sayılı Anayasa", "article": "m.55", "note": "Ücrette adaletin sağlanması ve asgari ücretin tespiti" },
+      { "law": "Asgari Ücret Yönetmeliği", "article": "m.7", "note": "Komisyonun toplanması ve kararın ilanı" }
+    ],
+    "explain": "Asgari ücret, işçi–işveren–devlet temsilcilerinden oluşan bir komisyonca belirlenir ve Resmî Gazete'de yayımlanarak yürürlüğe girer. Belirlenen tutar, ülke genelinde bütün işçiler için alt sınırdır; altında ücret kararlaştırılamaz.",
+    "deadline": "Komisyon kararı Resmî Gazete'de yayımlandığı tarihte yürürlüğe girer; işveren bu tarihten itibaren yeni tutarı uygulamak zorundadır.",
+    "where": "Çalışma ve Sosyal Güvenlik Bakanlığı (komisyon kararı), Resmî Gazete (ilan)."
+  },
+  "bordro": {
+    "topic": "Brüt, net ve kesintiler",
+    "short": "SGK primi, vergi istisnası",
+    "basis": [
+      { "law": "5510 sayılı SGK Kanunu", "article": "m.80-81", "note": "Prime esas kazanç ve prim oranları" },
+      { "law": "193 sayılı GVK", "article": "m.23/18", "note": "Asgari ücret tutarındaki ücretlerde gelir vergisi istisnası" },
+      { "law": "488 sayılı Damga Vergisi K.", "article": "ek m.2", "note": "Asgari ücrete isabet eden kısımda damga vergisi istisnası" },
+      { "law": "4857 sayılı İş Kanunu", "article": "m.37", "note": "Ücret hesap pusulası verme zorunluluğu" }
+    ],
+    "explain": "Brüt ücretten SGK ve işsizlik sigortası primi kesilir; asgari ücret tutarına isabet eden kısım gelir ve damga vergisinden istisnadır. Bu yüzden asgari ücretlinin net maaşı yıl boyunca sabit kalır, üst ücretlerde ise vergi dilimi nedeniyle net tutar yıl içinde düşer.",
+    "deadline": "İşveren, ücret ödemesinde işçiye kesintileri gösteren ücret hesap pusulası vermek zorundadır; talep beklemeden verilir.",
+    "where": "İşveren (bordro ve pusula), SGK (hizmet dökümü), e-Devlet (kazanç bilgileri)."
+  },
+  "haklar": {
+    "topic": "Ücretin korunması",
+    "short": "Ödenmeyen ücret, haciz sınırı",
+    "basis": [
+      { "law": "4857 sayılı İş Kanunu", "article": "m.34", "note": "Ücreti ödenmeyen işçinin çalışmaktan kaçınma hakkı" },
+      { "law": "4857 sayılı İş Kanunu", "article": "m.24/II-e", "note": "Ücret ödenmemesi hâlinde haklı nedenle fesih" },
+      { "law": "2004 sayılı İİK", "article": "m.83", "note": "Maaşın haczedilebilecek kısmı: en çok dörtte bir" },
+      { "law": "4857 sayılı İş Kanunu", "article": "m.35", "note": "Ücretin devir ve haczi sınırı" }
+    ],
+    "explain": "Ücret, işçinin en korunaklı alacağıdır: ödenmediğinde işçi çalışmaktan kaçınabilir ve haklı nedenle feshedip kıdem tazminatını isteyebilir. Maaşın tamamı da haczedilemez — kural olarak en çok dörtte biri kesilebilir.",
+    "deadline": "Ücreti ödeme gününden itibaren yirmi gün içinde ödenmeyen işçi, iş görme borcunu yerine getirmekten kaçınabilir.",
+    "where": "İşveren, ALO 170 (çalışma hayatı), arabuluculuk bürosu, iş mahkemesi."
+  },
+  "ekler": {
+    "topic": "Yan haklar ve eklentiler",
+    "short": "Yemek, yol, prim, mesai",
+    "basis": [
+      { "law": "4857 sayılı İş Kanunu", "article": "m.41", "note": "Fazla çalışma ücreti: saat başına yüzde elli zamlı" },
+      { "law": "4857 sayılı İş Kanunu", "article": "m.47", "note": "Ulusal bayram ve genel tatil ücreti" },
+      { "law": "4857 sayılı İş Kanunu", "article": "m.46", "note": "Hafta tatili ücreti" },
+      { "law": "5510 sayılı SGK Kanunu", "article": "m.80", "note": "Yemek ve yol yardımının prime esas kazanca dâhil olup olmaması" }
+    ],
+    "explain": "Yemek, yol ve ikramiye gibi ödemeler asgari ücretin içinde sayılmaz; asgari ücret, çıplak ücretin alt sınırıdır. Fazla çalışma, hafta tatili ve genel tatil çalışmaları ise ayrıca ve zamlı ödenir.",
+    "deadline": "Fazla çalışma süresi yılda iki yüz yetmiş saati aşamaz; aşan çalışmalar da ücrete hak kazandırır.",
+    "where": "İşveren (bordro kalemleri), iş müfettişi şikâyeti, iş mahkemesi."
+  },
+  "gecim": {
+    "topic": "Geçim ve alım gücü",
+    "short": "Sepet, kira, zorunlu gider",
+    "basis": [
+      { "law": "2709 sayılı Anayasa", "article": "m.55", "note": "Ücretin çalışanın geçimine uygun olması" },
+      { "law": "6098 sayılı TBK", "article": "m.344", "note": "Kira artışında tüketici fiyat endeksi sınırı" },
+      { "law": "2004 sayılı İİK", "article": "m.83", "note": "Asgari geçim için gerekli tutarın korunması" },
+      { "law": "4857 sayılı İş Kanunu", "article": "m.39", "note": "Asgari ücretin işçinin geçim şartlarına göre belirlenmesi" }
+    ],
+    "explain": "Alım gücü, ücretin lira tutarıyla değil; o ücretle alınabilen mal ve hizmet miktarıyla ölçülür. Aynı maaş, fiyatlar daha hızlı arttığında daha az şey alır — zam alındığı hâlde geçinmenin zorlaşması bu yüzdendir.",
+    "deadline": "Kira bedelinin yenilenen dönemlerdeki artışı, bir önceki kira yılına ait on iki aylık ortalama tüketici fiyat endeksi değişimini geçemez.",
+    "where": "TÜİK (fiyat endeksleri), Türk-İş ve sendikalar (açlık ve yoksulluk sınırı çalışmaları)."
+  },
+  "ozel": {
+    "topic": "Özel durumlar",
+    "short": "Kısmi süreli, stajyer, emeklilik",
+    "basis": [
+      { "law": "4857 sayılı İş Kanunu", "article": "m.13", "note": "Kısmi süreli çalışan işçiye ayrımcılık yapılamaması" },
+      { "law": "3308 sayılı Mesleki Eğitim K.", "article": "m.25", "note": "Stajyer ve çırak ücretinin asgari ücrete oranı" },
+      { "law": "5510 sayılı SGK Kanunu", "article": "m.82", "note": "Prime esas kazancın alt ve üst sınırı" },
+      { "law": "4857 sayılı İş Kanunu", "article": "m.5", "note": "Eşit davranma ilkesi" }
+    ],
+    "explain": "Kısmi süreli çalışanın ücreti, çalışılan süreyle orantılı olarak asgari ücretin altına düşebilir; ama saat ücreti asgari ücretin saat karşılığının altında olamaz. Stajyer ve çıraklarda ise kanunda ayrı bir oran öngörülmüştür.",
+    "deadline": "Prime esas kazancın alt sınırı asgari ücret tutarıdır; daha düşük kazanç bildirilemez, bildirilse bile alt sınır üzerinden prim tahakkuk eder.",
+    "where": "SGK (prim bildirimi), işveren (sözleşme), okul/işletme (staj sözleşmesi)."
+  }
+}

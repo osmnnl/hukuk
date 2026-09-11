@@ -146,5 +146,17 @@
       "Birikim hesabı",
       "Erime testi"
     ]
+  },
+  {
+    "slug": "asgari-ucretle-ne-alinir",
+    "name": "Asgari Ücretle Ne Alınır?",
+    "question": "Kaç saat çalışmak gerekiyor?",
+    "blurb": "Maaşın kaç ekmek, kaç kira, kaç saatlik çalışma ediyor? Bir de ücret hakların: kesinti, mesai, haciz sınırı.",
+    "icon": "🧾",
+    "accent": "#c2410c",
+    "tools": [
+      "Sepet testi",
+      "Zaman makinesi"
+    ]
   }
 ]

@@ -1,0 +1,118 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url } from "../../lib/url";
+
+const urunler = [
+  { id: "ekmek", ad: "Ekmek", birim: "adet", varsayilan: 15 },
+  { id: "sut", ad: "Süt (1 L)", birim: "litre", varsayilan: 40 },
+  { id: "yumurta", ad: "Yumurta (30'lu)", birim: "koli", varsayilan: 160 },
+  { id: "kiyma", ad: "Kıyma (1 kg)", birim: "kilo", varsayilan: 700 },
+  { id: "benzin", ad: "Benzin (1 L)", birim: "litre", varsayilan: 50 },
+  { id: "kira", ad: "Kira (aylık)", birim: "ay", varsayilan: 15000 },
+  { id: "ulasim", ad: "Toplu taşıma (tek yön)", birim: "biniş", varsayilan: 30 },
+  { id: "kahve", ad: "Kahve (dışarıda)", birim: "fincan", varsayilan: 120 },
+];
+---
+<Base
+  title="Sepet testi — asgari ücretle ne alınır?"
+  description="Maaşınızı ve kendi fiyatlarınızı girin: aylık ücretin kaç ekmek, kaç litre benzin, kaç kira ettiğini ve her ürün için kaç saat çalıştığınızı görün."
+  path="/sepet/"
+>
+  <section class="hero" style="padding-bottom:14px">
+    <div class="wrap narrow">
+      <p class="kick">Sepet testi</p>
+      <h1>Bu maaşla<br />ne alınır?</h1>
+      <p class="lede">Fiyatlar sizin bulunduğunuz yere göre değişir; bu yüzden rakamları siz giriyorsunuz. Site yalnız bölme işlemini yapıyor — ama sonucu görmek çarpıcı.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <div class="panel">
+      <div class="row2">
+        <div class="field">
+          <label for="maas">Aylık net maaş (₺)</label>
+          <input id="maas" type="number" min="0" step="500" value="22000" />
+          <p class="hint">Güncel net asgari ücreti bilmiyorsanız bordronuzdaki net tutarı yazın.</p>
+        </div>
+        <div class="field">
+          <label for="saat">Aylık çalışma saati</label>
+          <input id="saat" type="number" min="1" max="400" step="1" value="225" />
+          <p class="hint">Tam zamanlıda 225 saat (haftalık 45 saat).</p>
+        </div>
+      </div>
+
+      <h3 style="font-size:15px;margin:18px 0 4px">Fiyatlar</h3>
+      <p class="hint" style="margin:0 0 8px">Kendi bölgenizdeki güncel fiyatları yazın.</p>
+      {urunler.map((u) => (
+        <div class="field" style="margin-bottom:10px">
+          <label for={u.id}>{u.ad} (₺)</label>
+          <input id={u.id} type="number" min="0" step="1" value={u.varsayilan} />
+        </div>
+      ))}
+
+      <button class="btn" type="button" id="hesapla" style="width:100%">Sepeti hesapla</button>
+
+      <div id="sonuc" hidden style="margin-top:22px">
+        <div class="total">
+          <p class="lbl">Saat ücretin</p>
+          <p class="big num" id="saatUcret"></p>
+          <p class="sub">her ürün için kaç saat çalıştığın buradan çıkıyor</p>
+        </div>
+        <div class="lines" id="tablo"></div>
+        <div class="tipbox" id="yorum" style="margin-top:14px"></div>
+      </div>
+    </div>
+
+    <section class="sec" style="margin-top:26px">
+      <h2>Neden "kaç saat" diye soruyoruz?</h2>
+      <p>Lira tutarları yıllar arasında karşılaştırılamaz; enflasyon her rakamı bozar. Bir ürünün
+      <strong>kaç saatlik çalışmaya mal olduğu</strong> ise doğrudan karşılaştırılabilir bir ölçüdür.
+      Aynı ürün için daha çok saat çalışıyorsanız, ücretiniz artmış olsa bile fakirleşmişsiniz demektir.</p>
+    </section>
+    <p class="note">Girdiğiniz hiçbir değer kaydedilmez veya gönderilmez. Hesap tamamen tarayıcınızda yapılır.</p>
+  </div>
+
+  <script is:inline define:vars={{ urunler }}>
+    const $ = (id) => document.getElementById(id);
+    const sayi = (n, b = 0) => n.toLocaleString("tr-TR", { maximumFractionDigits: b });
+
+    function sureYaz(saat) {
+      if (saat < 1) return `${sayi(saat * 60)} dakika`;
+      if (saat < 45) return `${sayi(saat, 1)} saat`;
+      const gun = saat / 7.5;
+      if (gun < 30) return `${sayi(gun, 1)} iş günü`;
+      return `${sayi(saat / 225, 1)} ay`;
+    }
+
+    function hesapla() {
+      const maas = +$("maas").value || 0;
+      const saat = Math.max(1, +$("saat").value || 225);
+      if (!maas) { $("maas").focus(); return; }
+      const saatlik = maas / saat;
+      $("saatUcret").textContent = sayi(saatlik, 1) + " ₺ / saat";
+
+      const satirlar = urunler.map((u) => {
+        const f = +$(u.id).value || 0;
+        if (!f) return "";
+        const adet = maas / f;
+        const calisma = f / saatlik;
+        return `<div class="line"><span class="k"><b>${u.ad}</b><small>bir birim için ${sureYaz(calisma)} çalışma</small></span><span class="v">${sayi(adet, adet < 10 ? 1 : 0)} ${u.birim}</span></div>`;
+      }).join("");
+      $("tablo").innerHTML = satirlar;
+
+      const kira = +$("kira").value || 0;
+      const oran = kira ? (kira / maas) * 100 : 0;
+      $("yorum").innerHTML = kira
+        ? oran >= 50
+          ? `<b>Kira, maaşın %${sayi(oran)}'ini alıyor.</b> Bu oranda tek gelirle geçinmek matematiksel olarak çok zor: geriye kalan tutar, diğer bütün zorunlu giderleri karşılamak durumunda.`
+          : oran >= 33
+            ? `<b>Kira maaşın %${sayi(oran)}'i.</b> Genel kabul gören üçte bir sınırının üzerinde; zorunlu giderler için kalan pay daralıyor.`
+            : `<b>Kira maaşın %${sayi(oran)}'i.</b> Üçte bir sınırının altında — bütçede diğer kalemler için görece alan var.`
+        : "";
+      $("sonuc").hidden = false;
+      $("sonuc").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    $("hesapla").addEventListener("click", hesapla);
+  </script>
+</Base>

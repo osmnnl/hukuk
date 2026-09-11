@@ -1,0 +1,108 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url } from "../../lib/url";
+---
+<Base
+  title="Zaman makinesi — alım gücün arttı mı, azaldı mı?"
+  description="Geçmişteki maaşınızı ve o günün fiyatını girin, bugünle karşılaştırın: aynı ürün için daha çok mu yoksa daha az mı çalışıyorsunuz?"
+  path="/zaman/"
+>
+  <section class="hero" style="padding-bottom:14px">
+    <div class="wrap narrow">
+      <p class="kick">Zaman makinesi</p>
+      <h1>Alım gücün<br />arttı mı?</h1>
+      <p class="lede">Zam almış olmak zenginleşmek demek değil. Aynı ürün için o gün ve bugün kaç saat çalıştığınızı karşılaştırın.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <div class="panel">
+      <p class="kick" style="margin-bottom:8px">O zaman</p>
+      <div class="row2">
+        <div class="field">
+          <label for="eskiYil">Yıl</label>
+          <input id="eskiYil" type="number" min="1970" max="2100" step="1" value="2019" />
+        </div>
+        <div class="field">
+          <label for="eskiMaas">Aylık net maaş (₺)</label>
+          <input id="eskiMaas" type="number" min="0" step="100" value="2020" />
+        </div>
+      </div>
+      <div class="field">
+        <label for="eskiFiyat">Bir ürünün o günkü fiyatı (₺)</label>
+        <input id="eskiFiyat" type="number" min="0" step="0.5" value="1.5" />
+        <p class="hint">Ekmek, benzin, kira… Hatırladığınız bir fiyat yeter.</p>
+      </div>
+
+      <p class="kick" style="margin:20px 0 8px">Bugün</p>
+      <div class="row2">
+        <div class="field">
+          <label for="yeniMaas">Aylık net maaş (₺)</label>
+          <input id="yeniMaas" type="number" min="0" step="100" value="22000" />
+        </div>
+        <div class="field">
+          <label for="yeniFiyat">Aynı ürünün bugünkü fiyatı (₺)</label>
+          <input id="yeniFiyat" type="number" min="0" step="0.5" value="15" />
+        </div>
+      </div>
+
+      <button class="btn" type="button" id="hesapla" style="width:100%">Karşılaştır</button>
+
+      <div id="sonuc" hidden style="margin-top:22px">
+        <div class="total">
+          <p class="lbl" id="lbl"></p>
+          <p class="big num" id="fark"></p>
+          <p class="sub" id="alt"></p>
+        </div>
+        <div class="lines" id="tablo"></div>
+        <div class="tipbox" id="yorum" style="margin-top:14px"></div>
+      </div>
+    </div>
+
+    <section class="sec" style="margin-top:26px">
+      <h2>Bu karşılaştırma neyi gösterir?</h2>
+      <p>Tek bir ürün üzerinden yapılan karşılaştırma, genel enflasyonun yerine geçmez — o ürünün fiyatı
+      ortalamadan hızlı ya da yavaş artmış olabilir. Ama tam da bu yüzden değerlidir: <strong>sizin kendi
+      sepetinizde</strong> ne olduğunu gösterir. En sık aldığınız üç ürün için ayrı ayrı deneyin.</p>
+    </section>
+    <p class="note">Geçmiş maaş ve fiyat bilgilerini siz giriyorsunuz; site hiçbir tarihsel veri barındırmaz
+    ve tahmin yapmaz. Girilen değerler kaydedilmez.</p>
+  </div>
+
+  <script is:inline>
+    const $ = (id) => document.getElementById(id);
+    const sayi = (n, b = 0) => n.toLocaleString("tr-TR", { maximumFractionDigits: b });
+
+    function hesapla() {
+      const yil = +$("eskiYil").value || 0;
+      const m1 = +$("eskiMaas").value || 0, f1 = +$("eskiFiyat").value || 0;
+      const m2 = +$("yeniMaas").value || 0, f2 = +$("yeniFiyat").value || 0;
+      if (!m1 || !f1 || !m2 || !f2) { $("eskiMaas").focus(); return; }
+
+      const adet1 = m1 / f1, adet2 = m2 / f2;
+      const degisim = ((adet2 - adet1) / adet1) * 100;
+      const saat1 = (f1 / (m1 / 225)) * 60, saat2 = (f2 / (m2 / 225)) * 60;
+
+      $("lbl").textContent = degisim >= 0 ? "Alım gücün arttı" : "Alım gücün azaldı";
+      $("fark").textContent = `%${sayi(Math.abs(degisim), 1)} ${degisim >= 0 ? "artış" : "kayıp"}`;
+      $("alt").textContent = `${yil} ile bugün arasında, bu ürün özelinde`;
+
+      $("tablo").innerHTML = [
+        [`${yil} — maaşla alınan`, `${sayi(adet1, adet1 < 10 ? 1 : 0)} adet`],
+        ["Bugün — maaşla alınan", `${sayi(adet2, adet2 < 10 ? 1 : 0)} adet`],
+        [`${yil} — bir adet için çalışma`, `${sayi(saat1, 1)} dakika`],
+        ["Bugün — bir adet için çalışma", `${sayi(saat2, 1)} dakika`],
+        ["Maaş artışı", `%${sayi(((m2 - m1) / m1) * 100)}`],
+        ["Fiyat artışı", `%${sayi(((f2 - f1) / f1) * 100)}`],
+      ].map(([k, v]) => `<div class="line"><span class="k">${k}</span><span class="v">${v}</span></div>`).join("");
+
+      $("yorum").innerHTML = degisim < 0
+        ? `<b>Maaşınız %${sayi(((m2 - m1) / m1) * 100)} arttı, bu ürünün fiyatı %${sayi(((f2 - f1) / f1) * 100)}.</b> Fiyat daha hızlı arttığı için aynı ürün bugün size daha pahalıya mal oluyor — zam aldığınız hâlde bu kalemde geriye gittiniz.`
+        : `<b>Bu üründe alım gücünüz artmış.</b> Maaş artışı fiyat artışının üzerinde kalmış. Aynı hesabı kira ve gıda gibi ağırlığı yüksek kalemler için de yapın: sonuç kalemden kaleme değişebilir.`;
+      $("sonuc").hidden = false;
+      $("sonuc").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    $("hesapla").addEventListener("click", hesapla);
+  </script>
+</Base>
