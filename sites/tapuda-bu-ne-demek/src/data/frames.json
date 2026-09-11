@@ -1,0 +1,80 @@
+{
+  "nitelik": {
+    "topic": "Tapunun cinsi ve niteliği",
+    "short": "Arsa, tarla, kat irtifakı, kat mülkiyeti",
+    "basis": [
+      { "law": "4721 sayılı TMK", "article": "m.704", "note": "Taşınmaz mülkiyetinin konusu" },
+      { "law": "4721 sayılı TMK", "article": "m.705", "note": "Mülkiyetin tescille kazanılması" },
+      { "law": "634 sayılı Kat Mülkiyeti K.", "article": "m.1-3", "note": "Kat mülkiyeti ve kat irtifakı" },
+      { "law": "634 sayılı Kat Mülkiyeti K.", "article": "m.14", "note": "Kat irtifakının kat mülkiyetine çevrilmesi" }
+    ],
+    "explain": "Tapunun üst kısmındaki 'cinsi' satırı, o taşınmazın hukuken ne olduğunu söyler: arsa mı tarla mı, bina bitmiş mi bitmemiş mi. Kat irtifakı ile kat mülkiyeti arasındaki fark, çoğu alıcının farkında olmadığı en büyük ayrımdır.",
+    "deadline": "Yapı kullanma izni alındıktan sonra kat irtifakı, malikin başvurusu üzerine kat mülkiyetine çevrilir; bu başvuru yapılmadıkça kayıt kendiliğinden değişmez.",
+    "where": "Tapu müdürlüğü (kayıt ve tescil), belediye imar müdürlüğü (yapı kullanma izni)."
+  },
+  "hisse": {
+    "topic": "Paylı ve elbirliği mülkiyet",
+    "short": "Hisseli tapu, iştirak hâlinde mülkiyet",
+    "basis": [
+      { "law": "4721 sayılı TMK", "article": "m.688", "note": "Paylı mülkiyet" },
+      { "law": "4721 sayılı TMK", "article": "m.701", "note": "Elbirliği mülkiyeti" },
+      { "law": "4721 sayılı TMK", "article": "m.732", "note": "Önalım (şufa) hakkı" },
+      { "law": "4721 sayılı TMK", "article": "m.698", "note": "Paylaşma isteme hakkı" }
+    ],
+    "explain": "Hisseli tapuda size ait olan şey, arazinin belirli bir köşesi değil; taşınmazın tamamındaki bir orandır. Bu ayrım, 'benim payıma düşen yer' diye çitle ayrılan alanların neden hukuken var olmadığını açıklar.",
+    "deadline": "Paylı mülkiyette bir pay üçüncü kişiye satıldığında diğer paydaşların önalım hakkını kullanma süresi, satışın bildirilmesinden itibaren üç ay, her hâlde iki yıldır.",
+    "where": "Tapu müdürlüğü (pay devri), sulh hukuk mahkemesi (ortaklığın giderilmesi), asliye hukuk mahkemesi (önalım davası)."
+  },
+  "serh": {
+    "topic": "Şerhler",
+    "short": "Kişisel hakların tapuya işlenmesi",
+    "basis": [
+      { "law": "4721 sayılı TMK", "article": "m.1009", "note": "Şerh edilebilecek kişisel haklar" },
+      { "law": "4721 sayılı TMK", "article": "m.1010", "note": "Tasarruf yetkisinin kısıtlanmasına ilişkin şerhler" },
+      { "law": "6098 sayılı TBK", "article": "m.238", "note": "Taşınmaz satış vaadi" },
+      { "law": "4721 sayılı TMK", "article": "m.1011", "note": "Geçici tescil şerhi" }
+    ],
+    "explain": "Şerh, kişiye karşı ileri sürülebilen bir hakkı taşınmaza bağlar: şerhten sonra taşınmazı kim alırsa alsın o hakla karşılaşır. Tapuyu okurken şerhler hanesi, mülkiyet hanesi kadar önemlidir.",
+    "deadline": "Satış vaadi sözleşmesinin şerhi, şerh tarihinden itibaren beş yıl içinde satış yapılmaz veya irtifak kurulmazsa tapu sicilinden silinebilir.",
+    "where": "Tapu müdürlüğü (şerh talebi), mahkeme (tedbir kararına dayalı şerhler)."
+  },
+  "takyidat": {
+    "topic": "İpotek, haciz ve takyidatlar",
+    "short": "Taşınmazı bağlayan yükler",
+    "basis": [
+      { "law": "4721 sayılı TMK", "article": "m.881", "note": "İpotek" },
+      { "law": "2004 sayılı İİK", "article": "m.79-89", "note": "Haciz işlemleri" },
+      { "law": "4721 sayılı TMK", "article": "m.893", "note": "Kanuni ipotek hakları" },
+      { "law": "6183 sayılı AATUHK", "article": "m.62", "note": "Kamu alacağı için haciz" }
+    ],
+    "explain": "Takyidat, taşınmazın üzerindeki yüklerin toplu adıdır. İpotekli taşınmaz satılabilir ama ipotek satışla kalkmaz: yeni malik, borcu ödenmezse taşınmazın satılması riskini devralır.",
+    "deadline": "İpotek, alacağın sona ermesiyle kendiliğinden düşmez; terkin için tapuya başvuru gerekir. Haciz şerhinin kaldırılması ise icra dairesinin yazısına bağlıdır.",
+    "where": "Tapu müdürlüğü (terkin), icra dairesi (haciz fekki), banka (ipotek fek yazısı)."
+  },
+  "irtifak": {
+    "topic": "İrtifak hakları",
+    "short": "Geçit, intifa, üst hakkı",
+    "basis": [
+      { "law": "4721 sayılı TMK", "article": "m.779", "note": "İrtifak hakkının içeriği" },
+      { "law": "4721 sayılı TMK", "article": "m.794", "note": "İntifa hakkı" },
+      { "law": "4721 sayılı TMK", "article": "m.826", "note": "Üst hakkı (inşaat hakkı)" },
+      { "law": "4721 sayılı TMK", "article": "m.747", "note": "Zorunlu geçit hakkı" }
+    ],
+    "explain": "İrtifak, başkasının taşınmazı üzerinde sınırlı bir kullanma yetkisidir. Tapuda 'lehine' ve 'aleyhine' irtifak ayrımı önemlidir: biri size hak verir, diğeri taşınmazınızı sınırlar.",
+    "deadline": "İntifa hakkı, gerçek kişilerde hak sahibinin ölümüyle sona erer; süreli kurulmuşsa sürenin dolmasıyla düşer ve terkini istenir.",
+    "where": "Tapu müdürlüğü (tescil ve terkin), asliye hukuk mahkemesi (geçit hakkı davası)."
+  },
+  "beyan": {
+    "topic": "Beyanlar hanesi",
+    "short": "Bilgi amaçlı kayıtlar",
+    "basis": [
+      { "law": "4721 sayılı TMK", "article": "m.1012", "note": "Beyanlar hanesine yazılan hususlar" },
+      { "law": "634 sayılı Kat Mülkiyeti K.", "article": "m.28", "note": "Yönetim planının bağlayıcılığı" },
+      { "law": "6306 sayılı Kanun", "article": "m.3", "note": "Riskli yapı tespitinin tapuya işlenmesi" },
+      { "law": "2863 sayılı Kanun", "article": "m.7", "note": "Tescilli taşınmazın tapuya şerhi" }
+    ],
+    "explain": "Beyanlar hanesi, hak doğurmaz ama bilgilendirir: eklentiler, yönetim planı, riskli yapı tespiti, kültür varlığı kaydı burada durur. Alıcının en çok atladığı hane budur ve en kötü sürprizler buradan çıkar.",
+    "deadline": "Riskli yapı tespitine karşı itiraz süresi, tebliğden itibaren on beş gündür; süre kaçırılırsa tespit kesinleşir.",
+    "where": "Tapu müdürlüğü (kayıt örneği), belediye ve Çevre-Şehircilik müdürlüğü (riskli yapı dosyası)."
+  }
+}

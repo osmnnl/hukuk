@@ -1,0 +1,115 @@
+---
+import Base from "../../layouts/Base.astro";
+import { cases } from "../../lib/cases";
+import { url } from "../../lib/url";
+
+const havuz = (cases as any[]).map((c) => ({
+  slug: c.slug,
+  terim: c.title.replace(" ne demek?", "").replace(" nasıl okunur?", ""),
+  dogru: c.summary,
+}));
+---
+<Base
+  title="Tapu terimleri testi — kaç tanesini biliyorsun?"
+  description="Şerh, takyidat, intifa, muhdesat, üst hakkı… 10 soruda tapu terimlerini ne kadar bildiğinizi ölçün."
+  path="/test/"
+>
+  <section class="hero" style="padding-bottom:10px">
+    <div class="wrap narrow">
+      <p class="kick">Terim testi · 10 soru</p>
+      <h1>Kaç tanesini<br />biliyorsun?</h1>
+      <p class="lede">Ev alırken imzaladığınız belgede geçen kelimeler. Hangisinin ne anlama geldiğini gerçekten biliyor musunuz?</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <div class="panel" id="oyun">
+      <div class="steps-n" id="adimlar"></div>
+      <p class="kick" id="sayac" style="margin-bottom:4px"></p>
+      <h2 id="soru" style="font-size:clamp(20px,4.6vw,28px);margin:0 0 16px"></h2>
+      <div class="opts" id="secenekler"></div>
+      <div id="geri" hidden style="margin-top:16px">
+        <p id="geriMetin" style="margin:0 0 14px;line-height:1.6"></p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn" type="button" id="sonraki">Sıradaki →</button>
+          <a class="btn btn-2" id="detay" href="#">Ayrıntı</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="bitis" hidden style="text-align:center">
+      <p class="kick">Sonuç</p>
+      <p id="skor" style="font-size:clamp(34px,9vw,54px);font-weight:800;margin:6px 0;font-family:var(--font)"></p>
+      <p id="skorYorum" style="color:var(--ink-2);line-height:1.6;margin:0 0 16px"></p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+        <button class="btn" type="button" id="tekrar">Yeniden</button>
+        <a class="btn btn-2" href={url("/tapu-oku/")}>Kendi tapumu okut</a>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline define:vars={{ havuz, base: url("/") }}>
+    const $ = (id) => document.getElementById(id);
+    const N = 10;
+    let sorular = [], i = 0, dogru = 0;
+
+    const karistir = (a) => { const b = a.slice(); for (let k = b.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [b[k], b[j]] = [b[j], b[k]]; } return b; };
+
+    function kur() {
+      const secilen = karistir(havuz).slice(0, N);
+      sorular = secilen.map((s) => {
+        const yanlis = karistir(havuz.filter((x) => x.slug !== s.slug)).slice(0, 2).map((x) => x.dogru);
+        return { ...s, secenekler: karistir([s.dogru, ...yanlis]) };
+      });
+      i = 0; dogru = 0;
+      $("bitis").hidden = true; $("oyun").hidden = false;
+      $("adimlar").innerHTML = sorular.map(() => "<i></i>").join("");
+      ciz();
+    }
+
+    function ciz() {
+      const s = sorular[i];
+      $("sayac").textContent = `Soru ${i + 1} / ${N} · doğru ${dogru}`;
+      $("soru").textContent = `"${s.terim}" ne demek?`;
+      $("geri").hidden = true;
+      $("secenekler").innerHTML = "";
+      s.secenekler.forEach((metin) => {
+        const b = document.createElement("button");
+        b.type = "button"; b.textContent = metin;
+        b.addEventListener("click", () => cevapla(b, metin === s.dogru));
+        $("secenekler").appendChild(b);
+      });
+      [...$("adimlar").children].forEach((el, k) => el.classList.toggle("on", k < i));
+    }
+
+    function cevapla(btn, doguMu) {
+      const s = sorular[i];
+      [...$("secenekler").querySelectorAll("button")].forEach((b) => {
+        b.disabled = true;
+        if (b.textContent === s.dogru) b.setAttribute("aria-pressed", "true");
+      });
+      if (doguMu) { dogru++; $("geriMetin").innerHTML = "<b>Doğru.</b> " + s.dogru; }
+      else { btn.style.opacity = ".55"; $("geriMetin").innerHTML = "<b>Doğrusu:</b> " + s.dogru; }
+      $("detay").href = base + s.slug + "/";
+      $("geri").hidden = false;
+    }
+
+    $("sonraki").addEventListener("click", () => {
+      i++;
+      if (i >= N) {
+        $("oyun").hidden = true; $("bitis").hidden = false;
+        $("skor").textContent = `${dogru} / ${N}`;
+        $("skorYorum").textContent = dogru >= 8
+          ? "Tapu kaydını rahatlıkla okuyabilirsiniz. Yine de alım öncesi güncel kayıt örneğini almayı ihmal etmeyin."
+          : dogru >= 5
+            ? "Ortalamanın üzerinde. Şerhler ve takyidatlar hanesini bir kez daha gözden geçirin — riskin çoğu orada duruyor."
+            : "Bu kelimeler bir belgede karşınıza çıktığında ne anlama geldiğini bilmek, bir ev alımını kurtarabilir. Terim listesine göz atın.";
+        return;
+      }
+      ciz();
+    });
+
+    $("tekrar").addEventListener("click", kur);
+    kur();
+  </script>
+</Base>

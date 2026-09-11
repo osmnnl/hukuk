@@ -1,0 +1,105 @@
+---
+import Base from "../../layouts/Base.astro";
+import { cases } from "../../lib/cases";
+import { url } from "../../lib/url";
+
+const terimler = (cases as any[]).map((c) => ({
+  slug: c.slug,
+  title: c.title.replace(" ne demek?", "").replace(" nasıl okunur?", ""),
+  v: c.verdict,
+  s: c.summary,
+  kelimeler: [c.title.replace(" ne demek?", "").replace(" nasıl okunur?", ""), ...(c.aliases || [])]
+    .map((k: string) => k.toLocaleLowerCase("tr"))
+    .filter((k: string) => k.length > 4),
+}));
+const ornek = `Mülkiyet: 1/2 hisse — AHMET Y.
+Şerhler: Aile konutu şerhi. Satış vaadi şerhi (5 yıl).
+Beyanlar: Yönetim planı: 12.03.2019. Eklenti: depo no 3.
+Rehinler: 1. derece ipotek — 850.000 TL, X Bankası A.Ş.`;
+---
+<Base
+  title="Tapumu oku — kaydındaki terimler ne anlama geliyor?"
+  description="Tapu kayıt örneğinizdeki metni yapıştırın: şerh, takyidat ve beyanların ne anlama geldiğini, hangisinin sizi kısıtladığını görün."
+  path="/tapu-oku/"
+>
+  <section class="hero" style="padding-bottom:14px">
+    <div class="wrap narrow">
+      <p class="kick">Tapu okuyucu · {terimler.length} terim</p>
+      <h1>Tapumda ne<br />yazıyor?</h1>
+      <p class="lede">Kayıt örneğinizdeki metni yapıştırın; tanıdığı terimleri ayıklayıp her birinin sizin için ne anlama geldiğini söylesin.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <div class="panel">
+      <div class="field">
+        <label for="metin">Tapu kayıt örneğindeki metin</label>
+        <textarea id="metin" rows="6" placeholder="Şerhler, beyanlar ve rehinler hanesindeki satırları buraya yapıştırın…"></textarea>
+        <p class="hint">Metin tarayıcınızdan çıkmaz, hiçbir yere gönderilmez — bu sayfa tamamen cihazınızda çalışır.</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" type="button" id="oku">Terimleri bul</button>
+        <button class="btn btn-2" type="button" id="ornekBtn">Örnek metni dene</button>
+      </div>
+
+      <div id="sonuc" hidden style="margin-top:22px">
+        <p class="kick" id="ozet"></p>
+        <div id="liste"></div>
+      </div>
+      <p id="bos" hidden style="margin-top:18px;color:var(--ink-2);line-height:1.6">
+        Tanıdık bir terim bulunamadı. Metni olduğu gibi yapıştırdığınızdan emin olun ya da
+        aşağıdaki listeden aradığınız terimi seçin.
+      </p>
+    </div>
+
+    <section class="sec" style="margin-top:26px">
+      <h2>Terimi elle seç</h2>
+      <p style="margin-bottom:10px">Metniniz yoksa, tapunuzda gördüğünüz ifadeye en yakın olanı tıklayın.</p>
+      <div class="chips">
+        {terimler.map((t) => <a class={`chip chip-${t.v}`} href={url("/" + t.slug + "/")}>{t.title}</a>)}
+      </div>
+    </section>
+
+    <p class="note">Bu araç metindeki bilinen ifadeleri tanır; tanımadığı bir kayıt, önemsiz olduğu anlamına
+    gelmez. Güncel kayıt örneğini Web-Tapu'dan alın ve tereddütte tapu müdürlüğüne sorun.</p>
+  </div>
+
+  <style>
+    .chips { display: flex; flex-wrap: wrap; gap: 7px }
+    .chip { display: inline-block; padding: 6px 11px; border-radius: 999px; font-size: 13px; text-decoration: none;
+      border: 1px solid var(--line-2); color: var(--ink-2); background: var(--panel) }
+    .chip:hover { border-color: var(--accent); color: var(--accent) }
+    .chip-a { border-color: color-mix(in srgb, var(--no) 45%, var(--line-2)) }
+    .chip-b { border-color: color-mix(in srgb, var(--ok) 45%, var(--line-2)) }
+    .hit { display: block; padding: 14px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit }
+    .hit:last-child { border-bottom: 0 }
+    .hit h3 { font-size: 16px; margin: 8px 0 4px }
+    .hit p { margin: 0; color: var(--ink-2); font-size: 14px; line-height: 1.6 }
+    .hit:hover h3 { color: var(--accent) }
+  </style>
+
+  <script is:inline define:vars={{ terimler, ornek, base: url("/"), etiket: { a: "Hakkını sınırlar", b: "Lehine", c: "Bilgi kaydı" } }}>
+    const $ = (id) => document.getElementById(id);
+    const nrm = (s) => s.toLocaleLowerCase("tr").replace(/İ/g, "i").replace(/[.,;:()]/g, " ").replace(/\s+/g, " ");
+
+    function oku() {
+      const t = nrm($("metin").value);
+      if (!t.trim()) { $("metin").focus(); return; }
+      const bulunan = terimler.filter((x) => x.kelimeler.some((k) => t.includes(nrm(k))));
+      const sira = { a: 0, c: 1, b: 2 };
+      bulunan.sort((x, y) => sira[x.v] - sira[y.v]);
+
+      if (!bulunan.length) { $("sonuc").hidden = true; $("bos").hidden = false; return; }
+      $("bos").hidden = true;
+      const dikkat = bulunan.filter((x) => x.v === "a").length;
+      $("ozet").textContent = `${bulunan.length} terim tanındı${dikkat ? ` · ${dikkat} tanesi hakkınızı sınırlıyor` : ""}`;
+      $("liste").innerHTML = bulunan.map((x) =>
+        `<a class="hit" href="${base}${x.slug}/"><span class="tag tag-${x.v}">${etiket[x.v]}</span><h3>${x.title}</h3><p>${x.s}</p></a>`
+      ).join("");
+      $("sonuc").hidden = false;
+    }
+
+    $("oku").addEventListener("click", oku);
+    $("ornekBtn").addEventListener("click", () => { $("metin").value = ornek; oku(); });
+  </script>
+</Base>

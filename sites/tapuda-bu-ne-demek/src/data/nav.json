@@ -1,0 +1,6 @@
+[
+  { "href": "/", "label": "Ana sayfa" },
+  { "href": "/liste/", "label": "Tüm terimler" },
+  { "href": "/tapu-oku/", "label": "Tapumu oku" },
+  { "href": "/test/", "label": "Terim testi" }
+]

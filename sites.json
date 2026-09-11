@@ -110,5 +110,17 @@
       "Kaçak mı testi",
       "Satın alma kontrolü"
     ]
+  },
+  {
+    "slug": "tapuda-bu-ne-demek",
+    "name": "Tapuda Bu Ne Demek?",
+    "question": "Bu şerh ne anlama geliyor?",
+    "blurb": "İpotek, intifa, muhdesat, önalım… Tapu kaydındaki terimler ve hangisinin hakkını sınırladığı.",
+    "icon": "📜",
+    "accent": "#1c3f6e",
+    "tools": [
+      "Tapumu oku",
+      "Terim testi"
+    ]
   }
 ]

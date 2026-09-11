@@ -1,0 +1,10 @@
+{
+  "name": "Tapuda Bu Ne Demek?",
+  "tagline": "Tapuda bu <em>ne demek?</em>",
+  "unit": "tapu terimi",
+  "verdicts": {
+    "a": { "label": "Dikkat — hakkını sınırlar", "short": "DİKKAT" },
+    "b": { "label": "Lehine — seni korur", "short": "LEHİNE" },
+    "c": { "label": "Bilgi kaydı — duruma göre", "short": "BİLGİ" }
+  }
+}
