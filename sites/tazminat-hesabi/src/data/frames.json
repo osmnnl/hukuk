@@ -1,0 +1,73 @@
+{
+  "trafik": {
+    "topic": "Trafik Kazası",
+    "short": "KTK · TBK 49",
+    "basis": [
+      { "law": "2918 sayılı KTK", "article": "m.85", "note": "İşletenin sorumluluğu" },
+      { "law": "2918 sayılı KTK", "article": "m.97", "note": "Sigortacıya doğrudan başvuru" },
+      { "law": "6098 sayılı TBK", "article": "m.49", "note": "Haksız fiil sorumluluğu" }
+    ],
+    "explain": "Trafik kazalarında zarar gören, kusurlu sürücünün zorunlu mali sorumluluk sigortacısına doğrudan başvurabilir. Teminatı aşan kısım için işletene ve sürücüye dava açılabilir.",
+    "deadline": "Zorunlu trafik sigortasına karşı taleplerde zamanaşımı 2 yıl, her hâlde 10 yıldır. Eylem suç oluşturuyorsa ceza zamanaşımı süresi uygulanır.",
+    "where": "Önce sigorta şirketi; sonuç alınamazsa Sigorta Tahkim Komisyonu veya Asliye Ticaret / Asliye Hukuk Mahkemesi."
+  },
+  "isKazasi": {
+    "topic": "İş Kazası ve Meslek Hastalığı",
+    "short": "TBK 417 · 5510",
+    "basis": [
+      { "law": "6098 sayılı TBK", "article": "m.417", "note": "İşverenin işçiyi gözetme borcu" },
+      { "law": "6331 sayılı Kanun", "article": "-", "note": "İş sağlığı ve güvenliği yükümlülükleri" },
+      { "law": "5510 sayılı Kanun", "article": "m.13", "note": "İş kazası tanımı ve bildirim" }
+    ],
+    "explain": "İşveren, işçinin sağlığını korumak için gerekli her türlü önlemi almakla yükümlüdür. Bu yükümlülüğün ihlali hâlinde SGK ödemelerini aşan zarar için tazminat sorumluluğu doğar.",
+    "deadline": "İş kazasından doğan tazminat taleplerinde zamanaşımı kural olarak 10 yıldır. İşveren kazayı 3 iş günü içinde SGK'ya bildirmek zorundadır.",
+    "where": "İş Mahkemesi. Dava öncesi arabuluculuk zorunludur (maddi-manevi tazminat davalarında)."
+  },
+  "bedensel": {
+    "topic": "Bedensel Zarar",
+    "short": "TBK 54-56",
+    "basis": [
+      { "law": "6098 sayılı TBK", "article": "m.54", "note": "Bedensel zararda istenebilecek kalemler" },
+      { "law": "6098 sayılı TBK", "article": "m.55", "note": "Destekten yoksun kalma ve bedensel zararda belirleme" },
+      { "law": "6098 sayılı TBK", "article": "m.56", "note": "Manevi tazminat" }
+    ],
+    "explain": "Bedensel zararda tedavi giderleri, kazanç kaybı, çalışma gücünün azalmasından doğan kayıplar ve ekonomik geleceğin sarsılmasından doğan kayıplar istenebilir.",
+    "deadline": "Haksız fiilden doğan tazminat taleplerinde zamanaşımı, zararı ve failin öğrenildiği tarihten itibaren 2 yıl, her hâlde fiilden itibaren 10 yıldır.",
+    "where": "Asliye Hukuk Mahkemesi; iş kazasında İş Mahkemesi; trafik kazasında Asliye Ticaret de olabilir."
+  },
+  "manevi": {
+    "topic": "Manevi Tazminat",
+    "short": "TBK 56-58",
+    "basis": [
+      { "law": "6098 sayılı TBK", "article": "m.56", "note": "Bedensel bütünlüğün ihlali ve ölümde manevi tazminat" },
+      { "law": "6098 sayılı TBK", "article": "m.58", "note": "Kişilik hakkının zedelenmesi" }
+    ],
+    "explain": "Manevi tazminat, zararın karşılığı değil acı ve elemin bir ölçüde giderilmesidir. Hâkim; olayın ağırlığını, tarafların ekonomik durumunu ve kusur oranını gözeterek hakkaniyete uygun bir tutar belirler.",
+    "deadline": "Haksız fiil zamanaşımı uygulanır: öğrenmeden itibaren 2 yıl, her hâlde 10 yıl.",
+    "where": "Asliye Hukuk Mahkemesi (olayın niteliğine göre İş veya Aile Mahkemesi)."
+  },
+  "mal": {
+    "topic": "Mal ve Değer Kaybı",
+    "short": "TBK 49-51",
+    "basis": [
+      { "law": "6098 sayılı TBK", "article": "m.49", "note": "Kusurlu ve hukuka aykırı fiille verilen zarar" },
+      { "law": "6098 sayılı TBK", "article": "m.51", "note": "Tazminatın belirlenmesi ve indirim sebepleri" },
+      { "law": "2918 sayılı KTK", "article": "m.90", "note": "Maddi zararlarda sigorta teminatı" }
+    ],
+    "explain": "Malvarlığına verilen zararda onarım gideri, ikame araç bedeli ve onarıma rağmen ortaya çıkan değer kaybı ayrı ayrı istenebilir. Değer kaybı, aracın kaza kaydı nedeniyle piyasa değerindeki düşüştür.",
+    "deadline": "Sigortaya karşı 2 yıl, faile karşı öğrenmeden itibaren 2 yıl ve her hâlde 10 yıl.",
+    "where": "Sigorta şirketi → Sigorta Tahkim Komisyonu veya mahkeme."
+  },
+  "usul": {
+    "topic": "Dava ve Başvuru",
+    "short": "Usul",
+    "basis": [
+      { "law": "6100 sayılı HMK", "article": "m.107", "note": "Belirsiz alacak davası" },
+      { "law": "6325 sayılı Kanun", "article": "-", "note": "Ticari ve iş uyuşmazlıklarında zorunlu arabuluculuk" },
+      { "law": "5684 sayılı Kanun", "article": "m.30", "note": "Sigorta Tahkim Komisyonu" }
+    ],
+    "explain": "Tazminat miktarı başlangıçta tam olarak belirlenemiyorsa belirsiz alacak davası açılabilir; bu, zamanaşımını keser ve harç yükünü başlangıçta sınırlar.",
+    "deadline": "Arabuluculuk gereken hâllerde bu aşama dava şartıdır; atlanırsa dava usulden reddedilir.",
+    "where": "Uyuşmazlığın türüne göre Asliye Hukuk, Asliye Ticaret, İş Mahkemesi veya Sigorta Tahkim Komisyonu."
+  }
+}

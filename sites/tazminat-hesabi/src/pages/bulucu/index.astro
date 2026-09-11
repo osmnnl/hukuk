@@ -1,0 +1,158 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url } from "../../lib/url";
+---
+<Base
+  title="Hangi tazminatı isteyebilirim? — tazminat bulucu"
+  description="Olayınızı birkaç soruda anlatın: hangi tazminat kalemlerini kimden isteyebileceğinizi, hangi mercie başvurmanız gerektiğini ve süreyi görün."
+  path="/bulucu/"
+>
+  <section class="hero" style="padding-bottom:16px">
+    <div class="wrap narrow">
+      <p class="kick">Tazminat bulucu</p>
+      <h1>Hangi tazminatı<br />isteyebilirsin?</h1>
+      <p class="lede">Birkaç soru. Sonunda talep edebileceğin kalemleri, muhatabı ve süreyi görürsün.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <div class="panel" data-wiz>
+      <div class="steps-n" data-steps><i></i><i></i><i></i></div>
+      <div data-q>
+        <p style="font-size:clamp(18px,3.6vw,23px);font-weight:800;letter-spacing:-.02em;margin:0 0 6px" data-title></p>
+        <p style="color:var(--ink-3);font-size:13.5px;margin:0 0 18px" data-sub></p>
+        <div class="opts" data-opts></div>
+        <button class="btn btn-2" type="button" data-back style="margin-top:14px;display:none">← Geri</button>
+      </div>
+      <div data-out hidden>
+        <p class="kick">Talep edebileceklerin</p>
+        <p style="font-size:clamp(21px,4.6vw,30px);font-weight:850;letter-spacing:-.03em;line-height:1.15;margin:6px 0 10px" data-head></p>
+        <p style="color:var(--ink-2);margin:0 0 18px" data-body></p>
+        <ul class="checks" data-items style="margin-bottom:16px"></ul>
+        <dl class="facts" style="margin-bottom:16px">
+          <div class="fact"><dt>Muhatap</dt><dd data-who></dd></div>
+          <div class="fact"><dt>Süre</dt><dd data-time></dd></div>
+        </dl>
+        <div style="display:flex;gap:10px;flex-wrap:wrap" data-links></div>
+        <button class="btn btn-2" type="button" data-again style="margin-top:12px">Baştan başla</button>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline define:vars={{ baseUrl: url("/") }}>
+    (() => {
+      const root = document.querySelector("[data-wiz]");
+      const Q = {
+        olay: {
+          t: "Ne oldu?",
+          s: "Olayın türü, kime karşı ve hangi usulle talepte bulunacağınızı belirler.",
+          o: [["trafik","Trafik kazası"],["is","İş kazası veya meslek hastalığı"],["saglik","Tıbbi uygulama / tedavi"],["idare","Kamu kurumunun eylemi"],["diger","Başka bir kişinin verdiği zarar"]],
+          n: () => "zarar",
+        },
+        zarar: {
+          t: "Hangi zarar doğdu?",
+          s: "Birden fazlaysa en ağırını seçin; diğer kalemleri de sonuçta göreceksiniz.",
+          o: [["mal","Sadece maddi hasar (araç, eşya)"],["yarali","Yaralanma / sağlık sorunu"],["kalici","Kalıcı sakatlık veya çalışamama"],["olum","Ölüm"]],
+          n: (a) => (a.zarar === "mal" ? "son" : "kusur"),
+        },
+        kusur: {
+          t: "Kusur durumu ne?",
+          s: "Kendi kusurunuz tazminattan indirim sebebidir, ancak çoğu zaman hakkı ortadan kaldırmaz.",
+          o: [["karsi","Tamamen karşı taraf kusurlu"],["paylasik","İkimizin de kusuru var"],["belirsiz","Henüz belli değil"]],
+          n: () => "son",
+        },
+      };
+
+      const KALEM = {
+        mal: ["Onarım gideri", "Değer kaybı (araçta, onarıma rağmen düşen piyasa değeri)", "İkame araç / kullanım mahrumiyeti bedeli"],
+        yarali: ["Tedavi ve ilaç giderleri", "Çalışamadığın süre için kazanç kaybı", "Ulaşım ve refakatçi giderleri", "Manevi tazminat"],
+        kalici: ["Sürekli iş göremezlik tazminatı (çalışma gücü kaybı)", "Ekonomik geleceğin sarsılmasından doğan kayıp", "Bakıcı gideri ve protez/cihaz bedeli", "Gelecekteki tedavi masrafları", "Manevi tazminat (ağır zararda yakınlar için de)"],
+        olum: ["Destekten yoksun kalma tazminatı", "Cenaze ve defin giderleri", "Ölüm öncesi tedavi giderleri", "Manevi tazminat (eş, çocuk, anne-baba ve yakın kardeşler)"],
+      };
+
+      const OLAY = {
+        trafik: {
+          h: "Trafik kazası tazminatı",
+          b: "Kusurlu tarafın zorunlu trafik sigortasına doğrudan başvurabilirsiniz. Teminatı aşan kısım için sürücü ve işletene dava açılır.",
+          who: "Önce kusurlu tarafın zorunlu trafik sigortası; sonuç alınamazsa Sigorta Tahkim Komisyonu veya mahkeme. Karşı taraf sigortasız ise bedensel zarar için Güvence Hesabı.",
+          time: "Sigortaya karşı 2 yıl, her hâlde 10 yıl. Kaza taksirle yaralama suçu oluşturuyorsa daha uzun ceza zamanaşımı uygulanır.",
+          links: ["arac-deger-kaybi", "karsi-taraf-sigortasiz"],
+        },
+        is: {
+          h: "İş kazası tazminatı",
+          b: "SGK ödemeleri gerçek zararı karşılamıyorsa aradaki fark için işverene karşı dava açılır. İşverenin iş güvenliği yükümlülüğü ağırdır.",
+          who: "İşveren (ve varsa alt/asıl işveren). SGK ayrıca gelir bağlar. Dava İş Mahkemesi'nde, arabuluculuk zorunlu.",
+          time: "Kural olarak 10 yıl. İşveren kazayı 3 iş günü içinde SGK'ya bildirmek zorundadır.",
+          links: ["is-kazasi-tazminati", "is-kazasinda-kendi-kusurum"],
+        },
+        saglik: {
+          h: "Tıbbi uygulama hatası tazminatı",
+          b: "Hekimin özen yükümlülüğünü ihlal ettiği ve bunun zarara yol açtığı bilirkişi raporuyla ortaya konmalıdır. Komplikasyon ile hata ayrımı belirleyicidir.",
+          who: "Özel hastanede hastane ve hekim (Asliye Hukuk); kamu hastanesinde idareye karşı tam yargı davası (İdare Mahkemesi).",
+          time: "Özelde 2/10 yıl kuralı; kamuda önce idareye başvuru (öğrenmeden 1 yıl, her hâlde 5 yıl).",
+          links: ["malpraktis-tazminat"],
+        },
+        idare: {
+          h: "İdareye karşı tam yargı davası",
+          b: "Kamu hizmetinin kusurlu işlemesinden doğan zararda önce idareye yazılı başvuru zorunludur; reddedilirse idari yargıda dava açılır.",
+          who: "Zararı doğuran kamu kurumu (belediye, bakanlık, idare). Dava İdare Mahkemesi'nde.",
+          time: "Öğrenmeden itibaren 1 yıl, her hâlde 5 yıl içinde idareye başvuru. Cevap veya 60 günlük sessizlik üzerine dava süresi işler.",
+          links: ["kamu-kurumu-zarar-verdi"],
+        },
+        diger: {
+          h: "Haksız fiil tazminatı",
+          b: "Kusurlu ve hukuka aykırı davranışla zarar veren kişi, bu zararı gidermekle yükümlüdür.",
+          who: "Zararı veren kişi; varsa sorumluluk sigortası. Dava Asliye Hukuk Mahkemesi'nde.",
+          time: "Öğrenmeden itibaren 2 yıl, her hâlde 10 yıl. Fiil suç oluşturuyorsa ceza zamanaşımı uygulanır.",
+          links: ["komsu-su-basmasi-zarar", "hayvan-saldirisi-tazminat"],
+        },
+      };
+
+      let stack = ["olay"], ans = {};
+      const elT = root.querySelector("[data-title]"), elS = root.querySelector("[data-sub]");
+      const elO = root.querySelector("[data-opts]"), elB = root.querySelector("[data-back]");
+      const qb = root.querySelector("[data-q]"), ob = root.querySelector("[data-out]");
+      const bars = root.querySelectorAll("[data-steps] i");
+
+      function render() {
+        const k = stack[stack.length - 1];
+        if (k === "son") return finish();
+        const q = Q[k];
+        elT.textContent = q.t; elS.textContent = q.s;
+        elO.innerHTML = q.o.map(([v, l]) => `<button type="button" data-v="${v}">${l}</button>`).join("");
+        elB.style.display = stack.length > 1 ? "inline-flex" : "none";
+        qb.hidden = false; ob.hidden = true;
+        bars.forEach((b, i) => b.classList.toggle("on", i < stack.length));
+      }
+      elO.addEventListener("click", (e) => {
+        const b = e.target.closest("button[data-v]"); if (!b) return;
+        const k = stack[stack.length - 1];
+        ans[k] = b.dataset.v;
+        stack.push(Q[k].n(ans));
+        render();
+      });
+      elB.addEventListener("click", () => { stack.pop(); render(); });
+      root.querySelector("[data-again]").addEventListener("click", () => { stack = ["olay"]; ans = {}; render(); });
+
+      function finish() {
+        const o = OLAY[ans.olay];
+        let kalemler = [...KALEM[ans.zarar]];
+        if (ans.zarar !== "mal") kalemler = [...KALEM.mal.slice(0, 1), ...kalemler];
+        if (ans.kusur === "paylasik") kalemler.push("⚠ Kendi kusurun oranında indirim yapılır");
+        if (ans.kusur === "belirsiz") kalemler.push("Kusur oranı için bilirkişi incelemesi talep edilir");
+
+        qb.hidden = true; ob.hidden = false;
+        root.querySelector("[data-head]").textContent = o.h;
+        root.querySelector("[data-body]").textContent = o.b;
+        root.querySelector("[data-items]").innerHTML = kalemler.map((x) => `<li>${x}</li>`).join("");
+        root.querySelector("[data-who]").textContent = o.who;
+        root.querySelector("[data-time]").textContent = o.time;
+        root.querySelector("[data-links]").innerHTML =
+          `<a class="btn" href="${baseUrl}zamanasimi/">Sürem doldu mu? →</a>` +
+          o.links.map((s) => `<a class="btn btn-2" href="${baseUrl}${s}/">İlgili durum</a>`).join("");
+        bars.forEach((b) => b.classList.add("on"));
+      }
+      render();
+    })();
+  </script>
+</Base>

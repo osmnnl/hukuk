@@ -1,0 +1,22 @@
+/* Palet: koyu lacivert + altın vurgu (finansal ciddiyet) */
+:root {
+  --bg: #0d1220; --bg-2: #131a2b; --panel: #151d31; --panel-2: #1b2439;
+  --line: #253150; --line-2: #334065;
+  --ink: #eef2fb; --ink-2: #a4b0cc; --ink-3: #76829f;
+  --accent: #f0b429; --accent-bg: #2e2410; --on-accent: #1a1405;
+  --ok: #3ddc97; --ok-bg: #0f3026; --ok-ink: #86ecc3;
+  --no: #ff6f61; --no-bg: #331714; --no-ink: #ffa79d;
+  --mid: #7aa2ff; --mid-bg: #16214a; --mid-ink: #adc4ff;
+  --r: 10px; --r-lg: 16px; --max: 1060px;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+}
+:root[data-theme="light"] {
+  --bg: #f7f8fc; --bg-2: #eef1f8; --panel: #ffffff; --panel-2: #f3f5fb;
+  --line: #dfe4f0; --line-2: #c6cee2;
+  --ink: #0f1524; --ink-2: #4a5573; --ink-3: #78829c;
+  --accent: #9a6b00; --accent-bg: #fdf3dc; --on-accent: #ffffff;
+  --ok: #0f8f68; --ok-bg: #e2f7ef; --ok-ink: #0a6b4e;
+  --no: #c4362a; --no-bg: #fdecea; --no-ink: #93261d;
+  --mid: #2f5fd0; --mid-bg: #e8eefc; --mid-ink: #1f4299;
+}

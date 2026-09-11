@@ -1,0 +1,10 @@
+{
+  "name": "Tazminat Hesabı",
+  "tagline": "Bu <em>tazminat kaç para?</em>",
+  "unit": "tazminat durumu",
+  "verdicts": {
+    "a": { "label": "Tazminat isteyebilirsin", "short": "İSTEYEBİLİRSİN" },
+    "b": { "label": "Tazminat doğmaz", "short": "DOĞMAZ" },
+    "c": { "label": "Koşullara bağlı", "short": "KOŞULLU" }
+  }
+}

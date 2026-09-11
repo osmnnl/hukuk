@@ -50,5 +50,17 @@
       "Fesih testi",
       "Haklar sözlüğü"
     ]
+  },
+  {
+    "slug": "tazminat-hesabi",
+    "name": "Tazminat Hesabı",
+    "question": "Bu tazminat kaç para?",
+    "blurb": "Trafik kazası, iş kazası, değer kaybı, manevi tazminat… Hangi kalemi kimden, hangi sürede isteyebilirsin?",
+    "icon": "⚖️",
+    "accent": "#f0b429",
+    "tools": [
+      "Tazminat bulucu",
+      "Süre sayacı"
+    ]
   }
 ]

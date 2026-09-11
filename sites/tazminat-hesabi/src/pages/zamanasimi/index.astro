@@ -1,0 +1,138 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url } from "../../lib/url";
+---
+<Base
+  title="Tazminat zamanaşımı sayacı — sürem doldu mu?"
+  description="Olay tarihini girin: tazminat talebiniz için kaç gününüz kaldığını, hangi zamanaşımı süresinin uygulandığını ve suç oluşturan fiillerde sürenin nasıl uzadığını görün."
+  path="/zamanasimi/"
+>
+  <section class="hero" style="padding-bottom:16px">
+    <div class="wrap narrow">
+      <p class="kick">Süre sayacı</p>
+      <h1>Sürem<br />doldu mu?</h1>
+      <p class="lede">Tazminat davalarında en çok kaybedilen hak, süre kaçırıldığı için kaybediliyor. Olay tarihini girin, kalan süreyi görün.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <div class="panel">
+      <div class="field">
+        <label for="tarih">Olay tarihi</label>
+        <input id="tarih" type="date" />
+      </div>
+      <div class="field">
+        <label for="ogrenme">Zararı ve sorumluyu öğrendiğiniz tarih</label>
+        <input id="ogrenme" type="date" />
+        <p class="hint">Çoğu olayda bu tarih olay tarihiyle aynıdır. Gizli kalan zararlarda (örn. sonradan ortaya çıkan sağlık sorunu) daha sonra olabilir.</p>
+      </div>
+      <div class="field">
+        <label for="tur">Olayın türü</label>
+        <select id="tur">
+          <option value="haksiz">Haksız fiil / trafik kazası (genel)</option>
+          <option value="sigorta">Zorunlu trafik sigortasına başvuru</option>
+          <option value="isKazasi">İş kazası / meslek hastalığı</option>
+          <option value="idare">Kamu kurumunun eylemi</option>
+          <option value="sozlesme">Sözleşmeye aykırılık (genel)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="suc">Olay aynı zamanda suç oluşturuyor mu?</label>
+        <select id="suc">
+          <option value="hayir">Hayır / bilmiyorum</option>
+          <option value="taksir">Evet — taksirle yaralama/öldürme (trafik kazası genelde buraya girer)</option>
+          <option value="kasit">Evet — kasten yaralama veya daha ağır suç</option>
+        </select>
+        <p class="hint">Fiil suç oluşturuyorsa daha uzun olan <strong>ceza zamanaşımı</strong> uygulanır — süre dolmuş görünse bile hakkınız sürebilir.</p>
+      </div>
+      <button class="btn" type="button" id="hesapla" style="width:100%">Süremi hesapla</button>
+
+      <div id="sonuc" hidden style="margin-top:22px">
+        <div class="total">
+          <p class="lbl" id="durumLbl">Kalan süre</p>
+          <p class="big num" id="kalan"></p>
+          <p class="sub" id="sonTarih"></p>
+        </div>
+        <div class="lines" id="detay"></div>
+        <div id="not" style="margin-top:14px"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+          <a class="btn btn-2" href={url("/bulucu/")}>Hangi tazminatı isteyebilirim?</a>
+          <a class="btn btn-2" href={url("/zamanasimi-kacti-mi/")}>Zamanaşımı kuralları</a>
+        </div>
+      </div>
+    </div>
+    <p class="note" style="margin-top:18px">
+      Bu sayaç genel kuralları uygular. Zamanaşımı; dava açılması, icra takibi veya borcun kabulü gibi
+      işlemlerle kesilebilir ve yeniden işlemeye başlar. Süre dolmuş görünse bile bir avukata doğrulatın —
+      özellikle suç oluşturan fiillerde süre beklediğinizden uzun olabilir.
+    </p>
+  </div>
+
+  <script is:inline>
+    (() => {
+      const q = (id) => document.getElementById(id);
+      const GUN = 86400000;
+      const ekle = (d, y) => { const n = new Date(d); n.setFullYear(n.getFullYear() + y); return n; };
+      const fmt = (d) => new Intl.DateTimeFormat("tr-TR", { day: "numeric", month: "long", year: "numeric" }).format(d);
+
+      q("hesapla").addEventListener("click", () => {
+        const t = q("tarih").value, o = q("ogrenme").value || q("tarih").value;
+        if (!t) { alert("Olay tarihini girin."); return; }
+        const olay = new Date(t), ogrenme = new Date(o);
+        const tur = q("tur").value, suc = q("suc").value;
+        const bugun = new Date(); bugun.setHours(0, 0, 0, 0);
+
+        // kısa süre (öğrenmeden itibaren) ve azami süre (olaydan itibaren)
+        const kural = {
+          haksiz:   { kisa: 2,  uzun: 10, ad: "Haksız fiil", not: "TBK m.72: öğrenmeden 2 yıl, her hâlde 10 yıl." },
+          sigorta:  { kisa: 2,  uzun: 10, ad: "Zorunlu trafik sigortası", not: "KTK m.109: 2 yıl, her hâlde 10 yıl." },
+          isKazasi: { kisa: 10, uzun: 10, ad: "İş kazası", not: "Sözleşmeye aykırılık esas alınarak 10 yıl uygulanır." },
+          idare:    { kisa: 1,  uzun: 5,  ad: "İdari eylem", not: "İYUK m.13: öğrenmeden 1 yıl, her hâlde 5 yıl içinde İDAREYE BAŞVURU zorunlu." },
+          sozlesme: { kisa: 10, uzun: 10, ad: "Sözleşmeye aykırılık", not: "TBK m.146: genel zamanaşımı 10 yıl." },
+        }[tur];
+
+        const cezaYil = suc === "kasit" ? 15 : suc === "taksir" ? 8 : 0;
+
+        const sonKisa = ekle(ogrenme, kural.kisa);
+        const sonUzun = ekle(olay, kural.uzun);
+        const sonCeza = cezaYil ? ekle(olay, cezaYil) : null;
+
+        // geçerli son tarih: normal kuralda ikisinden erken olan; ceza zamanaşımı varsa en geç olan
+        let son = new Date(Math.min(sonKisa, sonUzun));
+        let kaynak = sonKisa <= sonUzun ? `${kural.kisa} yıllık süre` : `${kural.uzun} yıllık azami süre`;
+        if (sonCeza && sonCeza > son) { son = sonCeza; kaynak = `${cezaYil} yıllık ceza zamanaşımı`; }
+
+        const kalanGun = Math.ceil((son - bugun) / GUN);
+        const doldu = kalanGun <= 0;
+
+        q("durumLbl").textContent = doldu ? "Süre dolmuş görünüyor" : "Kalan süre";
+        q("kalan").textContent = doldu
+          ? `${Math.abs(kalanGun).toLocaleString("tr-TR")} gün geçti`
+          : `${kalanGun.toLocaleString("tr-TR")} gün`;
+        q("kalan").style.color = doldu ? "var(--no)" : kalanGun < 90 ? "var(--accent)" : "var(--ok)";
+        q("sonTarih").textContent = `Son gün: ${fmt(son)} · ${kaynak}`;
+
+        const satir = (b, s, v) => `<div class="line"><span class="k"><b>${b}</b><small>${s}</small></span><span class="v">${v}</span></div>`;
+        let html = satir(kural.ad, kural.not, "");
+        html += satir(`${kural.kisa} yıllık süre`, `Öğrenme tarihinden (${fmt(ogrenme)}) itibaren`, fmt(sonKisa));
+        if (kural.uzun !== kural.kisa) html += satir(`${kural.uzun} yıllık azami süre`, `Olay tarihinden (${fmt(olay)}) itibaren`, fmt(sonUzun));
+        if (sonCeza) html += satir(`${cezaYil} yıllık ceza zamanaşımı`, "Fiil suç oluşturduğu için daha uzun süre uygulanır", fmt(sonCeza));
+        q("detay").innerHTML = html;
+
+        let not = "";
+        if (doldu && !sonCeza)
+          not = "Süre dolmuş görünüyor. Ancak fiil <strong>suç oluşturuyorsa</strong> (trafik kazaları çoğu zaman taksirle yaralama suçudur) daha uzun ceza zamanaşımı uygulanır — yukarıdaki soruyu yeniden değerlendirin.";
+        else if (doldu)
+          not = "Ceza zamanaşımına göre de süre dolmuş görünüyor. Yine de zamanaşımını kesen bir işlem (dava, icra takibi, borcun kabulü) yapılmışsa süre yeniden işlemiş olabilir.";
+        else if (kalanGun < 180)
+          not = "⚠ Süre yaklaşıyor. Zamanaşımını kesmek için <strong>dava açmak</strong> veya icra takibi başlatmak gerekir; başvuru yapmak tek başına süreyi kesmez.";
+        if (tur === "idare")
+          not += (not ? "<br><br>" : "") + "İdari eylemlerde önce <strong>idareye yazılı başvuru</strong> zorunludur; idarenin cevabı (veya 60 günlük sessizliği) üzerine dava süresi ayrıca işler.";
+        q("not").innerHTML = not ? `<div class="note" style="border-color:${doldu ? "var(--no)" : "var(--accent)"}">${not}</div>` : "";
+
+        q("sonuc").hidden = false;
+        q("sonuc").scrollIntoView({ block: "nearest", behavior: "smooth" });
+      });
+    })();
+  </script>
+</Base>

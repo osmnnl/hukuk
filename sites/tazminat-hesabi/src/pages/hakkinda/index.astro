@@ -1,0 +1,25 @@
+---
+import Base from "../../layouts/Base.astro";
+import { cases, frames, site } from "../../lib/cases";
+---
+<Base title={`Hakkında — ${site.name}`} description="Bu site ne yapar, sınırları nelerdir?" path="/hakkinda/">
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <section class="hero" style="padding:36px 0 6px">
+      <p class="kick">Hakkında</p>
+      <h1 style="font-size:clamp(26px,5.2vw,38px)">Bu site ne yapar?</h1>
+      <p class="lede">Tazminat taleplerini tek tek ele alır: <strong>hangi kalemi</strong>, <strong>kimden</strong>,
+      <strong>hangi sürede</strong> isteyebileceğinizi gösterir.</p>
+    </section>
+    <section class="sec"><h2>Neden tutar hesaplamıyoruz?</h2>
+      <p>Destekten yoksun kalma ve sürekli iş göremezlik tazminatı, bakiye ömür tabloları ve aktüeryal
+      yöntemle hesaplanır; kusur oranı, yaş, gelir ve SGK ödemeleri sonucu belirler. Bunu bir formüle
+      indirgeyip rakam vermek yanıltıcı olurdu. Onun yerine <strong>hangi kalemleri isteyebileceğinizi</strong> ve
+      <strong>süreyi</strong> net gösteriyoruz — pratikte en çok hak kaybı buradan doğuyor.</p></section>
+    <section class="sec"><h2>Kapsam</h2>
+      <p>{cases.length} durum, {Object.keys(frames).length} başlık: {Object.values(frames).map((f) => f.topic).join(", ")}.</p></section>
+    <section class="sec" style="border-bottom:0"><h2>Sınırları</h2>
+      <p>Buradaki içerik <strong>hukuki danışmanlık değildir</strong>. Zamanaşımı süreleri; dava, icra takibi
+      veya borcun kabulü gibi işlemlerle kesilebilir ve olayın suç oluşturup oluşturmadığına göre uzayabilir.
+      Süre sayacı genel kuralları uygular; somut durumunuzu bir avukata doğrulatın.</p></section>
+  </div>
+</Base>

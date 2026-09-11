@@ -1,0 +1,6 @@
+[
+  { "href": "/", "label": "Ana sayfa" },
+  { "href": "/liste/", "label": "Tazminat türleri" },
+  { "href": "/bulucu/", "label": "Hangi tazminat?" },
+  { "href": "/zamanasimi/", "label": "Süre sayacı" }
+]
