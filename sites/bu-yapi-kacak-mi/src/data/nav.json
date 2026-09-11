@@ -1,0 +1,6 @@
+[
+  { "href": "/", "label": "Ana sayfa" },
+  { "href": "/liste/", "label": "Tüm durumlar" },
+  { "href": "/test/", "label": "Kaçak mı testi" },
+  { "href": "/kontrol/", "label": "Satın alma kontrolü" }
+]

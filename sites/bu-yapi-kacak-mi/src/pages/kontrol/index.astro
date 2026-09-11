@@ -1,0 +1,126 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url } from "../../lib/url";
+
+const gruplar = [
+  {
+    ad: "Belediye imar arşivi",
+    aciklama: "Bu üç belge, yapının yasal olup olmadığını tek başına söyler.",
+    maddeler: [
+      { id: "ruhsat", t: "Yapı ruhsatı var mı?", d: "Yoksa yapı ruhsatsızdır — istisna hâlleri dışında kaçaktır." },
+      { id: "iskan", t: "Yapı kullanma izni (iskân) alınmış mı?", d: "Yoksa ya iş eksik ya projeye aykırılık var; abonelik ve kredide sorun çıkar." },
+      { id: "proje", t: "Ruhsat eki mimari projeyi gördünüz mü?", d: "Daireyi projedeki planla karşılaştırın: oda, balkon ve ıslak hacim yerleri tutmalı." },
+      { id: "aykirilik", t: "Yapı hakkında aykırılık tutanağı veya encümen kararı var mı?", d: "Belediyeden yazılı sorun; varsa yıkım veya para cezası sizi bekliyor demektir." },
+      { id: "kayitbelge", t: "Yapı kayıt belgesi varsa, üzerindeki alan fiilî durumla uyuyor mu?", d: "Beyan yanlışsa belge iptal edilir ve koruma ortadan kalkar." },
+    ],
+  },
+  {
+    ad: "Tapu ve kat mülkiyeti",
+    aciklama: "Tapunun varlığı yapının yasal olduğunu göstermez; kaydın içeriği gösterir.",
+    maddeler: [
+      { id: "nitelik", t: "Tapudaki nitelik fiilî kullanımla aynı mı?", d: "Projede depo görünen yer mesken olarak satılıyor olabilir." },
+      { id: "katmulk", t: "Kat mülkiyeti mi, kat irtifakı mı?", d: "Kat irtifakı, yapının henüz tamamlanmadığı anlamına gelir." },
+      { id: "serh", t: "Beyanlar ve şerhler hanesi temiz mi?", d: "Yıkım, kamulaştırma ve riskli yapı kayıtları burada görünür." },
+      { id: "eklenti", t: "Satılan eklentiler (depo, otopark) tapuda yazıyor mu?", d: "Sözlü olarak verilen depo, kayıtta yoksa ortak alandır." },
+      { id: "yonetimplani", t: "Yönetim planında sizi ilgilendiren yasak var mı?", d: "İş yeri açma, evcil hayvan, cephe değişikliği gibi konular burada yazar." },
+    ],
+  },
+  {
+    ad: "Yapının kendisi",
+    aciklama: "Yerinde bakılmadan anlaşılmayan aykırılıklar.",
+    maddeler: [
+      { id: "ilave", t: "Balkon, teras veya çatıda sonradan kapatma var mı?", d: "Varsa projede görünüp görünmediğini kontrol edin." },
+      { id: "ortakalan", t: "Sığınak, otopark veya kömürlük amacı dışında kullanılıyor mu?", d: "Bu aykırılıkta zamanaşımı yoktur, her an açılması istenebilir." },
+      { id: "tasiyici", t: "Taşıyıcı duvarda sonradan açılmış boşluk var mı?", d: "Statik projeyle karşılaştırın; deprem güvenliği doğrudan etkilenir." },
+      { id: "riskli", t: "Bina riskli yapı başvurusuna konu olmuş mu?", d: "Kentsel dönüşüm süreci, satın alma kararınızı kökten değiştirir." },
+    ],
+  },
+  {
+    ad: "Özel alan kontrolü",
+    aciklama: "Arazi statüsü genel imar kurallarının üstündedir.",
+    maddeler: [
+      { id: "sit", t: "Parsel sit alanında veya yapı tescilli mi?", d: "Her müdahale koruma bölge kurulu iznine tabi olur." },
+      { id: "kiyi", t: "Kıyı kenar çizgisi paftasını kontrol ettiniz mi?", d: "Tapulu olması, yapının kıyıda olmadığını göstermez." },
+      { id: "tarim", t: "Arazi tarım arazisi mi?", d: "Yapılaşma izni tarım il müdürlüğüne bağlıdır." },
+    ],
+  },
+];
+const toplam = gruplar.reduce((a, g) => a + g.maddeler.length, 0);
+---
+<Base
+  title="Satın alma kontrol listesi — yapı yasal mı?"
+  description="Ev veya arsa almadan önce bakılacak 17 madde: ruhsat, iskân, proje, tapu şerhleri, ortak alanlar ve özel alan kontrolü."
+  path="/kontrol/"
+>
+  <section class="hero" style="padding-bottom:14px">
+    <div class="wrap narrow">
+      <p class="kick">{toplam} maddelik kontrol</p>
+      <h1>Almadan önce<br />bunlara bak</h1>
+      <p class="lede">Kaçak yapıyı satın alan kişi aykırılığı da devralır: yıkım kararı eski malike değil, size uygulanır. Bu liste o riski erkenden görünür kılıyor.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <div class="panel" style="position:sticky;top:8px;z-index:5;display:flex;align-items:center;gap:14px;justify-content:space-between">
+      <div>
+        <p class="kick" style="margin:0 0 2px">Durum</p>
+        <p id="ozet" style="margin:0;font-weight:700"></p>
+      </div>
+      <button class="btn btn-2" type="button" id="temizle">Sıfırla</button>
+    </div>
+
+    {gruplar.map((g) => (
+      <section class="sec">
+        <h2>{g.ad}</h2>
+        <p style="margin-bottom:10px">{g.aciklama}</p>
+        <div class="panel" style="padding:4px 14px">
+          {g.maddeler.map((m) => (
+            <label class="chk">
+              <input type="checkbox" data-id={m.id} />
+              <span><b>{m.t}</b><small>{m.d}</small></span>
+            </label>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <div class="tipbox" style="margin-top:8px">
+      <b>Bir madde bile eksikse:</b> satış sözleşmesine "yapının ruhsat ve iskân durumu şu şekildedir" diye
+      yazdırın ve aykırılık çıkması hâlinde bedelin iadesini kararlaştırın. Sözlü güvence, dava sırasında
+      ispat edilemiyor.
+    </div>
+    <p class="note">Bu liste genel bir kontrol aracıdır, ekspertiz raporunun yerine geçmez. Yüksek tutarlı
+    alımlarda imar arşivi incelemesini bir uzmana yaptırın.</p>
+  </div>
+
+  <style>
+    .chk { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--line); cursor: pointer }
+    .chk:last-child { border-bottom: 0 }
+    .chk input { margin-top: 3px; width: 19px; height: 19px; flex: 0 0 auto; accent-color: var(--accent) }
+    .chk span { display: block }
+    .chk b { display: block; font-size: 15px; line-height: 1.35 }
+    .chk small { display: block; margin-top: 3px; color: var(--ink-3); font-size: 13px; line-height: 1.5 }
+    .chk input:checked + span b { color: var(--ok-ink) }
+  </style>
+
+  <script is:inline define:vars={{ toplam }}>
+    const kutular = [...document.querySelectorAll(".chk input")];
+    const ozet = document.getElementById("ozet");
+    const KEY = "kacak-kontrol";
+
+    function yaz() {
+      const n = kutular.filter((k) => k.checked).length;
+      ozet.textContent = n === toplam ? `${n}/${toplam} — hepsi doğrulandı` : `${n}/${toplam} madde doğrulandı · ${toplam - n} tanesi açık`;
+      try { localStorage.setItem(KEY, JSON.stringify(kutular.filter((k) => k.checked).map((k) => k.dataset.id))); } catch {}
+    }
+
+    try {
+      const kayit = JSON.parse(localStorage.getItem(KEY) || "[]");
+      kutular.forEach((k) => { if (kayit.includes(k.dataset.id)) k.checked = true; });
+    } catch {}
+
+    kutular.forEach((k) => k.addEventListener("change", yaz));
+    document.getElementById("temizle").addEventListener("click", () => { kutular.forEach((k) => (k.checked = false)); yaz(); });
+    yaz();
+  </script>
+</Base>

@@ -1,0 +1,10 @@
+{
+  "name": "Bu Yapı Kaçak mı?",
+  "tagline": "Bu yapı <em>kaçak mı?</em>",
+  "unit": "imar durumu",
+  "verdicts": {
+    "a": { "label": "Ruhsata aykırı — kaçak sayılır", "short": "KAÇAK" },
+    "b": { "label": "Ruhsat gerekmez / kaçak değil", "short": "SERBEST" },
+    "c": { "label": "Duruma göre değişir", "short": "DEĞİŞKEN" }
+  }
+}

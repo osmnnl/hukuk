@@ -1,0 +1,80 @@
+{
+  "ruhsat": {
+    "topic": "Ruhsat ve ruhsatsız yapı",
+    "short": "3194 İmar K. m.21, 32",
+    "basis": [
+      { "law": "3194 sayılı İmar Kanunu", "article": "m.21", "note": "Yapı ruhsatı alınması zorunluluğu" },
+      { "law": "3194 sayılı İmar Kanunu", "article": "m.32", "note": "Ruhsatsız veya ruhsata aykırı yapıda mühürleme ve yıkım" },
+      { "law": "3194 sayılı İmar Kanunu", "article": "m.27", "note": "Köy yerleşik alanlarında ruhsat istisnası" },
+      { "law": "3194 sayılı İmar Kanunu", "article": "m.30", "note": "Yapı kullanma izni (iskân)" }
+    ],
+    "explain": "Kural basit: inşaat, tadilat ve ilave yapılar ruhsata tabidir. Ruhsatsız ya da ruhsata aykırı yapı tespit edildiğinde belediye önce yapıyı mühürleyip durdurur, bir ay içinde ruhsata uygun hâle getirilmezse yıkım kararı alır.",
+    "deadline": "Mühürlemeden sonra yapı sahibine ruhsat alması veya yapıyı ruhsata uygun hâle getirmesi için bir ay süre verilir. Encümen kararına karşı idari dava süresi 60 gündür.",
+    "where": "Belediye imar müdürlüğü (belediye sınırları içinde), il özel idaresi (dışında). İtiraz yolu: idare mahkemesi."
+  },
+  "basit": {
+    "topic": "Ruhsat gerektirmeyen işler",
+    "short": "3194 İmar K. m.21/3 · Planlı Alanlar Yönetmeliği",
+    "basis": [
+      { "law": "3194 sayılı İmar Kanunu", "article": "m.21/3", "note": "Basit onarım ve tadilat ruhsata tabi değildir" },
+      { "law": "Planlı Alanlar İmar Yönetmeliği", "article": "m.63", "note": "Basit yapılar ve müştemilat" },
+      { "law": "3194 sayılı İmar Kanunu", "article": "m.22", "note": "Esaslı tadilatta ruhsat zorunluluğu" },
+      { "law": "634 sayılı Kat Mülkiyeti K.", "article": "m.19", "note": "Ortak yerlerde değişiklik için kat malikleri kararı" }
+    ],
+    "explain": "Taşıyıcı sistemi, bağımsız bölüm sayısını, kullanım amacını veya dış görünüşü değiştirmeyen işler basit onarım sayılır ve ruhsat gerektirmez. Bu sınırın aşıldığı an iş 'esaslı tadilat'a döner ve ruhsat zorunlu hâle gelir.",
+    "deadline": "Basit onarımda süre yoktur; ancak apartmanda ortak yeri ilgilendiren işlerde önce kat malikleri kurulu kararı alınmalıdır.",
+    "where": "Belediye imar müdürlüğü (tereddüt hâlinde yazılı görüş isteyin), apartmanda yönetim ve kat malikleri kurulu."
+  },
+  "ilave": {
+    "topic": "Balkon, teras, çatı, kış bahçesi",
+    "short": "En sık karşılaşılan aykırılıklar",
+    "basis": [
+      { "law": "3194 sayılı İmar Kanunu", "article": "m.32", "note": "Ruhsata aykırı ilaveler" },
+      { "law": "634 sayılı Kat Mülkiyeti K.", "article": "m.19/2", "note": "Ana yapıya ilave ve değişiklik yasağı" },
+      { "law": "634 sayılı Kat Mülkiyeti K.", "article": "m.16", "note": "Ortak yerlerden yararlanma" },
+      { "law": "Planlı Alanlar İmar Yönetmeliği", "article": "m.40", "note": "Emsal ve taban alanı hesabı" }
+    ],
+    "explain": "Balkon kapatma, çatı katı ekleme, teras üstü kapalı alan gibi işlerin neredeyse tamamı emsal artırır ve ruhsata aykırılık oluşturur. Kat mülkiyetli binalarda ayrıca kat maliklerinin oybirliği aranır — belediyeden izin alınsa bile komşu dava açabilir.",
+    "deadline": "Kat maliki, aykırılığın giderilmesini her zaman dava edebilir; bu talep zamanaşımına uğramaz. İmar para cezasına itiraz için ise 30 günlük süre işler.",
+    "where": "Belediye imar müdürlüğü, kat malikleri kurulu, sulh hukuk mahkemesi (kat mülkiyetinden doğan davalar)."
+  },
+  "ceza": {
+    "topic": "Ceza, mühür ve yıkım",
+    "short": "3194 İmar K. m.42 · TCK m.203",
+    "basis": [
+      { "law": "3194 sayılı İmar Kanunu", "article": "m.42", "note": "İmar para cezasının hesabı" },
+      { "law": "3194 sayılı İmar Kanunu", "article": "m.32", "note": "Yıkım kararı ve masrafın yapı sahibinden tahsili" },
+      { "law": "5237 sayılı TCK", "article": "m.203", "note": "Mührü bozma suçu" },
+      { "law": "5326 sayılı Kabahatler K.", "article": "m.27", "note": "İdari para cezasına itiraz: 15 gün, sulh ceza hâkimliği" }
+    ],
+    "explain": "İmar para cezası, aykırı alanın metrekaresi ile yapının sınıfına göre belirlenen birim bedelin çarpımından bulunur ve kanunda sayılan hâllerde katlanarak artar. Ceza ödenmesi yapıyı yasal hâle getirmez; yıkım kararı ayrıca uygulanır.",
+    "deadline": "İdari para cezasına karşı sulh ceza hâkimliğine itiraz süresi tebliğden itibaren 15 gündür. Encümenin yıkım kararına karşı idare mahkemesinde 60 gün içinde dava açılır.",
+    "where": "Belediye encümeni (ceza ve yıkım kararı), sulh ceza hâkimliği (para cezasına itiraz), idare mahkemesi (yıkım kararına dava)."
+  },
+  "alim": {
+    "topic": "Satın alırken ve kiralarken",
+    "short": "İskân, tapu ve sorumluluk",
+    "basis": [
+      { "law": "3194 sayılı İmar Kanunu", "article": "m.30", "note": "Yapı kullanma izni olmadan kullanım" },
+      { "law": "6098 sayılı TBK", "article": "m.219", "note": "Satıcının ayıptan sorumluluğu" },
+      { "law": "6098 sayılı TBK", "article": "m.304", "note": "Kiralananın ayıplı teslimi" },
+      { "law": "3194 sayılı İmar Kanunu", "article": "m.32", "note": "Yıkım sorumluluğu yapı sahibine aittir" }
+    ],
+    "explain": "Kaçak yapıyı satın alan kişi, aykırılığı da devralır: yıkım kararı yeni malike uygulanır. Bu yüzden satış öncesi yapı ruhsatı, yapı kullanma izni (iskân) ve mimari projeye uygunluk mutlaka kontrol edilmelidir.",
+    "deadline": "Gizlenen ayıp nedeniyle satıcıya karşı dava açma süresi, teslimden itibaren iki yıldır; satıcı ayıbı ağır kusuruyla gizlemişse bu süre uygulanmaz.",
+    "where": "Tapu müdürlüğü (kayıt ve şerhler), belediye imar arşivi (ruhsat ve iskân), asliye hukuk / tüketici mahkemesi."
+  },
+  "ozel": {
+    "topic": "Özel alanlar: köy, tarla, sit, kıyı",
+    "short": "Farklı rejime tabi yerler",
+    "basis": [
+      { "law": "3194 sayılı İmar Kanunu", "article": "m.27", "note": "Köy yerleşik alanında konut için basitleştirilmiş usul" },
+      { "law": "5403 sayılı Toprak Koruma K.", "article": "m.13", "note": "Tarım arazisinin amaç dışı kullanımı" },
+      { "law": "2863 sayılı Kültür ve Tabiat Varlıkları K.", "article": "m.9", "note": "Sit alanında izinsiz inşaat yasağı" },
+      { "law": "3621 sayılı Kıyı Kanunu", "article": "m.6", "note": "Kıyıda yapılaşma sınırları" }
+    ],
+    "explain": "Köyde, tarlada, sit alanında ve kıyıda genel imar kuralları değil özel rejimler geçerlidir. Buradaki izinsiz yapılar çoğu zaman daha ağır yaptırıma tabidir; sit alanında izinsiz inşaat ayrıca suç oluşturur.",
+    "deadline": "Koruma bölge kurulu izni olmadan yapılan işlerde süre tanınmaz; durdurma kararı derhâl uygulanır ve eski hâle getirme istenir.",
+    "where": "İl özel idaresi / köy muhtarlığı ve kaymakamlık, tarım il müdürlüğü, koruma bölge kurulu müdürlüğü."
+  }
+}

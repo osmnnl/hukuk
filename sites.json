@@ -98,5 +98,17 @@
       "Tahmin oyunu",
       "Süre takvimi"
     ]
+  },
+  {
+    "slug": "bu-yapi-kacak-mi",
+    "name": "Bu Yapı Kaçak mı?",
+    "question": "Ruhsat gerekiyor mu?",
+    "blurb": "Balkon kapatma, çatı katı, tarlaya ev… Hangi iş ruhsat ister, hangisi serbest, kaçağın sonucu ne?",
+    "icon": "🚧",
+    "accent": "#b8860b",
+    "tools": [
+      "Kaçak mı testi",
+      "Satın alma kontrolü"
+    ]
   }
 ]

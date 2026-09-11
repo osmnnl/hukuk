@@ -1,0 +1,172 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url } from "../../lib/url";
+
+const nodes = {
+  yer: {
+    q: "Yapı nerede?",
+    hint: "Arazinin statüsü, her şeyden önce gelir: bazı yerlerde genel imar kuralları hiç uygulanmaz.",
+    opts: [
+      { t: "Belediye sınırları içinde (şehir, ilçe, mahalle)", go: "ne" },
+      { t: "Köy yerleşik alanında", go: "r_koy" },
+      { t: "Tarım arazisinde / tarlada", go: "r_tarla" },
+      { t: "Sit alanı, tescilli yapı veya kıyıda", go: "r_ozel" },
+    ],
+  },
+  ne: {
+    q: "Ne yapmak istiyorsun?",
+    hint: "En yakın seçeneği işaretle; sonraki soru ayrımı yapacak.",
+    opts: [
+      { t: "Dairenin içini yenilemek (boya, zemin, mutfak, banyo)", go: "ic" },
+      { t: "Balkon, teras veya çatıyı kapatmak / ilave yapmak", go: "kapatma" },
+      { t: "Bahçeye bir şey yapmak (havuz, kamelya, konteyner)", go: "bahce" },
+      { t: "Kullanım amacını değiştirmek (konut ↔ iş yeri)", go: "amac" },
+    ],
+  },
+  ic: {
+    q: "Taşıyıcı duvara, kolona veya perdeye dokunuluyor mu?",
+    hint: "Bunu ustaya değil, binanın statik projesine ve bir inşaat mühendisine sorun.",
+    opts: [
+      { t: "Evet, duvar kaldırılacak veya kolona müdahale var", go: "r_tasiyici" },
+      { t: "Hayır, sadece yüzeysel yenileme", go: "islak" },
+      { t: "Bilmiyorum", go: "r_bilmiyorum" },
+    ],
+  },
+  islak: {
+    q: "Mutfak veya banyonun yeri değişiyor mu?",
+    hint: "Islak hacmin taşınması tesisatı ve izolasyonu değiştirir.",
+    opts: [
+      { t: "Hayır, yerinde yenileniyor", go: "r_basit" },
+      { t: "Evet, başka odaya taşınıyor", go: "r_islak" },
+    ],
+  },
+  kapatma: {
+    q: "Nasıl kapatılacak?",
+    hint: "Belirleyici olan, kapalı alan oluşup oluşmadığıdır.",
+    opts: [
+      { t: "Katlanır cam sistemi (sökülebilir, doğramasız)", go: "r_camBalkon" },
+      { t: "Duvar örülerek veya pencere doğraması takılarak", go: "r_ilave" },
+      { t: "Teras veya çatıya yeni kapalı hacim ekleyerek", go: "r_ilave" },
+    ],
+  },
+  bahce: {
+    q: "Yapılacak şey sabit mi?",
+    hint: "Temel veya zemine sabitleme varsa yapı sayılır.",
+    opts: [
+      { t: "Evet — gömme havuz, betonarme veya sabitlenmiş prefabrik", go: "r_bahceSabit" },
+      { t: "Hayır — taşınabilir, sökülebilir, geçici", go: "r_bahcePortatif" },
+    ],
+  },
+  amac: {
+    q: "Hangi yöne dönüşüm?",
+    hint: "Kat mülkiyeti kütüğündeki nitelik belirleyicidir.",
+    opts: [
+      { t: "Meskende serbest meslek bürosu (avukat, doktor, mali müşavir)", go: "r_buro" },
+      { t: "Meskende ticari işletme (kafe, market, kuaför, atölye)", go: "r_ticari" },
+      { t: "Dükkânı konuta çevirmek", go: "r_ticari" },
+    ],
+  },
+};
+
+const results = {
+  r_basit: { v: "b", h: "Ruhsat gerekmez", t: "Bu iş basit onarım sayılır: taşıyıcı sistemi, bağımsız bölüm sayısını ve kullanım amacını değiştirmiyorsunuz.", s: ["Apartmanda çalışma saatleri ve atık için yönetim planına uyun.", "Ortak tesisata dokunulacaksa yönetime önceden bildirin.", "Alt komşuya su sızması riskine karşı izolasyonu belgeletin."], slug: "ic-tadilat-serbest" },
+  r_islak: { v: "c", h: "Duruma göre değişir", t: "Islak hacmin taşınması çoğu belediyede tadilat projesi gerektirir; ayrıca alt komşuya karşı sorumluluğunuz doğar.", s: ["Belediyeden yazılı görüş isteyin — uygulama belediyeden belediyeye değişiyor.", "Su yalıtımını uzman firmaya yaptırıp belgesini saklayın.", "Ortak kolon ve gidere müdahale varsa yönetim kararı alın."], slug: "ic-tadilat-serbest" },
+  r_tasiyici: { v: "a", h: "Ruhsat şart — yapmayın", t: "Taşıyıcı sisteme müdahale esaslı tadilattır. Ruhsatsız yapılırsa hem imar yaptırımı doğar hem de yapı güvenliğini tehlikeye attığı için cezai sorumluluk gündeme gelir.", s: ["İnşaat mühendisinden statik rapor alın.", "Belediyeye tadilat projesiyle ruhsat başvurusu yapın.", "Kat mülkiyetli binada kat malikleri kararını da alın."], slug: "tasiyici-duvar-kesme" },
+  r_bilmiyorum: { v: "c", h: "Önce öğrenin", t: "Duvarın taşıyıcı olup olmadığı gözle anlaşılmaz. Yanlış karar, geri dönüşü olmayan bir yapısal hasar demek.", s: ["Belediyenin imar arşivinden binanın statik projesini isteyin.", "Bir inşaat mühendisine yerinde tespit yaptırın.", "Rapor 'taşıyıcı' diyorsa ruhsat yolundan gidin."], slug: "tasiyici-duvar-kesme" },
+  r_camBalkon: { v: "c", h: "Belediyeye bağlı", t: "Sökülebilir katlanır cam sistemleri çoğu belediyede eklenti sayılmaz; bazı belediyeler ise cephe bütünlüğü gerekçesiyle izin şartı arar.", s: ["Belediyenizin cam balkon uygulama esaslarını yazılı isteyin.", "Kat malikleri kurulundan karar alın — dış cephe ortak yerdir.", "Binadaki diğer dairelerle aynı sistemi tercih edin."], slug: "balkon-kapatma" },
+  r_ilave: { v: "a", h: "Ruhsata aykırı", t: "Kapalı alan oluşturan her ilave, yapının inşaat alanını artırır. Emsal dolu binalarda sonradan ruhsata bağlanması genelde mümkün olmaz.", s: ["Yapmadan önce belediyeden imar durumu belgesi isteyin.", "Emsal doluysa bu işin yasal yolu yok demektir.", "Yapılmışsa: mühürleme sonrası 1 aylık süreyi ve 60 günlük dava süresini kaçırmayın."], slug: "teras-kapatma" },
+  r_bahceSabit: { v: "a", h: "Ruhsat gerekir", t: "Zemine sabitlenmiş veya gömülü yapılar — temeli olmasa bile — yapı sayılır ve ruhsata tabidir.", s: ["Taban alanı ve komşu sınırına çekme mesafesini öğrenin.", "Geçici kullanım için 'geçici yapı ruhsatı' yolunu sorun.", "Su tahliyesinin komşu parsele akmadığından emin olun."], slug: "bahceye-prefabrik" },
+  r_bahcePortatif: { v: "b", h: "Kural olarak serbest", t: "Gerçekten taşınabilir ve geçici kullanılan öğeler ruhsata tabi değildir. Ancak 'geçici' sözü fiilî duruma bakılarak değerlendirilir.", s: ["Zemine beton kaide dökmeyin — kaide, yapıya dönüştürür.", "Sürekli oturma veya depolama amacıyla kullanmayın.", "Sitede iseniz yönetim planındaki kuralları kontrol edin."], slug: "bahceye-prefabrik" },
+  r_buro: { v: "c", h: "Şarta bağlı mümkün", t: "Serbest meslek büroları için kanun kolaylık tanır; yönetim planında açık yasak yoksa kat maliklerinin oybirliği aranmaz.", s: ["Önce yönetim planını okuyun — plan yasaklıyorsa yasak uygulanır.", "Vergi dairesi ve oda kaydı için adres uygunluğunu teyit edin.", "Ortak alan kullanımını artıracak bir faaliyetse yönetimle konuşun."], slug: "evi-isyerine-cevirme" },
+  r_ticari: { v: "a", h: "İzin olmadan olmaz", t: "Kullanım amacının değişmesi esaslı tadilattır: hem belediye izni hem kat mülkiyeti kütüğünde nitelik değişikliği gerekir; meskende ticari işletme için oybirliği aranır.", s: ["Kat malikleri kurulundan yazılı karar alın.", "Belediyeden kullanım amacı değişikliği için başvuru yapın.", "Tapu kütüğündeki niteliği güncelletin — bu adım atlanırsa kullanım kaçak kalır."], slug: "dukkani-eve-cevirme" },
+  r_koy: { v: "c", h: "Basitleştirilmiş usul", t: "Köy yerleşik alanında, köyde sürekli oturanların kendi ihtiyacı için yaptığı konutlarda basitleştirilmiş usul uygulanır. Bu 'izin gerekmez' demek değildir.", s: ["Yapının köy yerleşik alan sınırı içinde olduğunu yazılı teyit ettirin.", "Muhtarlık izni + valilik/il özel idaresi onayını birlikte alın.", "Yazlık veya ikinci konut amaçlıysa bu istisnadan yararlanamazsınız."], slug: "koyde-ev" },
+  r_tarla: { v: "a", h: "Tarımsal amaç dışı kullanım", t: "Tarım arazisinde yapılaşma ancak tarımsal amaçlı ve izinli olarak mümkündür. İzinsiz yapı hem imar hem toprak koruma yaptırımı doğurur.", s: ["Tarım il müdürlüğünden amaç dışı kullanım izni şartlarını sorun.", "Paylı tapuda 'kendi yerim' diye bir şey olmadığını unutmayın.", "Hobi bahçesi vaadiyle satılan parsellerde vaadi yazılı isteyin."], slug: "tarlaya-ev" },
+  r_ozel: { v: "a", h: "Kurul izni şart", t: "Sit alanında, tescilli yapıda ve kıyıda her türlü müdahale özel izne tabidir. İzinsiz iş, eski hâle getirme ve cezai sorumluluk doğurur.", s: ["Koruma bölge kurulu müdürlüğüne başvurun.", "Kıyıdaysanız kadastrodan kıyı kenar çizgisi paftasını isteyin.", "İzinsiz yapılan işin sonradan onaylanmasına neredeyse hiç rastlanmaz."], slug: "sit-alaninda-tadilat" },
+};
+---
+<Base
+  title="Kaçak mı testi — yapacağın iş ruhsat gerektiriyor mu?"
+  description="Birkaç soruda öğrenin: yapmak istediğiniz iş basit onarım mı, ruhsata tabi tadilat mı, yoksa baştan kaçak yapı mı?"
+  path="/test/"
+>
+  <section class="hero" style="padding-bottom:14px">
+    <div class="wrap narrow">
+      <p class="kick">Kaçak mı testi</p>
+      <h1>Bu iş ruhsat<br />gerektiriyor mu?</h1>
+      <p class="lede">Çoğu kişi ruhsatın yalnız yeni bina için gerektiğini sanıyor. Birkaç soruda kendi işinizin hangi kategoriye düştüğünü görün.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <div class="panel">
+      <div class="steps-n" id="adimlar"></div>
+      <div id="soruAlani">
+        <h2 id="soru" style="font-size:clamp(19px,4.2vw,25px);margin:6px 0 6px;line-height:1.3"></h2>
+        <p class="hint" id="ipucu" style="margin:0 0 16px"></p>
+        <div class="opts" id="secenekler"></div>
+      </div>
+
+      <div id="sonuc" hidden>
+        <span class="tag tag-lg" id="etiket"></span>
+        <h2 id="baslik" style="font-size:clamp(20px,4.4vw,27px);margin:12px 0 10px"></h2>
+        <p id="metin" style="color:var(--ink-2);line-height:1.65;margin:0 0 16px"></p>
+        <h3 style="font-size:15px;margin:0 0 8px">Şimdi ne yapmalı?</h3>
+        <ol id="adimlarListe" style="margin:0 0 18px;padding-left:20px;color:var(--ink-2);line-height:1.7"></ol>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a class="btn" id="detay" href="#">Bu konunun ayrıntısı →</a>
+          <button class="btn btn-2" type="button" id="bastan">Baştan başla</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="note">Bu test genel kuralları uygular; belediyelerin uygulama esasları ve imar planı notları farklılık
+    gösterebilir. Kritik bir iş yapmadan önce belediyenizden <strong>yazılı görüş</strong> alın.</p>
+  </div>
+
+  <script is:inline define:vars={{ nodes, results, base: url("/") }}>
+    const $ = (id) => document.getElementById(id);
+    let yol = [];
+
+    function ciz(id) {
+      const n = nodes[id];
+      $("soru").textContent = n.q;
+      $("ipucu").textContent = n.hint;
+      $("secenekler").innerHTML = "";
+      n.opts.forEach((o) => {
+        const b = document.createElement("button");
+        b.type = "button"; b.textContent = o.t;
+        b.addEventListener("click", () => git(o.go));
+        $("secenekler").appendChild(b);
+      });
+      $("adimlar").innerHTML = Array.from({ length: 3 }, (_, i) => `<i class="${i < yol.length ? "on" : ""}"></i>`).join("");
+    }
+
+    function git(id) {
+      if (id.startsWith("r_")) return bitir(id);
+      yol.push(id);
+      ciz(id);
+      $("soruAlani").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    function bitir(id) {
+      const r = results[id];
+      $("soruAlani").hidden = true;
+      $("adimlar").innerHTML = "<i class='on'></i><i class='on'></i><i class='on'></i>";
+      $("etiket").className = `tag tag-lg tag-${r.v}`;
+      $("etiket").textContent = r.h;
+      $("baslik").textContent = r.h;
+      $("metin").textContent = r.t;
+      $("adimlarListe").innerHTML = r.s.map((x) => `<li>${x}</li>`).join("");
+      $("detay").href = base + r.slug + "/";
+      $("sonuc").hidden = false;
+      $("sonuc").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    $("bastan").addEventListener("click", () => {
+      yol = []; $("sonuc").hidden = true; $("soruAlani").hidden = false; ciz("yer");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    ciz("yer");
+  </script>
+</Base>

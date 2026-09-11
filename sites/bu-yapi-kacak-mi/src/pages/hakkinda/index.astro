@@ -1,0 +1,27 @@
+---
+import Base from "../../layouts/Base.astro";
+import { cases, frames, site } from "../../lib/cases";
+---
+<Base title={`Hakkında — ${site.name}`} description="Bu site ne yapar, kapsamı ve sınırları nedir?" path="/hakkinda/">
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <section class="hero" style="padding:36px 0 6px">
+      <p class="kick">Hakkında</p>
+      <h1 style="font-size:clamp(26px,5.2vw,38px)">Bu site ne yapar?</h1>
+      <p class="lede">İmar mevzuatının tek bir pratik sorusunu cevaplar: yapmak istediğiniz iş izne tabi mi?</p>
+    </section>
+    <section class="sec"><h2>Neden kesin cevap veremiyoruz?</h2>
+      <p>İmar hukukunda üç katman var: kanun, yönetmelik ve <strong>belediyenin kendi uygulama esasları
+      ile imar planı notları</strong>. Üçüncüsü her yerde farklı. Bu yüzden cam balkon bir ilçede serbest,
+      komşu ilçede izne tabi olabiliyor. Site genel kuralı verir; son sözü belediyenizin yazılı görüşü söyler.</p></section>
+    <section class="sec"><h2>Ceza tutarı neden yazmıyor?</h2>
+      <p>İmar para cezası, yapı sınıfına göre belirlenen ve <strong>her yıl güncellenen</strong> birim bedel
+      üzerinden hesaplanıyor. Sabit bir rakam yazmak, bir yıl sonra yanlış bilgi vermek olurdu. Bunun yerine
+      hesabın nasıl kurulduğunu ve güncel bedeli nereden alacağınızı anlatıyoruz.</p></section>
+    <section class="sec"><h2>Kapsam</h2>
+      <p>{cases.length} durum, {Object.keys(frames).length} başlık: {Object.values(frames).map((f: any) => f.topic).join(", ")}.</p></section>
+    <section class="sec" style="border-bottom:0"><h2>Sınırları</h2>
+      <p>Burada yazanlar <strong>hukuki danışmanlık değildir</strong>. Mühürleme, yıkım kararı veya ceza
+      tebliği aldıysanız süreler işlemeye başlamıştır — 15 ve 60 günlük itiraz süreleri kısa ve kesindir.
+      Bu durumda bir avukata başvurun.</p></section>
+  </div>
+</Base>
