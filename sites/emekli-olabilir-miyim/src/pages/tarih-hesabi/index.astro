@@ -1,0 +1,142 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url } from "../../lib/url";
+---
+<Base
+  title="Ne zaman emekli olurum? — emeklilik şartları hesaplama"
+  description="Sigorta başlangıcınızı ve prim gününüzü girin: hangi emeklilik rejimine tabi olduğunuzu, kaç gününüzün eksik olduğunu ve hangi şartları tamamlamanız gerektiğini görün."
+  path="/tarih-hesabi/"
+>
+  <section class="hero" style="padding-bottom:16px">
+    <div class="wrap narrow">
+      <p class="kick">Şart hesabı</p>
+      <h1>Ne zaman<br />emekli olurum?</h1>
+      <p class="lede">Sigorta başlangıcınız hangi rejime tabi olduğunuzu belirler. Girin, eksiklerinizi görün.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <div class="panel">
+      <div class="field">
+        <label for="baslangic">İlk sigorta başlangıç tarihi</label>
+        <input id="baslangic" type="date" />
+        <p class="hint">e-Devlet → "SGK Tescil ve Hizmet Dökümü" sayfasındaki ilk tescil tarihi.</p>
+      </div>
+      <div class="row2">
+        <div class="field"><label for="dogum">Doğum tarihi</label><input id="dogum" type="date" /></div>
+        <div class="field"><label for="cinsiyet">Cinsiyet</label>
+          <select id="cinsiyet"><option value="k">Kadın</option><option value="e">Erkek</option></select></div>
+      </div>
+      <div class="field">
+        <label for="gun">Toplam prim gün sayısı</label>
+        <input id="gun" type="number" min="0" step="1" placeholder="Örn. 6200" />
+        <p class="hint">Borçlanmalar dahil değilse aşağıya ayrıca yazın.</p>
+      </div>
+      <div class="field">
+        <label for="borc">Borçlanabileceğiniz gün (askerlik, doğum, yurt dışı)</label>
+        <input id="borc" type="number" min="0" step="1" placeholder="0" />
+      </div>
+      <button class="btn" type="button" id="hesapla" style="width:100%">Durumumu göster</button>
+
+      <div id="sonuc" hidden style="margin-top:22px">
+        <div class="total">
+          <p class="lbl" id="rejim"></p>
+          <p class="big" id="durum"></p>
+          <p class="sub" id="ozet"></p>
+        </div>
+        <div class="lines" id="sartlar"></div>
+        <div id="notlar" style="margin-top:14px"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+          <a class="btn btn-2" href={url("/prim-gunum-eksik/")}>Prim günümü nasıl tamamlarım?</a>
+          <a class="btn btn-2" href={url("/maasim/")}>Maaşım ne olur?</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="note" style="margin-top:18px">
+      Bu araç genel şartları gösterir; <strong>kesin emeklilik tarihinizi yalnız SGK belirler</strong>.
+      1999–2008 arası girişlerde kademeli yaş tabloları, yıpranma payı, engellilik ve statü değişiklikleri
+      sonucu değiştirir. e-Devlet'ten hizmet dökümünüzü alıp SGK'ya doğrulatın.
+    </p>
+  </div>
+
+  <script is:inline>
+    (() => {
+      const q = (id) => document.getElementById(id);
+      const yilFark = (a, b) => (b - a) / (365.25 * 86400000);
+
+      q("hesapla").addEventListener("click", () => {
+        const b = q("baslangic").value, d = q("dogum").value;
+        const gun = parseInt(q("gun").value || "0", 10) || 0;
+        const borc = parseInt(q("borc").value || "0", 10) || 0;
+        const kadin = q("cinsiyet").value === "k";
+        if (!b || !d) { alert("Sigorta başlangıcı ve doğum tarihi gerekli."); return; }
+
+        const bas = new Date(b), dog = new Date(d), bugun = new Date();
+        const sigortaYili = yilFark(bas, bugun);
+        const yas = yilFark(dog, bugun);
+        const toplamGun = gun + borc;
+
+        // Rejim belirleme
+        const T1999 = new Date("1999-09-08T23:59:59");
+        const T2008 = new Date("2008-04-30T23:59:59");
+        let rejim, gerekenGun, gerekenSure, gerekenYas, yasNotu;
+
+        if (bas <= T1999) {
+          rejim = "8 Eylül 1999 ve öncesi girişli (EYT kapsamı)";
+          gerekenGun = 5000; // kademeli: 5000-5975 arası; en yaygın eşik
+          gerekenSure = kadin ? 20 : 25;
+          gerekenYas = 0;
+          yasNotu = "Yaş şartı aranmaz (EYT düzenlemesi). Prim günü, giriş yılınıza göre 5000–5975 arasında kademelidir.";
+        } else if (bas <= T2008) {
+          rejim = "9 Eylül 1999 – 30 Nisan 2008 arası girişli";
+          gerekenGun = 7000;
+          gerekenSure = kadin ? 20 : 25;
+          gerekenYas = kadin ? 58 : 60;
+          yasNotu = "Bu dönemde yaş şartı giriş tarihinize göre kademelidir; 58/60 taban değerlerdir ve daha yüksek olabilir.";
+        } else {
+          rejim = "1 Mayıs 2008 ve sonrası girişli";
+          gerekenGun = 7200;
+          gerekenSure = 0;
+          gerekenYas = kadin ? 58 : 60;
+          yasNotu = "2036'dan itibaren yaş şartı kademeli olarak 65'e yükselir; genç sigortalılar için geçerli yaş daha yüksek olacaktır.";
+        }
+
+        const eksikGun = Math.max(0, gerekenGun - toplamGun);
+        const eksikSure = Math.max(0, gerekenSure - sigortaYili);
+        const eksikYas = Math.max(0, gerekenYas - yas);
+        const tamam = eksikGun === 0 && eksikSure <= 0 && eksikYas <= 0;
+
+        q("rejim").textContent = rejim;
+        q("durum").textContent = tamam ? "Şartlar tamam görünüyor" : eksikGun > 0 ? `${eksikGun.toLocaleString("tr-TR")} gün eksik` : "Yaş/süre bekleniyor";
+        q("durum").style.color = tamam ? "var(--ok)" : "var(--accent)";
+        q("durum").style.fontSize = "clamp(24px,6vw,40px)";
+        q("ozet").textContent = `Sigortalılık ${sigortaYili.toFixed(1)} yıl · yaş ${yas.toFixed(1)} · prim ${toplamGun.toLocaleString("tr-TR")} gün${borc ? ` (${borc} borçlanma dahil)` : ""}`;
+
+        const sat = (b, s, v, ok) =>
+          `<div class="line"><span class="k"><b>${b}</b><small>${s}</small></span><span class="v" style="color:${ok ? "var(--ok)" : "var(--accent)"}">${v}</span></div>`;
+        let html = "";
+        html += sat("Prim gün sayısı", `Gereken ${gerekenGun.toLocaleString("tr-TR")} · sende ${toplamGun.toLocaleString("tr-TR")}`,
+          eksikGun ? `−${eksikGun.toLocaleString("tr-TR")} gün` : "✓ tamam", !eksikGun);
+        if (gerekenSure)
+          html += sat("Sigortalılık süresi", `Gereken ${gerekenSure} yıl · sende ${sigortaYili.toFixed(1)} yıl`,
+            eksikSure > 0 ? `−${eksikSure.toFixed(1)} yıl` : "✓ tamam", eksikSure <= 0);
+        html += sat("Yaş", gerekenYas ? `Gereken ${gerekenYas} · sende ${yas.toFixed(1)}` : "Bu rejimde yaş şartı yok",
+          gerekenYas ? (eksikYas > 0 ? `−${eksikYas.toFixed(1)} yıl` : "✓ tamam") : "✓ aranmaz", eksikYas <= 0);
+        q("sartlar").innerHTML = html;
+
+        const notlar = [yasNotu];
+        if (eksikGun > 0 && borc === 0)
+          notlar.push("Askerlik, doğum veya yurt dışı borçlanmasıyla eksik günü kapatabilirsiniz — yukarıdaki alana yazıp yeniden hesaplayın.");
+        if (bas > T1999 && yilFark(T1999, bas) < 2)
+          notlar.push("⚡ Sigorta başlangıcınız 8 Eylül 1999'a çok yakın. <strong>Askerlik borçlanması başlangıcı geriye çekebilir</strong> ve sizi EYT kapsamına sokabilir — mutlaka hesaplatın.");
+        if (tamam)
+          notlar.push("Şartlar tutuyorsa işten ayrılırken <strong>kıdem tazminatı</strong> hakkınız da doğar. Önce SGK'dan yazıyı alın, sonra dilekçe verin.");
+        q("notlar").innerHTML = `<div class="note">${notlar.map((n) => "• " + n).join("<br><br>")}</div>`;
+
+        q("sonuc").hidden = false;
+        q("sonuc").scrollIntoView({ block: "nearest" });
+      });
+    })();
+  </script>
+</Base>

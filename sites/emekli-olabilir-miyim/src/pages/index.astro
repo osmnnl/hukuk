@@ -1,0 +1,60 @@
+---
+import Base from "../layouts/Base.astro";
+import SearchBox from "../components/SearchBox.astro";
+import CaseCard from "../components/CaseCard.astro";
+import { cases, surprising, site } from "../lib/cases";
+import { url, absUrl } from "../lib/url";
+
+const populer = ["eyt-kimleri-kapsiyor","prim-gunum-eksik","askerlik-borclanmasi","emeklilik-icin-istifa","emekli-aylikim-nasil-hesaplanir","bagkur-ssk-birlesimi"]
+  .map((s) => cases.find((c) => c.slug === s)!);
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "WebSite", "@id": absUrl("/") + "#website", name: site.name, url: absUrl("/"), inLanguage: "tr-TR" },
+    { "@type": "FAQPage", mainEntity: populer.map((c) => ({ "@type": "Question", name: c.question, acceptedAnswer: { "@type": "Answer", text: c.summary } })) },
+  ],
+};
+---
+<Base
+  title="Emekli olabilir miyim? — şartlar, prim günü ve emeklilik tarihi"
+  description="EYT, prim günü, borçlanma, sigortalılık süresi… Emeklilik şartlarını hesaplayın: hangi rejime tabisiniz, kaç gününüz eksik, ne zaman emekli olabilirsiniz?"
+  path="/"
+  jsonLd={jsonLd}
+>
+  <section class="hero">
+    <div class="wrap">
+      <p class="kick">{cases.length} soru · şart hesabı · aylık rehberi</p>
+      <h1>Emekli<br />olabilir miyim?</h1>
+      <p class="lede">
+        Her şey sigorta başlangıç tarihinizle başlıyor: bir günlük fark bile hangi rejime tabi olduğunuzu
+        ve yıllarca beklemenizi değiştirebiliyor.
+      </p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn" href={url("/tarih-hesabi/")}>Şartlarımı hesapla →</a>
+        <a class="btn btn-2" href={url("/maasim/")}>Maaşım ne olur?</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:18px"><div class="wrap">
+    <div class="grid g3">
+      <a class="tool" href={url("/tarih-hesabi/")}><span class="ic">📅</span><span><h3>Şart hesabı</h3><p>Hangi rejim, kaç gün eksik, hangi yaş?</p></span></a>
+      <a class="tool" href={url("/maasim/")}><span class="ic">💰</span><span><h3>Aylık rehberi</h3><p>Maaşı ne belirliyor, nasıl yükseltilir?</p></span></a>
+      <a class="tool" href={url("/liste/")}><span class="ic">📖</span><span><h3>{cases.length} soru</h3><p>EYT, borçlanma, statü, ölüm aylığı.</p></span></a>
+    </div>
+  </div></section>
+
+  <section class="block" style="padding-top:0"><div class="wrap">
+    <div class="head"><h2>Sorunu ara</h2></div><SearchBox placeholder="Ara: EYT, borçlanma, prim günü…" />
+  </div></section>
+
+  <section class="block" style="padding-top:10px"><div class="wrap">
+    <div class="head"><h2>En çok sorulanlar</h2><a href={url("/liste/")}>Tüm sorular ({cases.length}) →</a></div>
+    <div class="grid g2">{populer.map((c) => <CaseCard item={c} />)}</div>
+  </div></section>
+
+  <section class="block" style="padding-top:0"><div class="wrap">
+    <div class="head"><h2>Çoğu kişinin bilmediği {surprising.length} nokta</h2></div>
+    <div class="grid g2">{surprising.slice(0, 6).map((c) => <CaseCard item={c} hide />)}</div>
+  </div></section>
+</Base>

@@ -1,0 +1,67 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url } from "../../lib/url";
+---
+<Base
+  title="Emekli maaşım ne kadar olur? — aylığı belirleyen etkenler"
+  description="Emekli aylığını ne belirler? Ortalama kazanç, aylık bağlama oranı, prim günü ve dönem katsayıları. Aylığınızı yükseltmenin yolları ve kesin hesabı nereden alacağınız."
+  path="/maasim/"
+>
+  <section class="hero" style="padding-bottom:16px">
+    <div class="wrap narrow">
+      <p class="kick">Aylık tutarı</p>
+      <h1>Maaşım<br />ne olur?</h1>
+      <p class="lede">Kesin tutarı yalnız SGK hesaplayabilir. Burada tutarı <strong>neyin belirlediğini</strong> ve nasıl yükselteceğinizi bulacaksınız.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <div class="panel" style="margin-bottom:16px">
+      <p style="font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:800;margin:0 0 12px">Formül</p>
+      <p style="font-size:19px;font-weight:750;margin:0 0 10px;line-height:1.4">
+        Aylık = Ortalama aylık kazanç × Aylık bağlama oranı
+      </p>
+      <p style="color:var(--ink-2);margin:0">
+        Ortalama kazanç, tüm çalışma hayatınızdaki prime esas kazançların güncelleme katsayısıyla bugüne
+        taşınmış ortalamasıdır. Bağlama oranı prim gün sayınıza göre yükselir ve dönemlere ayrı ayrı uygulanır.
+      </p>
+    </div>
+
+    <div class="lines" style="margin-bottom:16px">
+      <div class="line"><span class="k"><b>Prime esas kazanç</b><small>Bordroda bildirilen brüt ücret — elden ödenen fark buraya girmez</small></span><span class="v" style="color:var(--accent)">En belirleyici</span></div>
+      <div class="line"><span class="k"><b>Prim gün sayısı</b><small>Gün arttıkça bağlama oranı yükselir</small></span><span class="v" style="color:var(--accent)">Yüksek etki</span></div>
+      <div class="line"><span class="k"><b>Çalışılan dönemler</b><small>2000 öncesi, 2000–2008 ve 2008 sonrası için ayrı oranlar hesaplanıp toplanır</small></span><span class="v">Orta etki</span></div>
+      <div class="line"><span class="k"><b>Son yılların kazancı</b><small>Güncelleme katsayısı nedeniyle yakın dönem kazançları ortalamayı daha çok etkiler</small></span><span class="v">Orta etki</span></div>
+      <div class="line"><span class="k"><b>Borçlanma kazancı</b><small>Borçlanmada seçtiğiniz kazanç, ortalamayı yukarı ya da aşağı çeker</small></span><span class="v">Değişken</span></div>
+    </div>
+
+    <div class="panel" style="margin-bottom:16px">
+      <p style="font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:800;margin:0 0 12px">Aylığı yükseltmenin yolları</p>
+      <ul class="checks">
+        <li>Gerçek ücretinizden bildirim yaptırın — asgari ücretten bildirim, aylığı ömür boyu düşürür.</li>
+        <li>Emekliliğe yakın yıllarda kazancınızı yükseltmek ortalamayı belirgin biçimde artırır.</li>
+        <li>Borçlanmada yüksek kazanç seçmek maliyeti artırır ama aylığı da yükseltir — hesaplatın.</li>
+        <li>Eksik günleri tamamlayın: bağlama oranı prim günüyle birlikte yükselir.</li>
+        <li>Hangi statüden (4/a, 4/b) emekli olacağınızı son yedi yıl kuralına göre planlayın.</li>
+      </ul>
+    </div>
+
+    <div class="total">
+      <p class="lbl">Kesin hesap</p>
+      <p style="font-size:19px;font-weight:750;margin:4px 0 8px">e-Devlet → "Tahmini Emekli Aylığı Hesaplama"</p>
+      <p class="sub">Bu hizmet sizin gerçek kazanç kayıtlarınız üzerinden çalışır. Hiçbir bağımsız hesaplayıcı bu doğrulukta sonuç veremez — çünkü kimse sizin kazanç geçmişinizi bilmiyor.</p>
+      <a class="btn" href="https://www.turkiye.gov.tr/sgk-tescil-ve-hizmet-dokumu" target="_blank" rel="noopener nofollow" style="margin-top:14px">e-Devlet'te aç →</a>
+    </div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+      <a class="btn btn-2" href={url("/tarih-hesabi/")}>Ne zaman emekli olurum?</a>
+      <a class="btn btn-2" href={url("/dusuk-primden-bildirim-emeklilik/")}>Düşük primden bildirim</a>
+    </div>
+
+    <p class="note" style="margin-top:18px">
+      Bu sayfa bilinçli olarak tutar tahmini vermiyor. Emekli aylığı hesabı; güncelleme katsayıları, dönem
+      bazlı bağlama oranları ve kişisel kazanç geçmişine bağlıdır. Uydurma bir rakam, emeklilik kararınızı
+      yanlış yönlendirebilir.
+    </p>
+  </div>
+</Base>

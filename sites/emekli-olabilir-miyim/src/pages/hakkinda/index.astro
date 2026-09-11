@@ -1,0 +1,25 @@
+---
+import Base from "../../layouts/Base.astro";
+import { cases, frames, site } from "../../lib/cases";
+---
+<Base title={`Hakkında — ${site.name}`} description="Bu site ne yapar, hesaplayıcı neyi kapsar?" path="/hakkinda/">
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <section class="hero" style="padding:36px 0 6px">
+      <p class="kick">Hakkında</p>
+      <h1 style="font-size:clamp(26px,5.2vw,38px)">Bu site ne yapar?</h1>
+      <p class="lede">Emeklilik şartlarını üç değişkene indirger — sigortalılık süresi, prim günü ve yaş —
+      ve hangisinin eksik olduğunu gösterir.</p>
+    </section>
+    <section class="sec"><h2>Neden kesin tarih vermiyoruz?</h2>
+      <p>1999–2008 arası girişlerde yaş ve prim şartları giriş tarihine göre <strong>kademelidir</strong>; ayrıca
+      yıpranma payı, engellilik, statü değişiklikleri ve borçlanmalar sonucu değiştirir. Tek bir formülle
+      kesin tarih vermek yanıltıcı olurdu. Bunun yerine hangi rejime tabi olduğunuzu ve neyin eksik
+      olduğunu gösteriyoruz — asıl karar verilecek nokta bu.</p></section>
+    <section class="sec"><h2>Kapsam</h2>
+      <p>{cases.length} soru, {Object.keys(frames).length} başlık: {Object.values(frames).map((f) => f.topic).join(", ")}.</p></section>
+    <section class="sec" style="border-bottom:0"><h2>Sınırları</h2>
+      <p>Buradaki içerik <strong>hukuki danışmanlık değildir</strong>. Sosyal güvenlik mevzuatı sık değişir ve
+      kişisel kayıtlar sonucu belirler. Kesin durumunuz için e-Devlet'ten hizmet dökümünüzü alın ve SGK'ya
+      doğrulatın. Emeklilik kararı geri alınamaz bir karardır — tek kaynağa güvenmeyin.</p></section>
+  </div>
+</Base>

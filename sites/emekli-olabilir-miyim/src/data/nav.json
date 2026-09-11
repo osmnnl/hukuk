@@ -1,0 +1,6 @@
+[
+  { "href": "/", "label": "Ana sayfa" },
+  { "href": "/liste/", "label": "Emeklilik soruları" },
+  { "href": "/tarih-hesabi/", "label": "Ne zaman emekli olurum?" },
+  { "href": "/maasim/", "label": "Maaşım ne olur?" }
+]

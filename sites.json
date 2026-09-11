@@ -74,5 +74,17 @@
       "Pay hesabı",
       "Saklı pay"
     ]
+  },
+  {
+    "slug": "emekli-olabilir-miyim",
+    "name": "Emekli Olabilir miyim?",
+    "question": "Şartlarım tuttu mu?",
+    "blurb": "EYT, prim günü, borçlanma… Hangi rejime tabisin, kaç günün eksik, ne zaman emekli olabilirsin?",
+    "icon": "🌅",
+    "accent": "#ff9d5c",
+    "tools": [
+      "Şart hesabı",
+      "Aylık rehberi"
+    ]
   }
 ]

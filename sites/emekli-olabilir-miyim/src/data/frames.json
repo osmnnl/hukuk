@@ -1,0 +1,60 @@
+{
+  "sartlar": {
+    "topic": "Emeklilik Şartları",
+    "short": "5510 s. K.",
+    "basis": [
+      { "law": "5510 sayılı Kanun", "article": "m.28", "note": "Yaşlılık aylığına hak kazanma şartları" },
+      { "law": "506 sayılı Kanun", "article": "geçici m.81", "note": "1999 öncesi sigortalılar için kademeli geçiş" },
+      { "law": "5510 sayılı Kanun", "article": "geçici m.95", "note": "Yaş şartının kaldırılmasına ilişkin düzenleme (EYT)" }
+    ],
+    "explain": "Emeklilik üç şarta bağlıdır: sigortalılık süresi, prim gün sayısı ve yaş. Hangi şartların uygulanacağını belirleyen temel ölçüt, sigorta başlangıç tarihinizdir.",
+    "deadline": "Şartlar tamamlandığında başvuru için süre sınırı yoktur; ancak aylık, başvuruyu takip eden ay başından itibaren bağlanır — geç başvuru geçmişe dönük ödeme getirmez.",
+    "where": "SGK — e-Devlet üzerinden tahsis talebi veya SGK il/merkez müdürlüğü."
+  },
+  "prim": {
+    "topic": "Prim Günü ve Borçlanma",
+    "short": "5510 · m.41",
+    "basis": [
+      { "law": "5510 sayılı Kanun", "article": "m.41", "note": "Hizmet borçlanması: askerlik, doğum, yurt dışı" },
+      { "law": "5510 sayılı Kanun", "article": "m.86", "note": "Eksik gün bildirimi ve belgelendirme" },
+      { "law": "3201 sayılı Kanun", "article": "-", "note": "Yurt dışında geçen sürelerin borçlanılması" }
+    ],
+    "explain": "Prim gün sayısı yetmiyorsa askerlik, doğum (her çocuk için en fazla 2 yıl, 3 çocuğa kadar), yurt dışı süreleri ve ücretsiz izin dönemleri borçlanılarak eklenebilir.",
+    "deadline": "Borçlanma bedeli, tebliğ tarihinden itibaren 1 ay içinde ödenmelidir; ödenmezse borçlanma geçersiz olur.",
+    "where": "SGK'ya borçlanma talep dilekçesi (e-Devlet veya müdürlük)."
+  },
+  "aylik": {
+    "topic": "Aylık Tutarı",
+    "short": "5510 · m.29",
+    "basis": [
+      { "law": "5510 sayılı Kanun", "article": "m.29", "note": "Yaşlılık aylığının hesaplanması" },
+      { "law": "5510 sayılı Kanun", "article": "m.55", "note": "Aylıkların artırılması" }
+    ],
+    "explain": "Aylık; ortalama aylık kazanç ile aylık bağlama oranının çarpımıyla bulunur. Kazançlar güncelleme katsayısıyla bugüne taşınır. Prim gün sayısı arttıkça bağlama oranı yükselir.",
+    "deadline": "Aylıklar her yıl ocak ve temmuz aylarında, belirlenen oranlarda artırılır.",
+    "where": "SGK — e-Devlet 'Emeklilik Tahsis Talep' ve 'Tahmini Emekli Aylığı' hizmetleri."
+  },
+  "calisma": {
+    "topic": "Emeklilikte Çalışma",
+    "short": "SGDP",
+    "basis": [
+      { "law": "5510 sayılı Kanun", "article": "m.30", "note": "Yaşlılık aylığı alırken çalışma" },
+      { "law": "1475 sayılı Kanun", "article": "m.14", "note": "Emeklilik nedeniyle kıdem tazminatı" }
+    ],
+    "explain": "Emekli olduktan sonra çalışmaya devam edilebilir. Bu durumda sosyal güvenlik destek primi ödenir veya aylık kesilerek tüm sigorta kollarına tabi çalışılır.",
+    "deadline": "Emeklilik nedeniyle işten ayrılırken kıdem tazminatı için SGK'dan alınacak yazı, istifa dilekçesine eklenmelidir.",
+    "where": "SGK ve işveren."
+  },
+  "ozel": {
+    "topic": "Özel Durumlar",
+    "short": "Engelli · Malulen",
+    "basis": [
+      { "law": "5510 sayılı Kanun", "article": "m.25", "note": "Malullük aylığı" },
+      { "law": "5510 sayılı Kanun", "article": "m.28/5", "note": "Engellilik nedeniyle vergi indirimine bağlı emeklilik" },
+      { "law": "5510 sayılı Kanun", "article": "m.40", "note": "Fiili hizmet süresi zammı (yıpranma)" }
+    ],
+    "explain": "Engellilik, malullük ve ağır işlerde çalışma (yıpranma payı) emeklilik şartlarını hafifletir. Bu durumlarda daha düşük prim günü ve yaşla emeklilik mümkündür.",
+    "deadline": "Malullük aylığı için sigortalılıktan sonra ortaya çıkan çalışma gücü kaybı ve en az 1800 gün prim aranır.",
+    "where": "SGK ve yetkili sağlık kuruluşu (kurul raporu)."
+  }
+}

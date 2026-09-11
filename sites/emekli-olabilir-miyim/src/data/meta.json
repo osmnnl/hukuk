@@ -1,0 +1,10 @@
+{
+  "name": "Emekli Olabilir miyim?",
+  "tagline": "Emekli <em>olabilir miyim?</em>",
+  "unit": "emeklilik sorusu",
+  "verdicts": {
+    "a": { "label": "Evet, hakkın var", "short": "HAKKIN VAR" },
+    "b": { "label": "Hayır", "short": "HAYIR" },
+    "c": { "label": "Koşullara bağlı", "short": "KOŞULLU" }
+  }
+}
