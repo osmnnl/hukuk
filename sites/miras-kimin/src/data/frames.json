@@ -1,0 +1,63 @@
+{
+  "zumre": {
+    "topic": "Zümre ve Paylar",
+    "short": "TMK 495-501",
+    "basis": [
+      { "law": "4721 sayılı TMK", "article": "m.495", "note": "Birinci zümre: altsoy" },
+      { "law": "4721 sayılı TMK", "article": "m.496", "note": "İkinci zümre: ana-baba ve altsoyları" },
+      { "law": "4721 sayılı TMK", "article": "m.497", "note": "Üçüncü zümre: büyük ana-baba ve altsoyları" },
+      { "law": "4721 sayılı TMK", "article": "m.499", "note": "Sağ kalan eşin miras payı" }
+    ],
+    "explain": "Türk miras hukuku zümre sistemine dayanır: önceki zümrede mirasçı varsa sonraki zümre mirasçı olamaz. Sağ kalan eş her zümreyle birlikte mirasçı olur ancak payı zümreye göre değişir.",
+    "deadline": "Mirasın reddi için yasal süre, mirasçılığı öğrenmeden itibaren 3 aydır.",
+    "where": "Sulh Hukuk Mahkemesi (mirasçılık belgesi, mirasın reddi) veya noter (mirasçılık belgesi)."
+  },
+  "sakliPay": {
+    "topic": "Saklı Pay ve Tenkis",
+    "short": "TMK 505-571",
+    "basis": [
+      { "law": "4721 sayılı TMK", "article": "m.505", "note": "Saklı paylı mirasçılar ve tasarruf edilebilir kısım" },
+      { "law": "4721 sayılı TMK", "article": "m.506", "note": "Saklı pay oranları" },
+      { "law": "4721 sayılı TMK", "article": "m.560", "note": "Tenkis davası" }
+    ],
+    "explain": "Miras bırakan, saklı paylı mirasçıların paylarına dokunamaz. Altsoyun saklı payı yasal payının yarısı, ana-babanın dörtte biri, sağ kalan eşin payı ise birlikte mirasçı olduğu zümreye göre belirlenir.",
+    "deadline": "Tenkis davası, saklı payın zedelendiğinin öğrenilmesinden itibaren 1 yıl ve her hâlde vasiyetnamelerde açılma tarihinden, diğer tasarruflarda mirasın açılmasından itibaren 10 yıl içinde açılır.",
+    "where": "Asliye Hukuk Mahkemesi (miras bırakanın son yerleşim yeri)."
+  },
+  "vasiyet": {
+    "topic": "Vasiyet ve Miras Sözleşmesi",
+    "short": "TMK 502-574",
+    "basis": [
+      { "law": "4721 sayılı TMK", "article": "m.502", "note": "Tasarruf ehliyeti" },
+      { "law": "4721 sayılı TMK", "article": "m.531-544", "note": "Vasiyetname şekilleri" },
+      { "law": "4721 sayılı TMK", "article": "m.545", "note": "Miras sözleşmesi" }
+    ],
+    "explain": "Vasiyetname resmî şekilde, el yazısıyla veya sözlü olarak yapılabilir. El yazılı vasiyetnamenin tamamının miras bırakanın el yazısıyla yazılmış, tarih atılmış ve imzalanmış olması şarttır.",
+    "deadline": "Vasiyetnamenin iptali davası, iptal sebebinin öğrenilmesinden itibaren 1 yıl, her hâlde 10 (kötüniyette 20) yıl içinde açılır.",
+    "where": "Sulh Hukuk Mahkemesi (vasiyetnamenin açılması) ve Asliye Hukuk Mahkemesi (iptal, tenkis)."
+  },
+  "paylasma": {
+    "topic": "Paylaşma ve Tereke",
+    "short": "TMK 640-676",
+    "basis": [
+      { "law": "4721 sayılı TMK", "article": "m.640", "note": "Miras ortaklığı ve elbirliği mülkiyeti" },
+      { "law": "4721 sayılı TMK", "article": "m.642", "note": "Paylaşmayı isteme hakkı" },
+      { "law": "4721 sayılı TMK", "article": "m.669", "note": "Denkleştirme (mirasta iade)" }
+    ],
+    "explain": "Mirasçılar, terekeye elbirliğiyle sahip olur; paylaşma yapılana kadar tek başına tasarruf edemezler. Her mirasçı her zaman paylaşma isteyebilir.",
+    "deadline": "Paylaşma isteme hakkı zamanaşımına uğramaz; ancak veraset ve intikal vergisi beyanı için süreler vardır.",
+    "where": "Sulh Hukuk Mahkemesi (ortaklığın giderilmesi / izale-i şüyu davası)."
+  },
+  "borc": {
+    "topic": "Miras Borçları ve Ret",
+    "short": "TMK 605-618",
+    "basis": [
+      { "law": "4721 sayılı TMK", "article": "m.605", "note": "Mirasın reddi" },
+      { "law": "4721 sayılı TMK", "article": "m.606", "note": "Ret süresi: 3 ay" },
+      { "law": "4721 sayılı TMK", "article": "m.619", "note": "Tereke defterinin tutulması" }
+    ],
+    "explain": "Mirasçılar, miras bırakanın borçlarından kişisel malvarlıklarıyla da sorumludur. Borç aşırıysa miras reddedilebilir; ölüm tarihinde borca batık olduğu açıksa miras hükmen reddedilmiş sayılır.",
+    "deadline": "Ret süresi, yasal mirasçılar için ölümü öğrenme tarihinden itibaren 3 aydır. Süre kaçırılırsa miras kabul edilmiş sayılır.",
+    "where": "Sulh Hukuk Mahkemesi (mirasın reddi beyanı, tereke defteri)."
+  }
+}

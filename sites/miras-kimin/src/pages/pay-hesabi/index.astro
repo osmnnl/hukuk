@@ -1,0 +1,151 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url } from "../../lib/url";
+---
+<Base
+  title="Miras payı hesaplama — kim ne kadar alır?"
+  description="Aile durumunu işaretleyin: sağ kalan eş, çocuklar, anne-baba ve kardeşler arasında miras payları TMK zümre sistemine göre anında hesaplansın."
+  path="/pay-hesabi/"
+>
+  <section class="hero" style="padding-bottom:16px">
+    <div class="wrap narrow">
+      <p class="kick">Pay hesabı</p>
+      <h1>Kim ne kadar<br />alır?</h1>
+      <p class="lede">Aileyi işaretleyin, paylar zümre sistemine göre anında hesaplansın. Tereke tutarını da girerseniz kişi başı tutarı gösteririz.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <div class="panel">
+      <div class="field">
+        <label><input type="checkbox" id="es" style="width:auto;margin-right:8px" /> Sağ kalan eş var</label>
+      </div>
+      <div class="row2">
+        <div class="field"><label for="cocuk">Sağ çocuk sayısı</label><input id="cocuk" type="number" min="0" step="1" value="0" /></div>
+        <div class="field"><label for="olenCocuk">Önce ölen çocuk sayısı</label><input id="olenCocuk" type="number" min="0" step="1" value="0" /></div>
+      </div>
+      <div class="field" id="torunWrap" hidden>
+        <label for="torun">Ölen çocukların toplam altsoyu (torun sayısı)</label>
+        <input id="torun" type="number" min="0" step="1" value="0" />
+        <p class="hint">Önce ölen çocuğun payı kendi çocuklarına geçer (halefiyet).</p>
+      </div>
+
+      <div class="field" style="border-top:1px solid var(--line);padding-top:14px">
+        <label style="margin-bottom:8px">Altsoy yoksa devreye girer:</label>
+        <label style="font-weight:500"><input type="checkbox" id="anne" style="width:auto;margin-right:8px" /> Anne sağ</label>
+        <label style="font-weight:500;margin-top:6px"><input type="checkbox" id="baba" style="width:auto;margin-right:8px" /> Baba sağ</label>
+      </div>
+      <div class="field"><label for="kardes">Kardeş sayısı</label><input id="kardes" type="number" min="0" step="1" value="0" />
+        <p class="hint">Anne veya babadan biri ölmüşse onun payı kardeşlere geçer.</p></div>
+      <div class="field">
+        <label style="font-weight:500"><input type="checkbox" id="buyuk" style="width:auto;margin-right:8px" /> Büyükanne/büyükbaba veya amca, hala, dayı, teyze var</label>
+        <p class="hint">Yalnız ilk iki zümrede kimse yoksa dikkate alınır.</p>
+      </div>
+
+      <div class="field" style="border-top:1px solid var(--line);padding-top:14px">
+        <label for="tereke">Tereke değeri (TL) — isteğe bağlı</label>
+        <input id="tereke" type="number" min="0" step="1" placeholder="Örn. 3000000" />
+        <p class="hint">Borçlar ve eşin katılma alacağı düşüldükten sonraki net değer.</p>
+      </div>
+
+      <button class="btn" type="button" id="hesapla" style="width:100%">Payları hesapla</button>
+
+      <div id="sonuc" hidden style="margin-top:22px">
+        <div class="total">
+          <p class="lbl" id="zumreLbl"></p>
+          <p class="big" id="ozet"></p>
+        </div>
+        <div class="lines" id="paylar"></div>
+        <div id="notlar" style="margin-top:14px"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+          <a class="btn btn-2" href={url("/sakli-pay/")}>Saklı payımı hesapla</a>
+          <a class="btn btn-2" href={url("/es-ve-cocuklar-nasil-paylasir/")}>Kurallar nasıl işliyor?</a>
+        </div>
+      </div>
+    </div>
+    <p class="note" style="margin-top:18px">
+      Bu hesap yasal miras paylarını gösterir. Vasiyetname, miras sözleşmesi, mirastan çıkarma, mirasın
+      reddi veya denkleştirme (sağlığında yapılan devirler) sonucu değiştirir. Eşin mal rejiminden doğan
+      katılma alacağı mirastan önce ayrılır ve bu hesaba dahil değildir.
+    </p>
+  </div>
+
+  <script is:inline>
+    (() => {
+      const q = (id) => document.getElementById(id);
+      const num = (id) => Math.max(0, parseInt(q(id).value || "0", 10) || 0);
+      const tl = (n) => new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 }).format(n);
+      const kesir = (o) => {
+        // en yakın sade kesir gösterimi
+        for (const d of [2,3,4,5,6,8,9,10,12,16,20,24,32,48,64]) {
+          const p = Math.round(o * d);
+          if (Math.abs(p / d - o) < 1e-9 && p > 0) return `${p}/${d}`;
+        }
+        return null;
+      };
+      q("olenCocuk").addEventListener("input", () => { q("torunWrap").hidden = num("olenCocuk") === 0; });
+
+      q("hesapla").addEventListener("click", () => {
+        const a = {
+          es: q("es").checked, cocuk: num("cocuk"), olenCocuk: num("olenCocuk"), torun: num("torun"),
+          anne: q("anne").checked, baba: q("baba").checked, kardes: num("kardes"), buyuk: q("buyuk").checked,
+        };
+        const tereke = parseFloat(q("tereke").value) || 0;
+        const altsoyVar = a.cocuk > 0 || (a.olenCocuk > 0 && a.torun > 0);
+        const ikinciVar = a.anne || a.baba || a.kardes > 0;
+
+        let esPay = 0, zumre = "";
+        if (altsoyVar) { esPay = a.es ? 0.25 : 0; zumre = "1. zümre — altsoy"; }
+        else if (ikinciVar) { esPay = a.es ? 0.5 : 0; zumre = "2. zümre — ana-baba ve altsoyları"; }
+        else if (a.buyuk) { esPay = a.es ? 0.75 : 0; zumre = "3. zümre — büyük ana-baba ve altsoyları"; }
+        else { esPay = a.es ? 1 : 0; zumre = a.es ? "Yalnız sağ kalan eş" : "Mirasçı bulunamadı"; }
+
+        const paylar = [], notlar = [];
+        if (a.es && esPay > 0) paylar.push(["Sağ kalan eş", esPay, altsoyVar ? "Altsoyla birlikte: 1/4" : ikinciVar ? "Ana-baba zümresiyle birlikte: 1/2" : a.buyuk ? "3. zümreyle birlikte: 3/4" : "Tek başına: tamamı"]);
+        const kalan = 1 - esPay;
+
+        if (altsoyVar) {
+          const kok = a.cocuk + a.olenCocuk, kokPay = kalan / kok;
+          if (a.cocuk > 0) paylar.push([`Çocuklar — ${a.cocuk} kişi`, kokPay, "Her biri için ayrı ayrı bu oran"]);
+          if (a.olenCocuk > 0 && a.torun > 0) {
+            paylar.push([`Torunlar — ${a.torun} kişi`, (kokPay * a.olenCocuk) / a.torun, `Önce ölen ${a.olenCocuk} çocuğun payı altsoyuna geçti`]);
+            notlar.push("Torunların payı, ölen ebeveynlerine düşen payın kendi aralarında bölünmesiyle bulunur — diğer çocuklarla eşit değildir.");
+          }
+        } else if (ikinciVar) {
+          const sag = (a.anne ? 1 : 0) + (a.baba ? 1 : 0), yarim = kalan / 2;
+          if (sag === 2) { paylar.push(["Anne", yarim, "Ana-baba arasında eşit"]); paylar.push(["Baba", yarim, "Ana-baba arasında eşit"]); }
+          else if (sag === 1) {
+            const ad = a.anne ? "Anne" : "Baba";
+            if (a.kardes > 0) { paylar.push([ad, yarim, "Kendi yarısı"]); paylar.push([`Kardeşler — ${a.kardes} kişi`, yarim / a.kardes, "Ölen ebeveynin payı altsoyuna geçti"]); }
+            else { paylar.push([ad, kalan, "Diğer ebeveynin altsoyu olmadığı için pay ona geçti"]); notlar.push("Ölen ebeveynin altsoyu yoksa payı sağ kalan ebeveyne geçer."); }
+          } else if (a.kardes > 0) paylar.push([`Kardeşler — ${a.kardes} kişi`, kalan / a.kardes, "Ana-baba yerine altsoyları mirasçı oldu"]);
+        } else if (a.buyuk) {
+          paylar.push(["3. zümre mirasçıları", kalan, "Büyük ana-baba ve altsoyları arasında paylaşılır"]);
+          notlar.push("Üçüncü zümredeki dağılım, hayatta olan büyük ana-babaya ve onların altsoyuna göre ayrıca hesaplanır.");
+        }
+
+        if (!paylar.length) {
+          notlar.push("Üç zümrede de mirasçı ve sağ kalan eş yoksa miras Devlete geçer (TMK m.501).");
+        }
+        if (a.es && altsoyVar) notlar.push("Eşin katılma alacağı (mal rejimi tasfiyesi) bu paylardan ÖNCE terekeden ayrılır; miras payına dahil değildir.");
+        if (a.es && !altsoyVar && !ikinciVar && !a.buyuk) notlar.push("Üçüncü zümrede de mirasçı olmadığı için mirasın tamamı eşe kalır.");
+
+        q("zumreLbl").textContent = zumre;
+        q("ozet").textContent = paylar.length ? `${paylar.length} mirasçı grubu` : "Mirasçı yok";
+        q("ozet").style.fontSize = "clamp(22px,5vw,34px)";
+
+        q("paylar").innerHTML = paylar.map(([kim, oran, acik]) => {
+          const k = kesir(oran);
+          const yuzde = (oran * 100).toLocaleString("tr-TR", { maximumFractionDigits: 2 });
+          const tutar = tereke > 0 ? ` · ${tl(oran * tereke)}` : "";
+          return `<div class="line"><span class="k"><b>${kim}</b><small>${acik}</small></span><span class="v">${k ? k + " · " : ""}%${yuzde}${tutar}</span></div>`;
+        }).join("");
+
+        q("notlar").innerHTML = notlar.length
+          ? `<div class="note">${notlar.map((n) => "• " + n).join("<br>")}</div>` : "";
+        q("sonuc").hidden = false;
+        q("sonuc").scrollIntoView({ block: "nearest", behavior: "smooth" });
+      });
+    })();
+  </script>
+</Base>

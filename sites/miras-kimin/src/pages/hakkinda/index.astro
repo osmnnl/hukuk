@@ -1,0 +1,29 @@
+---
+import Base from "../../layouts/Base.astro";
+import { cases, frames, site } from "../../lib/cases";
+---
+<Base title={`Hakkında — ${site.name}`} description="Bu site ne yapar, hesaplayıcı neyi kapsar?" path="/hakkinda/">
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <section class="hero" style="padding:36px 0 6px">
+      <p class="kick">Hakkında</p>
+      <h1 style="font-size:clamp(26px,5.2vw,38px)">Bu site ne yapar?</h1>
+      <p class="lede">Miras paylarını zümre sistemine göre hesaplar ve miras hukukunun en çok sorulan
+      sorularını tek tek cevaplar.</p>
+    </section>
+    <section class="sec"><h2>Zümre sistemi</h2>
+      <p>Türk miras hukukunda mirasçılar üç zümreye ayrılır: altsoy (çocuklar, torunlar), ana-baba ve
+      altsoyları (kardeşler), büyük ana-baba ve altsoyları (amca, hala, dayı, teyze). Önceki zümrede tek bir
+      mirasçı bile varsa sonraki zümre hiç pay almaz. Sağ kalan eş her zümreyle birlikte mirasçı olur ama
+      payı değişir: altsoyla 1/4, ana-baba zümresiyle 1/2, üçüncü zümreyle 3/4.</p></section>
+    <section class="sec"><h2>Hesaplayıcı neyi kapsamaz</h2>
+      <p>Vasiyetname, miras sözleşmesi, mirastan çıkarma, mirasın reddi ve denkleştirme sonucu değiştirir;
+      hesaplayıcı yasal payları gösterir. Eşin mal rejiminden doğan <strong>katılma alacağı</strong> mirastan önce
+      ayrılır ve bu hesaba dahil değildir — uygulamada en sık atlanan nokta budur.</p></section>
+    <section class="sec"><h2>Kapsam</h2>
+      <p>{cases.length} soru, {Object.keys(frames).length} başlık: {Object.values(frames).map((f) => f.topic).join(", ")}.</p></section>
+    <section class="sec" style="border-bottom:0"><h2>Sınırları</h2>
+      <p>Buradaki içerik <strong>hukuki danışmanlık değildir</strong>. Miras uyuşmazlıklarında tapu kayıtları,
+      nüfus kayıtları ve sağlığında yapılan devirler sonucu belirler. Özellikle <strong>mirasın reddi için 3 ay</strong>
+      ve <strong>tenkis davası için 1 yıl</strong> süreleri kaçırılırsa hak tamamen kaybedilir.</p></section>
+  </div>
+</Base>

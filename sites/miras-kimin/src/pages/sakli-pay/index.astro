@@ -1,0 +1,107 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url } from "../../lib/url";
+---
+<Base
+  title="Saklı pay hesaplama — miras bırakan ne kadarını serbestçe verebilir?"
+  description="Saklı pay oranları ve tasarruf edilebilir kısım: altsoy, ana-baba ve sağ kalan eş için TMK m.506'ya göre hesaplayın."
+  path="/sakli-pay/"
+>
+  <section class="hero" style="padding-bottom:16px">
+    <div class="wrap narrow">
+      <p class="kick">Saklı pay</p>
+      <h1>Ne kadarına<br />dokunamaz?</h1>
+      <p class="lede">Miras bırakan malının tamamını dilediğine bırakamaz. Saklı paylı mirasçıların payı korunur; kalan kısım "tasarruf edilebilir kısım"dır.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <div class="panel">
+      <div class="field">
+        <label for="durum">Mirasçı durumu</label>
+        <select id="durum">
+          <option value="esCocuk">Eş + çocuk(lar)</option>
+          <option value="cocuk">Yalnız çocuk(lar)</option>
+          <option value="esAnaBaba">Eş + anne ve/veya baba</option>
+          <option value="anaBaba">Yalnız anne ve/veya baba</option>
+          <option value="esUcuncu">Eş + 3. zümre (amca, hala, dayı, teyze)</option>
+          <option value="esTek">Yalnız eş</option>
+        </select>
+      </div>
+      <div class="field" id="cocukWrap"><label for="cocuk">Çocuk sayısı</label><input id="cocuk" type="number" min="1" step="1" value="2" /></div>
+      <div class="field" id="ebeveynWrap" hidden><label for="ebeveyn">Sağ ebeveyn sayısı</label>
+        <select id="ebeveyn"><option value="2">İkisi de sağ</option><option value="1">Biri sağ</option></select></div>
+      <div class="field"><label for="tereke">Tereke değeri (TL) — isteğe bağlı</label><input id="tereke" type="number" min="0" step="1" placeholder="Örn. 3000000" /></div>
+      <button class="btn" type="button" id="hesapla" style="width:100%">Saklı payları hesapla</button>
+
+      <div id="sonuc" hidden style="margin-top:22px">
+        <div class="total">
+          <p class="lbl">Serbestçe bırakabileceği kısım</p>
+          <p class="big" id="serbest"></p>
+          <p class="sub" id="serbestTutar"></p>
+        </div>
+        <div class="lines" id="tablo"></div>
+        <div class="note" style="margin-top:14px">
+          Saklı payı aşan tasarruflar kendiliğinden geçersiz olmaz — saklı paylı mirasçının
+          <strong>tenkis davası</strong> açması gerekir. Süre: öğrenmeden itibaren 1 yıl, her hâlde 10 yıl.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    (() => {
+      const q = (id) => document.getElementById(id);
+      const tl = (n) => new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 }).format(n);
+      const kesir = (o) => { for (const d of [2,3,4,6,8,12,16,24,32,48]) { const p = Math.round(o*d); if (Math.abs(p/d-o) < 1e-9 && p > 0) return `${p}/${d}`; } return null; };
+      const sync = () => {
+        const d = q("durum").value;
+        q("cocukWrap").hidden = !["esCocuk","cocuk"].includes(d);
+        q("ebeveynWrap").hidden = !["esAnaBaba","anaBaba"].includes(d);
+      };
+      q("durum").addEventListener("change", sync); sync();
+
+      q("hesapla").addEventListener("click", () => {
+        const d = q("durum").value;
+        const nc = Math.max(1, parseInt(q("cocuk").value || "1", 10));
+        const ne = parseInt(q("ebeveyn").value || "2", 10);
+        const tereke = parseFloat(q("tereke").value) || 0;
+        const rows = [];
+
+        if (d === "esCocuk") {
+          rows.push(["Sağ kalan eş", 0.25, 0.25, "Altsoyla birlikte yasal payının tamamı saklıdır"]);
+          const cy = 0.75 / nc;
+          rows.push([`Her çocuk (${nc} kişi)`, cy, cy / 2, "Yasal payının yarısı"]);
+        } else if (d === "cocuk") {
+          const cy = 1 / nc;
+          rows.push([`Her çocuk (${nc} kişi)`, cy, cy / 2, "Yasal payının yarısı"]);
+        } else if (d === "esAnaBaba") {
+          rows.push(["Sağ kalan eş", 0.5, 0.5, "Ana-baba zümresiyle birlikte yasal payının tamamı saklıdır"]);
+          const ey = 0.5 / ne;
+          rows.push([`Her ebeveyn (${ne} kişi)`, ey, ey / 4, "Yasal payının dörtte biri"]);
+        } else if (d === "anaBaba") {
+          const ey = 1 / ne;
+          rows.push([`Her ebeveyn (${ne} kişi)`, ey, ey / 4, "Yasal payının dörtte biri"]);
+        } else if (d === "esUcuncu") {
+          rows.push(["Sağ kalan eş", 0.75, 0.75 * 0.75, "Diğer hâllerde yasal payının dörtte üçü"]);
+          rows.push(["3. zümre mirasçıları", 0.25, 0, "Saklı payları yoktur"]);
+        } else {
+          rows.push(["Sağ kalan eş", 1, 0.75, "Diğer hâllerde yasal payının dörtte üçü"]);
+        }
+
+        const toplamSakli = rows.reduce((s, r) => s + r[2] * (r[0].includes("Her ") ? (r[0].includes("çocuk") ? nc : ne) : 1), 0);
+        const serbest = Math.max(0, 1 - toplamSakli);
+        q("serbest").textContent = (kesir(serbest) ? kesir(serbest) + " · " : "") + "%" + (serbest * 100).toLocaleString("tr-TR", { maximumFractionDigits: 2 });
+        q("serbestTutar").textContent = tereke > 0 ? `Tereke ${tl(tereke)} ise serbest kısım: ${tl(serbest * tereke)}` : "Tereke değeri girerseniz tutarı da gösteririz.";
+
+        q("tablo").innerHTML = rows.map(([kim, yasal, sakli, acik]) => {
+          const t = tereke > 0 ? ` · ${tl(sakli * tereke)}` : "";
+          return `<div class="line"><span class="k"><b>${kim}</b><small>${acik}</small></span><span class="v">yasal ${kesir(yasal) || "%" + (yasal*100).toFixed(1)} → saklı ${sakli > 0 ? (kesir(sakli) || "%" + (sakli*100).toFixed(1)) : "yok"}${t}</span></div>`;
+        }).join("") + `<div class="line sum"><span class="k"><b>Tasarruf edilebilir kısım</b><small>Miras bırakanın serbestçe bırakabileceği</small></span><span class="v">${kesir(serbest) || ""} · %${(serbest*100).toLocaleString("tr-TR",{maximumFractionDigits:2})}</span></div>`;
+
+        q("sonuc").hidden = false;
+        q("sonuc").scrollIntoView({ block: "nearest", behavior: "smooth" });
+      });
+    })();
+  </script>
+</Base>

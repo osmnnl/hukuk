@@ -1,0 +1,10 @@
+{
+  "name": "Miras Kimin?",
+  "tagline": "Miras <em>kimin?</em>",
+  "unit": "miras durumu",
+  "verdicts": {
+    "a": { "label": "Mirasçısın", "short": "MİRASÇI" },
+    "b": { "label": "Mirasçı değilsin", "short": "MİRASÇI DEĞİL" },
+    "c": { "label": "Koşullara bağlı", "short": "KOŞULLU" }
+  }
+}

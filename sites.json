@@ -62,5 +62,17 @@
       "Tazminat bulucu",
       "Süre sayacı"
     ]
+  },
+  {
+    "slug": "miras-kimin",
+    "name": "Miras Kimin?",
+    "question": "Kim ne kadar pay alır?",
+    "blurb": "Eş, çocuk, anne-baba, kardeş… Aileyi işaretle, miras payları zümre sistemine göre hesaplansın.",
+    "icon": "📜",
+    "accent": "#8c2f39",
+    "tools": [
+      "Pay hesabı",
+      "Saklı pay"
+    ]
   }
 ]

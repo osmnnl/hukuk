@@ -1,0 +1,6 @@
+[
+  { "href": "/", "label": "Ana sayfa" },
+  { "href": "/liste/", "label": "Miras soruları" },
+  { "href": "/pay-hesabi/", "label": "Pay hesabı" },
+  { "href": "/sakli-pay/", "label": "Saklı pay" }
+]

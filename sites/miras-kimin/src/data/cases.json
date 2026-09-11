@@ -1,0 +1,485 @@
+[
+  {
+    "slug": "es-ve-cocuklar-nasil-paylasir",
+    "title": "Eş ve çocuklar mirası nasıl paylaşır?",
+    "question": "Eş ve çocuklar arasında miras nasıl bölünür?",
+    "verdict": "a",
+    "frame": "zumre",
+    "surprising": false,
+    "aliases": [
+      "eş çocuk miras",
+      "dörtte bir eş",
+      "çocuklar arası paylaşım"
+    ],
+    "summary": "Altsoy varsa sağ kalan eş mirasın dörtte birini alır; kalan dörtte üç çocuklar arasında eşit paylaşılır.",
+    "situation": "Çocuk sayısı eşin payını değiştirmez; eşin payı her hâlde 1/4'tür. Ölen çocuk varsa payı kendi altsoyuna geçer.",
+    "legal": "Sağ kalan eş, altsoyla birlikte mirasçı olursa mirasın dörtte birini alır. Altsoy, miras bırakanın birinci derece mirasçısıdır ve aralarında eşit olarak paylaşır.",
+    "tip": "Evlilik birliği içinde edinilen mallar önce mal rejimi tasfiyesiyle ayrılır; eşin \"katılma alacağı\" mirastan ÖNCE ayrılır ve miras payına eklenmez. En sık karıştırılan nokta budur.",
+    "rights": [
+      "Eşe 1/4, çocuklara 3/4 (eşit)",
+      "Mal rejimi tasfiyesinden doğan katılma alacağı ayrıca",
+      "Mirasçılık belgesi talebi"
+    ]
+  },
+  {
+    "slug": "cocuk-yoksa-kim-mirasci",
+    "title": "Çocuk yoksa miras kime kalır?",
+    "question": "Çocuğu olmayan kişinin mirası kime gider?",
+    "verdict": "c",
+    "frame": "zumre",
+    "surprising": true,
+    "aliases": [
+      "çocuksuz miras",
+      "anne baba miras",
+      "eş yarısı"
+    ],
+    "summary": "Altsoy yoksa ikinci zümre (ana-baba ve altsoyları) devreye girer; eş bu durumda mirasın yarısını alır.",
+    "situation": "Anne veya babadan biri ölmüşse onun payı kendi altsoyuna, yani ölenin kardeşlerine geçer.",
+    "legal": "Sağ kalan eş, miras bırakanın ana-baba zümresiyle birlikte mirasçı olursa mirasın yarısını alır. Kalan yarı ana ve baba arasında eşit paylaşılır; ölmüş olanın payı altsoyuna geçer.",
+    "tip": "Çocuğu olmayan çiftlerde eşin mirasın tamamını almadığını öğrenmek çoğu zaman şaşırtıyor. Bunu değiştirmek isteyenler vasiyetname veya miras sözleşmesi yapmalı.",
+    "rights": [
+      "Eşe 1/2, ana-babaya 1/2",
+      "Ana-baba ölmüşse pay kardeşlere",
+      "Vasiyetle tasarruf edilebilir kısmın artırılması"
+    ]
+  },
+  {
+    "slug": "sadece-es-varsa",
+    "title": "Sadece eş sağ, başka kimse yok",
+    "question": "Tek başına kalan eş mirasın tamamını alır mı?",
+    "verdict": "c",
+    "frame": "zumre",
+    "surprising": true,
+    "aliases": [
+      "eş tek mirasçı",
+      "tüm miras eşe",
+      "eşe kalır mı"
+    ],
+    "summary": "Eş, ancak üçüncü zümrede de mirasçı yoksa mirasın tamamını alır; büyükanne/büyükbaba veya onların çocukları varsa eşin payı dörtte üçtür.",
+    "situation": "Üçüncü zümre büyükanne-büyükbaba ve onların altsoyudur; yani ölenin amca, hala, dayı ve teyzeleri.",
+    "legal": "Sağ kalan eş, büyük ana-baba zümresiyle birlikte mirasçı olursa mirasın dörtte üçünü alır. Bu zümrede de mirasçı yoksa mirasın tamamı eşe kalır.",
+    "tip": "Uzak akrabaların mirasa ortak olmasını istemiyorsanız vasiyetname şart. Eş varken devlet mirasçı olmaz; devlet ancak hiç mirasçı yoksa son mirasçıdır.",
+    "rights": [
+      "Eşe 3/4 (3. zümre varsa) veya tamamı",
+      "Vasiyetname ile payın artırılması"
+    ]
+  },
+  {
+    "slug": "evlilik-disi-cocuk-mirasci-mi",
+    "title": "Evlilik dışı doğan çocuk mirasçı olur mu?",
+    "question": "Tanınmış veya babalığı hükmen belirlenmiş çocuk mirasçı mıdır?",
+    "verdict": "a",
+    "frame": "zumre",
+    "surprising": true,
+    "aliases": [
+      "evlilik dışı çocuk",
+      "tanıma",
+      "babalık davası miras"
+    ],
+    "summary": "Soybağı kurulmuş çocuk, evlilik içi doğan çocukla tamamen eşit mirasçıdır.",
+    "situation": "Soybağı; tanıma, babalık davası veya evlat edinme yoluyla kurulur. Soybağı kurulmamışsa miras hakkı doğmaz.",
+    "legal": "Soybağı kurulmuş çocuklar, miras bakımından evlilik içinde doğan çocuklarla aynı haklara sahiptir. Ayrım yapılamaz.",
+    "tip": "Soybağı kurulmamışsa mirasın açılmasından sonra da babalık davası açılabilir; bu dava miras payını doğrudan etkiler.",
+    "rights": [
+      "Diğer çocuklarla eşit pay",
+      "Saklı pay (yasal payın yarısı)",
+      "Babalık davası (soybağı kurulmamışsa)"
+    ]
+  },
+  {
+    "slug": "evlatlik-mirasci-mi",
+    "title": "Evlatlık mirasçı olur mu?",
+    "question": "Evlat edinilen çocuk mirastan pay alır mı?",
+    "verdict": "a",
+    "frame": "zumre",
+    "surprising": true,
+    "aliases": [
+      "evlatlık miras",
+      "evlat edinme",
+      "manevi evlat"
+    ],
+    "summary": "Evlatlık, evlat edinene kan hısımı gibi mirasçı olur; ancak evlat edinen, evlatlığa mirasçı olamaz.",
+    "situation": "Evlatlık kendi öz ailesine de mirasçı olmaya devam eder. \"Manevi evlat\" ise hukuki bir kurum değildir ve miras hakkı doğurmaz.",
+    "legal": "Evlatlık ve altsoyu, evlat edinene kan hısımı gibi mirasçı olur. Evlatlığın kendi ailesindeki mirasçılığı devam eder. Evlat edinen ve hısımları, evlatlığa mirasçı olmaz.",
+    "tip": "Resmî evlat edinme kararı olmadan \"evlat gibi büyüttüm\" demek miras hakkı doğurmaz; bu durumda vasiyetname tek yoldur.",
+    "rights": [
+      "Evlat edinene kan hısımı gibi mirasçılık",
+      "Öz aileye mirasçılığın devamı",
+      "Saklı pay"
+    ]
+  },
+  {
+    "slug": "bosanmis-es-mirasci-mi",
+    "title": "Boşandığım eşim mirasçı olur mu?",
+    "question": "Boşanma miras hakkını sona erdirir mi?",
+    "verdict": "b",
+    "frame": "zumre",
+    "surprising": false,
+    "aliases": [
+      "boşanma miras",
+      "eski eş miras",
+      "boşanmış eş"
+    ],
+    "summary": "Boşanma kararı kesinleştiğinde eşler birbirine mirasçı olamaz; dava sürerken ölüm olursa kural değişebilir.",
+    "situation": "Boşanma davası devam ederken eşlerden biri ölürse, mirasçılar davaya devam ederek kusur tespiti yaptırabilir; kusurlu eşin mirasçılığı düşebilir.",
+    "legal": "Boşanmayla eşler arasındaki yasal mirasçılık sona erer ve ölüme bağlı tasarruflarla sağlanan haklar aksi belirtilmedikçe ortadan kalkar. Dava sırasında ölüm hâlinde mirasçılar davayı sürdürebilir.",
+    "tip": "Boşanma kesinleşmeden ölüm gerçekleşirse eş hâlâ mirasçıdır — bu yüzden boşanma sürecinde vasiyetname güncellemek kritik.",
+    "rights": [
+      "Kesinleşmiş boşanmada mirasçılığın sona ermesi",
+      "Devam eden davada mirasçıların davayı sürdürmesi"
+    ]
+  },
+  {
+    "slug": "sakli-pay-nedir",
+    "title": "Saklı pay ne kadar?",
+    "question": "Miras bırakan malının tamamını başkasına bırakabilir mi?",
+    "verdict": "c",
+    "frame": "sakliPay",
+    "surprising": false,
+    "aliases": [
+      "saklı pay",
+      "tenkis",
+      "mahfuz hisse"
+    ],
+    "summary": "Altsoyun saklı payı yasal payının yarısı, ana-babanın dörtte biridir; eşin saklı payı birlikte mirasçı olduğu zümreye göre değişir.",
+    "situation": "Saklı pay dışında kalan kısım \"tasarruf edilebilir kısım\"dır ve miras bırakan bu kısım üzerinde serbestçe tasarruf edebilir.",
+    "legal": "Saklı pay oranları: altsoy için yasal miras payının yarısı, ana-babadan her biri için dörtte biri, sağ kalan eş için altsoy veya ana-baba zümresiyle birlikte mirasçı olması hâlinde yasal payının tamamı, diğer hâllerde dörtte üçü.",
+    "tip": "Kardeşlerin saklı payı 2007'de kaldırıldı; artık kardeşler saklı paylı mirasçı değil. Eski kaynaklarda hâlâ aksi yazıyor olabilir.",
+    "rights": [
+      "Saklı payın korunması",
+      "Tenkis davası (1 yıl / 10 yıl)",
+      "Tasarruf edilebilir kısmın hesaplanması"
+    ]
+  },
+  {
+    "slug": "mal-kacirma-tenkis",
+    "title": "Babam malını devretmiş, hakkım gitti mi?",
+    "question": "Sağlığında yapılan devirler mirastan düşülür mü?",
+    "verdict": "a",
+    "frame": "sakliPay",
+    "surprising": true,
+    "aliases": [
+      "mal kaçırma",
+      "muris muvazaası",
+      "tapu iptali"
+    ],
+    "summary": "Saklı payı zedelemek için yapılan karşılıksız kazandırmalar tenkise tabidir; satış gibi gösterilen bağışlar için muvazaa davası açılır.",
+    "situation": "Uygulamada \"satış\" olarak gösterilen ama bedelsiz yapılan tapu devirleri sık görülür. Bu, muris muvazaası olarak adlandırılır.",
+    "legal": "Miras bırakanın saklı pay kurallarını etkisiz kılmak amacıyla yaptığı kazandırmalar tenkise tabidir. Gerçekte bağış olduğu hâlde satış gibi gösterilen işlemlerde tapu iptali ve tescil davası açılabilir.",
+    "tip": "Muvazaa davasında bedelin gerçekten ödenip ödenmediği araştırılır: alıcının ödeme gücü, banka kayıtları ve tapu bedelinin rayiçle ilişkisi incelenir.",
+    "rights": [
+      "Tenkis davası",
+      "Tapu iptali ve tescil (muris muvazaası)",
+      "Denkleştirme (mirasta iade) talebi"
+    ]
+  },
+  {
+    "slug": "el-yazili-vasiyet-gecerli-mi",
+    "title": "El yazısıyla yazılan vasiyet geçerli mi?",
+    "question": "Elle yazılmış vasiyetname hüküm doğurur mu?",
+    "verdict": "c",
+    "frame": "vasiyet",
+    "surprising": false,
+    "aliases": [
+      "el yazılı vasiyet",
+      "vasiyetname geçerlilik",
+      "vasiyet nasıl yazılır"
+    ],
+    "summary": "Tamamı el yazısıyla yazılmış, tarih atılmış ve imzalanmış vasiyetname geçerlidir; bu üç unsurdan biri eksikse iptal edilebilir.",
+    "situation": "Bilgisayarda yazılıp imzalanan metin el yazılı vasiyetname sayılmaz. Tarihin gün-ay-yıl olarak belirtilmesi gerekir.",
+    "legal": "El yazılı vasiyetnamenin yapıldığı yıl, ay ve gün belirtilerek başından sonuna kadar miras bırakanın el yazısıyla yazılmış ve imzalanmış olması zorunludur.",
+    "tip": "En güvenli yol noterde resmî vasiyetname düzenletmektir; el yazılı vasiyetnameler şekil eksikliği nedeniyle sık iptal ediliyor. Vasiyetnameyi notere veya sulh hâkimine tevdi edebilirsiniz.",
+    "rights": [
+      "Geçerli vasiyetnamenin uygulanması",
+      "Şekil eksikliğinde iptal davası (1 yıl)",
+      "Noterde resmî vasiyetname düzenleme"
+    ]
+  },
+  {
+    "slug": "miras-borca-batik",
+    "title": "Miras borçtan ibaret, ne yapmalıyım?",
+    "question": "Borçlu mirası reddedebilir miyim?",
+    "verdict": "a",
+    "frame": "borc",
+    "surprising": false,
+    "aliases": [
+      "mirasın reddi",
+      "borçlu miras",
+      "reddi miras"
+    ],
+    "summary": "Mirasçılığı öğrendiğiniz tarihten itibaren 3 ay içinde sulh hukuk mahkemesine başvurarak mirası reddedebilirsiniz.",
+    "situation": "Süre kaçırılırsa miras kabul edilmiş sayılır ve borçlardan kişisel malvarlığıyla sorumlu olunur. Terekeye ait malları kullanmak da kabul sayılabilir.",
+    "legal": "Miras, yasal mirasçılar için mirasçı olduklarını öğrendikleri tarihten itibaren üç ay içinde reddedilebilir. Ölüm tarihinde miras bırakanın ödemeden aczi açıkça belli veya resmen tespit edilmişse miras reddedilmiş sayılır.",
+    "tip": "Reddetmeden önce terekenin resmî defterinin tutulmasını isteyebilirsiniz; böylece borç-alacak durumunu görüp karar verirsiniz. Bu talep de 1 ay içinde yapılmalı.",
+    "rights": [
+      "3 ay içinde mirasın reddi",
+      "Tereke defterinin tutulması talebi",
+      "Hükmen ret (borca batıklık açıksa)",
+      "Resmî tasfiye talebi"
+    ]
+  },
+  {
+    "slug": "mirasci-belgesi-nasil-alinir",
+    "title": "Mirasçılık belgesi nasıl alınır?",
+    "question": "Veraset ilamı nereden alınır?",
+    "verdict": "a",
+    "frame": "paylasma",
+    "surprising": true,
+    "aliases": [
+      "veraset ilamı",
+      "mirasçılık belgesi",
+      "veraset belgesi"
+    ],
+    "summary": "Mirasçılık belgesi noterden veya sulh hukuk mahkemesinden alınabilir; noter yolu genellikle çok daha hızlıdır.",
+    "situation": "Yabancılık unsuru, nüfus kayıtlarında belirsizlik veya mirasçılar arasında uyuşmazlık varsa noter reddedebilir; bu durumda mahkemeye başvurulur.",
+    "legal": "Mirasçılık belgesi, mirasçılık sıfatını gösteren belgedir ve noterler ile sulh hukuk mahkemelerince verilebilir. Aksi ispat edilinceye kadar geçerlidir.",
+    "tip": "Belgeyi almadan banka hesaplarına, tapuya ve araca ilişkin hiçbir işlem yapılamaz. Her mirasçı tek başına başvurabilir; hepsinin birlikte gitmesi gerekmez.",
+    "rights": [
+      "Noterden mirasçılık belgesi",
+      "Sulh Hukuk Mahkemesi'nden veraset ilamı",
+      "Belgenin iptali davası (hatalıysa)"
+    ]
+  },
+  {
+    "slug": "tereke-paylasilmiyor",
+    "title": "Mirasçılar paylaşmada anlaşamıyor",
+    "question": "Diğer mirasçılar razı olmazsa ne yapılır?",
+    "verdict": "a",
+    "frame": "paylasma",
+    "surprising": false,
+    "aliases": [
+      "izale-i şüyu",
+      "ortaklığın giderilmesi",
+      "paylaşma davası"
+    ],
+    "summary": "Her mirasçı her zaman paylaşmayı isteyebilir; anlaşma olmazsa ortaklığın giderilmesi davası açılır.",
+    "situation": "Dava sonunda mal aynen bölünebiliyorsa bölünür, bölünemiyorsa satılarak bedeli paylaştırılır. Satış genellikle açık artırmayla yapılır.",
+    "legal": "Mirasçılardan her biri, sözleşme veya kanun gereğince ortaklığı sürdürmekle yükümlü olmadıkça her zaman mirasın paylaşılmasını isteyebilir.",
+    "tip": "Açık artırmada taşınmaz çoğu zaman piyasa değerinin altında satılır. Dava açmadan önce diğer mirasçılarla anlaşmayı denemek neredeyse her zaman daha kârlı.",
+    "rights": [
+      "Paylaşmayı isteme hakkı",
+      "Ortaklığın giderilmesi davası",
+      "Aynen bölünme veya satış yoluyla paylaşım"
+    ]
+  },
+  {
+    "slug": "babam-bana-ev-vermisti",
+    "title": "Sağlığında bana yaptığı devir düşülür mü?",
+    "question": "Miras bırakanın sağlığında verdiği mal paydan düşülür mü?",
+    "verdict": "c",
+    "frame": "paylasma",
+    "surprising": true,
+    "aliases": [
+      "denkleştirme",
+      "mirasta iade",
+      "önceden verilen mal"
+    ],
+    "summary": "Miras payına mahsuben yapılan kazandırmalar paylaşmada denkleştirmeye tabidir; miras bırakan aksini açıkça belirtmişse düşülmez.",
+    "situation": "Çeyiz, kuruluş sermayesi, eğitim gideri gibi kazandırmalar tipik denkleştirme konularıdır.",
+    "legal": "Yasal mirasçılar, miras bırakandan miras paylarına mahsuben elde ettikleri sağlararası karşılıksız kazandırmaları denkleştirmekle yükümlüdür. Miras bırakan aksini açıkça belirtmişse bu yükümlülük doğmaz.",
+    "tip": "Tapuda \"bağış\" olarak görünen devirlerde denkleştirme tartışması çıkar. Miras bırakan devir sırasında \"mirastan mahsup edilmeyecektir\" notunu yazdırırsa sorun baştan çözülür.",
+    "rights": [
+      "Denkleştirme talebi",
+      "Aksinin ispatı (mahsup edilmeyeceği)",
+      "Tenkis (saklı payı aşan kısımda)"
+    ]
+  },
+  {
+    "slug": "yurt-disinda-mirasci",
+    "title": "Mirasçılardan biri yurt dışında",
+    "question": "Yurt dışındaki mirasçı olmadan işlem yapılabilir mi?",
+    "verdict": "c",
+    "frame": "paylasma",
+    "surprising": false,
+    "aliases": [
+      "yurt dışı mirasçı",
+      "vekaletname miras",
+      "gurbetçi miras"
+    ],
+    "summary": "Tereke elbirliği mülkiyetine tabidir; işlemler için tüm mirasçıların katılımı veya vekâletname gerekir.",
+    "situation": "Yurt dışındaki mirasçı, bulunduğu ülkedeki Türk konsolosluğundan vekâletname düzenleterek süreci yürütebilir.",
+    "legal": "Mirasçılar terekeye elbirliğiyle sahip olur ve tereke üzerindeki tasarruflarda oybirliğiyle hareket ederler. Katılım sağlanamıyorsa paylaşma davası yoluna gidilir.",
+    "tip": "Konsolosluk vekâletnamesinde \"mirasçılık belgesi almaya, tereke işlemlerini yürütmeye ve taşınmaz satışına\" yetki maddelerinin ayrı ayrı yer alması gerekir; eksik yetki işlemi durdurur.",
+    "rights": [
+      "Konsolosluktan vekâletname",
+      "Ortaklığın giderilmesi davası",
+      "Mirasçılık belgesine tek başına başvuru"
+    ]
+  },
+  {
+    "slug": "miras-vergisi",
+    "title": "Mirastan vergi ödenir mi?",
+    "question": "Veraset ve intikal vergisi nasıl ödenir?",
+    "verdict": "a",
+    "frame": "paylasma",
+    "surprising": false,
+    "aliases": [
+      "veraset vergisi",
+      "intikal vergisi",
+      "miras vergisi"
+    ],
+    "summary": "Miras yoluyla intikal eden mallar için veraset ve intikal vergisi beyannamesi verilir; vergi belirli istisnalar düşüldükten sonra hesaplanır.",
+    "situation": "Beyanname, ölüm Türkiye'de gerçekleşmişse ölüm tarihinden itibaren dört ay içinde verilir. Vergi üç yılda, her yıl mayıs ve kasım aylarında iki taksitte ödenir.",
+    "legal": "Veraset ve İntikal Vergisi Kanunu uyarınca miras yoluyla intikallerde beyanname verilmesi zorunludur. İstisna tutarları her yıl yeniden değerleme oranında güncellenir.",
+    "tip": "Tapu ve banka işlemleri için vergi dairesinden \"ilişik kesme\" yazısı istenir; beyanname verilmeden bu yazı alınamaz ve hiçbir devir yapılamaz.",
+    "rights": [
+      "İstisna tutarlarından yararlanma",
+      "Taksitle ödeme (3 yıl)",
+      "Borçların terekeden indirilmesi"
+    ]
+  },
+  {
+    "slug": "esin-mal-rejimi-alacagi",
+    "title": "Eşin katılma alacağı mirastan önce mi?",
+    "question": "Mal rejimi tasfiyesi mirastan önce mi yapılır?",
+    "verdict": "a",
+    "frame": "zumre",
+    "surprising": true,
+    "aliases": [
+      "katılma alacağı",
+      "mal rejimi tasfiyesi",
+      "edinilmiş mallar miras"
+    ],
+    "summary": "Önce mal rejimi tasfiye edilir, eşin katılma alacağı terekeden ayrılır; miras bundan sonra kalan üzerinden paylaşılır.",
+    "situation": "Bu ayrım eşin toplam alacağını önemli ölçüde artırır ve uygulamada en sık atlanan noktadır.",
+    "legal": "Eşlerden birinin ölümü hâlinde önce mal rejimi tasfiye edilir. Sağ kalan eşin katılma alacağı tereke borcu niteliğindedir ve miras paylaşımından önce ayrılır.",
+    "tip": "2002 öncesi evliliklerde o tarihe kadar mal ayrılığı, sonrası için edinilmiş mallara katılma rejimi uygulanır — hesap iki dönem ayrılarak yapılır.",
+    "rights": [
+      "Katılma alacağı (mirastan önce)",
+      "Ayrıca yasal miras payı",
+      "Aile konutu üzerinde öncelik talebi"
+    ]
+  },
+  {
+    "slug": "aile-konutu-ese-kalir-mi",
+    "title": "Aile konutu eşe kalır mı?",
+    "question": "Sağ kalan eş evde oturmaya devam edebilir mi?",
+    "verdict": "c",
+    "frame": "paylasma",
+    "surprising": true,
+    "aliases": [
+      "aile konutu",
+      "eşin oturma hakkı",
+      "intifa hakkı eş"
+    ],
+    "summary": "Sağ kalan eş, aile konutu ve ev eşyası üzerinde mülkiyet veya intifa hakkı tanınmasını isteyebilir.",
+    "situation": "Talep, eşin miras payına mahsuben yapılır; payı yetmezse aradaki farkı ödemesi gerekebilir.",
+    "legal": "Sağ kalan eş, eski yaşantısını sürdürebilmesi için ölen eşine ait ev eşyası veya eşlerin birlikte yaşadıkları konut üzerinde kendisine katılma alacağına mahsup edilmek, yetmezse bedel eklenmek suretiyle intifa veya oturma hakkı tanınmasını isteyebilir.",
+    "tip": "Bu talep kendiliğinden doğmaz — paylaşma sırasında açıkça ileri sürülmelidir. İleri sürülmezse konut satışa çıkabilir.",
+    "rights": [
+      "Aile konutu üzerinde mülkiyet veya intifa/oturma hakkı",
+      "Ev eşyası üzerinde öncelik",
+      "Katılma alacağına mahsup"
+    ]
+  },
+  {
+    "slug": "mirastan-cikarma",
+    "title": "Beni mirastan çıkarabilir mi?",
+    "question": "Miras bırakan bir mirasçıyı tamamen çıkarabilir mi?",
+    "verdict": "c",
+    "frame": "sakliPay",
+    "surprising": true,
+    "aliases": [
+      "mirastan çıkarma",
+      "ıskat",
+      "mirastan men"
+    ],
+    "summary": "Mirastan çıkarma ancak kanunda sayılan ağır sebeplerle ve vasiyetnamede sebebi gösterilerek mümkündür.",
+    "situation": "Sebep gösterilmemiş veya ispat edilememişse çıkarma geçersiz olur ve mirasçı saklı payını alır.",
+    "legal": "Miras bırakan, mirasçısı kendisine veya yakınlarına karşı ağır bir suç işlemişse ya da aile hukukundan doğan yükümlülüklerini önemli ölçüde yerine getirmemişse ölüme bağlı tasarrufla saklı paylı mirasçıyı mirasçılıktan çıkarabilir. Sebep vasiyetnamede belirtilmelidir.",
+    "tip": "\"Beni aramadı, ilgilenmedi\" gibi gerekçeler uygulamada çoğu zaman yeterli görülmüyor; ispat yükü çıkarmadan yararlanan tarafta.",
+    "rights": [
+      "Çıkarmanın iptali davası",
+      "Sebep gösterilmemişse saklı payın talebi",
+      "Tenkis davası"
+    ]
+  },
+  {
+    "slug": "olen-cocugun-payi",
+    "title": "Mirasçı, miras bırakandan önce ölmüşse",
+    "question": "Önce ölen çocuğun payı ne olur?",
+    "verdict": "a",
+    "frame": "zumre",
+    "surprising": false,
+    "aliases": [
+      "halefiyet",
+      "torun miras",
+      "önce ölen mirasçı"
+    ],
+    "summary": "Önce ölen mirasçının payı kendi altsoyuna geçer; torunlar ölen ebeveynlerinin payını paylaşır.",
+    "situation": "Buna halefiyet (kök içinde paylaşım) denir. Torunlar kendi aralarında, ölen ebeveynlerine düşen payı eşit bölüşür.",
+    "legal": "Miras bırakandan önce ölmüş olan çocukların yerini, her derecede halefiyet yoluyla kendi altsoyları alır.",
+    "tip": "Torunun payı, diğer çocukların payıyla eşit değildir — ölen ebeveynin payı kaç toruna bölünüyorsa o kadardır.",
+    "rights": [
+      "Halefiyet yoluyla mirasçılık",
+      "Ölen ebeveynin payının paylaşımı",
+      "Saklı pay"
+    ]
+  },
+  {
+    "slug": "miras-birakan-hic-mirasci-yok",
+    "title": "Hiç mirasçı yoksa miras ne olur?",
+    "question": "Mirasçısı olmayan kişinin malları kime kalır?",
+    "verdict": "c",
+    "frame": "zumre",
+    "surprising": true,
+    "aliases": [
+      "mirasçısız",
+      "devlete kalır mı",
+      "hazineye intikal"
+    ],
+    "summary": "Üç zümrede de mirasçı ve sağ kalan eş yoksa miras Devlete geçer.",
+    "situation": "Devlet son sıradaki mirasçıdır; uzak akrabalar bulunduğu sürece Devlete intikal etmez.",
+    "legal": "Mirasçı bırakmaksızın ölen kimsenin mirası Devlete geçer. Devlet, mirası tutmakla yükümlü olduğu borçlardan sorumludur.",
+    "tip": "Vasiyetname yapılmadıysa ve akraba yoksa malvarlığı Hazineye geçiyor. Bir vakfa veya arkadaşa bırakmak isteyenler için vasiyetname tek yol.",
+    "rights": [
+      "Vasiyetname ile serbest tasarruf",
+      "Uzak akrabaların mirasçılığı",
+      "Devletin son mirasçı sıfatı"
+    ]
+  },
+  {
+    "slug": "banka-hesabi-bloke",
+    "title": "Bankadaki para mirasçılara nasıl geçer?",
+    "question": "Ölenin banka hesabındaki paraya nasıl ulaşılır?",
+    "verdict": "a",
+    "frame": "paylasma",
+    "surprising": false,
+    "aliases": [
+      "banka hesabı miras",
+      "hesap bloke",
+      "ölenin parası"
+    ],
+    "summary": "Banka hesapları ölümle bloke edilir; mirasçılık belgesi ve vergi dairesinden alınan ilişik kesme yazısıyla çözülür.",
+    "situation": "Mirasçılar elbirliğiyle hak sahibi olduğundan, tüm mirasçıların katılımı veya vekâletname aranır.",
+    "legal": "Tereke, mirasçılara elbirliği mülkiyeti olarak geçer. Bankalar, mirasçılık belgesi ve veraset vergisi ilişik kesme belgesi olmadan ödeme yapamaz.",
+    "tip": "Ortak hesapta ölen kişinin payı yine terekeye dahildir; diğer hesap sahibinin tamamını çekmesi sonradan iade yükümlülüğü doğurur.",
+    "rights": [
+      "Mirasçılık belgesiyle hesap bilgisi talebi",
+      "Vergi ilişik kesme belgesi sonrası ödeme",
+      "Ortak hesapta payın belirlenmesi"
+    ]
+  },
+  {
+    "slug": "vasiyetle-tanimadigim-birine",
+    "title": "Tüm malını başkasına bıraktı",
+    "question": "Vasiyetle mirasçılar tamamen devre dışı bırakılabilir mi?",
+    "verdict": "b",
+    "frame": "sakliPay",
+    "surprising": false,
+    "aliases": [
+      "tüm mal vasiyet",
+      "yabancıya vasiyet",
+      "mirastan mahrum"
+    ],
+    "summary": "Saklı paylı mirasçılar varsa miras bırakan yalnız tasarruf edilebilir kısım üzerinde serbesttir; aşan kısım tenkise tabidir.",
+    "situation": "Vasiyet geçerli olsa bile saklı payı zedeleyen kısmı, dava açılması hâlinde orantılı olarak indirilir.",
+    "legal": "Miras bırakan, saklı pay dışında kalan kısımda ölüme bağlı tasarrufta bulunabilir. Saklı payı aşan tasarruflar, saklı paylı mirasçıların açacağı tenkis davasıyla indirilir.",
+    "tip": "Tenkis davası kendiliğinden işlemez — dava açmazsanız vasiyet olduğu gibi uygulanır. 1 yıllık süreye dikkat.",
+    "rights": [
+      "Tenkis davası (1 yıl / 10 yıl)",
+      "Saklı payın tahsili",
+      "Vasiyetnamenin iptali (şekil/ehliyet sakatlığı varsa)"
+    ]
+  }
+]

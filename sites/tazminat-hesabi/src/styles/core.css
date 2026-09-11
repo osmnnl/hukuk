@@ -172,5 +172,7 @@ ul.checks li::before { content: "→"; color: var(--accent); font-weight: 800; f
   .filters::-webkit-scrollbar { display: none }
   .filters button { flex-shrink: 0 }
   section.block { padding: 26px 0 }
-  .line { flex-wrap: wrap; row-gap: 2px }
+  .line { flex-wrap: wrap; row-gap: 4px }
+  .line .k { flex: 1 0 100% }
+  .line .v { font-size: 15px; white-space: normal }
 }
