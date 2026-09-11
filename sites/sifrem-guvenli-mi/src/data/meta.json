@@ -1,0 +1,10 @@
+{
+  "name": "Şifrem Güvenli mi?",
+  "tagline": "Şifrem <em>güvenli mi?</em>",
+  "unit": "güvenlik sorusu",
+  "verdicts": {
+    "a": { "label": "Riskli — değiştir", "short": "RİSKLİ" },
+    "b": { "label": "Güvenli sayılır", "short": "GÜVENLİ" },
+    "c": { "label": "Duruma göre değişir", "short": "DEĞİŞKEN" }
+  }
+}

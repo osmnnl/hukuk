@@ -1,0 +1,80 @@
+{
+  "sifre": {
+    "topic": "Şifrenin kendisi",
+    "short": "Uzunluk, tahmin edilebilirlik, tekrar",
+    "basis": [
+      { "law": "NIST SP 800-63B", "article": "§5.1.1", "note": "Uzunluk karmaşıklıktan önemlidir; zorunlu periyodik değişim önerilmez" },
+      { "law": "NIST SP 800-63B", "article": "§5.1.1.2", "note": "Sızmış şifre listeleriyle karşılaştırma önerilir" },
+      { "law": "OWASP Authentication Cheat Sheet", "article": "—", "note": "Kilitleme ve hız sınırlama ile kaba kuvvet saldırısının engellenmesi" },
+      { "law": "6698 sayılı KVKK", "article": "m.12", "note": "Veri sorumlusunun güvenlik tedbirlerini alma yükümlülüğü" }
+    ],
+    "explain": "Bir şifrenin gücü, içindeki karakter çeşitliliğinden çok tahmin edilebilirliğine bağlıdır. 'Ali1234!' kâğıt üzerinde büyük harf, rakam ve sembol içerir ama saldırganın sözlüğünde ilk sıralardadır. Belirleyici olan uzunluk ve öngörülemezliktir.",
+    "deadline": "Şifrenin sızdığından şüpheleniyorsanız değiştirme için beklenecek bir süre yoktur — aynı şifreyi kullandığınız bütün hesaplarda hemen değiştirin.",
+    "where": "Hesap ayarları → güvenlik; kurumsal hesaplarda bilgi işlem birimi."
+  },
+  "hesap": {
+    "topic": "Hesabı koruma",
+    "short": "İki adımlı doğrulama, kurtarma, oturumlar",
+    "basis": [
+      { "law": "NIST SP 800-63B", "article": "§5.1.3", "note": "SMS tabanlı doğrulamanın sınırları" },
+      { "law": "OWASP MFA Cheat Sheet", "article": "—", "note": "Kimlik doğrulama uygulaması ve donanım anahtarı önceliği" },
+      { "law": "FIDO2 / WebAuthn", "article": "—", "note": "Kimlik avına dayanıklı geçiş anahtarları (passkey)" },
+      { "law": "5237 sayılı TCK", "article": "m.243", "note": "Bilişim sistemine hukuka aykırı erişim suçu" }
+    ],
+    "explain": "Şifre tek başına bir kilit değildir; kapıdır. İki adımlı doğrulama, şifre çalınsa bile hesabı kapalı tutar. Saldırıların büyük kısmı karmaşık şifreleri kırarak değil, başka bir sitede sızmış şifreyi deneyerek çalışır.",
+    "deadline": "Şüpheli erişim bildirimi aldığınızda ilk 24 saat kritiktir: oturumları kapatın, şifreyi değiştirin, kurtarma bilgilerini kontrol edin.",
+    "where": "Hesap → güvenlik ayarları → iki adımlı doğrulama, aktif oturumlar, kurtarma e-postası."
+  },
+  "sizinti": {
+    "topic": "Veri sızıntısı",
+    "short": "Sızan şifre, kimlik ve hesap",
+    "basis": [
+      { "law": "6698 sayılı KVKK", "article": "m.12/5", "note": "Veri ihlalinin Kurula ve ilgili kişiye bildirimi" },
+      { "law": "KVKK Kurul kararı", "article": "2019/271", "note": "İhlal bildiriminin en kısa sürede ve 72 saat içinde yapılması" },
+      { "law": "6698 sayılı KVKK", "article": "m.11", "note": "İlgili kişinin bilgi talep etme hakkı" },
+      { "law": "5237 sayılı TCK", "article": "m.136", "note": "Verileri hukuka aykırı olarak verme veya ele geçirme" }
+    ],
+    "explain": "Sızıntılarda asıl tehlike, sızan sitenin kendisi değil; aynı şifreyi kullandığınız diğer hesaplardır. Saldırganlar sızan e-posta ve şifre çiftlerini otomatik olarak onlarca serviste dener — buna kimlik bilgisi doldurma saldırısı denir.",
+    "deadline": "Veri sorumlusu, ihlali öğrendiğinden itibaren en kısa sürede ve 72 saat içinde Kurula bildirmekle yükümlüdür.",
+    "where": "KVKK'ya şikâyet (kişisel verilerin korunması kurumu), ilgili şirketin veri sorumlusu iletişim adresi."
+  },
+  "dolandirici": {
+    "topic": "Dolandırıcılık ve kimlik avı",
+    "short": "Oltalama, sahte site, OTP isteme",
+    "basis": [
+      { "law": "5237 sayılı TCK", "article": "m.158/1-f", "note": "Bilişim sistemlerinin araç olarak kullanılması suretiyle dolandırıcılık" },
+      { "law": "5237 sayılı TCK", "article": "m.245", "note": "Banka veya kredi kartlarının kötüye kullanılması" },
+      { "law": "5464 sayılı Banka Kartları K.", "article": "m.12", "note": "Kartın haksız kullanımında sorumluluk" },
+      { "law": "6502 sayılı TKHK", "article": "m.4", "note": "Tüketicinin bilgilendirilmesi ve haksız şart yasağı" }
+    ],
+    "explain": "Kimlik avının hedefi şifreniz değil, davranışınızdır: acele ettirir, korkutur, sizi kendi elinizle kod paylaşmaya ikna eder. Hiçbir banka, kurum veya platform sizden telefonda ya da mesajla doğrulama kodu istemez.",
+    "deadline": "Kart veya hesap dolandırıcılığında bankaya bildirim gecikmeden yapılmalıdır; gecikme, kaybın size kalan kısmını artırabilir.",
+    "where": "Bankanın çağrı merkezi (kartı bloke ettirme), Cumhuriyet Başsavcılığı veya polis/jandarma (şikâyet), USOM ihbar."
+  },
+  "cihaz": {
+    "topic": "Cihaz ve ağ",
+    "short": "Telefon, tarayıcı, açık Wi-Fi",
+    "basis": [
+      { "law": "OWASP Mobile Top 10", "article": "—", "note": "Cihaz güvenliği ve güvensiz veri depolama" },
+      { "law": "NIST SP 800-63B", "article": "§5.1.7", "note": "Cihaz tabanlı kimlik doğrulayıcılar" },
+      { "law": "5237 sayılı TCK", "article": "m.244", "note": "Sistemi engelleme, bozma, verileri yok etme veya değiştirme" },
+      { "law": "6698 sayılı KVKK", "article": "m.12", "note": "Teknik ve idari tedbirler" }
+    ],
+    "explain": "Şifreniz ne kadar güçlü olursa olsun, cihazınızda çalışan bir zararlı yazılım onu yazarken görebilir. Bu yüzden güncellemeler, ekran kilidi ve uygulamaların nereden indirildiği şifre karmaşıklığından daha belirleyici olabilir.",
+    "deadline": "Güvenlik güncellemeleri çıktığı gün kurulmalıdır; bilinen açıklar için saldırı araçları genelde günler içinde yayılır.",
+    "where": "Cihaz ayarları → güncelleme ve güvenlik; tarayıcı → kayıtlı şifreler ve uzantılar."
+  },
+  "yonetim": {
+    "topic": "Şifre yönetimi",
+    "short": "Parola yöneticisi, yedek, paylaşım",
+    "basis": [
+      { "law": "NIST SP 800-63B", "article": "§5.1.1.2", "note": "Parola yöneticisi ve yapıştırmaya izin verilmesi" },
+      { "law": "OWASP Password Storage", "article": "—", "note": "Şifrelerin özet fonksiyonlarıyla saklanması" },
+      { "law": "FIDO2 / WebAuthn", "article": "—", "note": "Geçiş anahtarları ile şifresiz oturum açma" },
+      { "law": "6698 sayılı KVKK", "article": "m.12", "note": "Erişim yetkilerinin sınırlandırılması" }
+    ],
+    "explain": "İnsan hafızası, onlarca farklı ve uzun şifreyi taşıyamaz. Çözüm daha akıllı bir şifre kuralı bulmak değil, hatırlama işini bırakmaktır: her hesap için rastgele üretilmiş ayrı bir şifre ve tek bir güçlü ana parola.",
+    "deadline": "Bir ekip şifresini bilen kişi ayrıldığında şifre aynı gün değiştirilmelidir; paylaşılan şifrelerin süresi ayrılma tarihiyle biter.",
+    "where": "Parola yöneticisi uygulaması, kurumsal kimlik yönetimi, tarayıcı şifre kasası."
+  }
+}

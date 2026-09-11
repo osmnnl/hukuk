@@ -1,0 +1,27 @@
+---
+import Base from "../../layouts/Base.astro";
+import { cases, frames, site } from "../../lib/cases";
+---
+<Base title={`Hakkında — ${site.name}`} description="Veriler nereye gidiyor, kaynaklar neler?" path="/hakkinda/">
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <section class="hero" style="padding:36px 0 6px">
+      <p class="kick">Hakkında</p>
+      <h1 style="font-size:clamp(26px,5.2vw,38px)">Yazdığım şifre nereye gidiyor?</h1>
+      <p class="lede">Hiçbir yere. Site tamamen statiktir: arkasında çalışan bir sunucu, veri tabanı veya
+      analitik kaydı yoktur. Şifre testi tarayıcınızda çalışır ve sayfa kapanınca alan temizlenir.</p>
+    </section>
+    <section class="sec"><h2>Süre tahmini ne kadar güvenilir?</h2>
+      <p>Entropi tabanlı tahminler bir <strong>üst sınır</strong> verir. Şifreniz sızmış listelerde varsa
+      gerçek süre saniyelerle ölçülür — matematik değil, liste belirler. Bu yüzden "milyonlarca yıl" sonucunu
+      gördüğünüzde bile aynı şifreyi başka bir yerde kullanıp kullanmadığınıza bakın.</p></section>
+    <section class="sec"><h2>Kaynaklar</h2>
+      <p>Öneriler; kimlik doğrulama rehberleri (NIST SP 800-63B), OWASP kılavuzları ve FIDO2/WebAuthn
+      standartlarının yaygın kabul görmüş tavsiyelerine dayanıyor. Hukuki çerçeve için KVKK ve TCK'nın
+      bilişim suçlarına ilişkin hükümlerine atıf yapılıyor.</p></section>
+    <section class="sec"><h2>Kapsam</h2>
+      <p>{cases.length} soru, {Object.keys(frames).length} başlık: {Object.values(frames).map((f: any) => f.topic).join(", ")}.</p></section>
+    <section class="sec" style="border-bottom:0"><h2>Sınırları</h2>
+      <p>Bu site genel güvenlik bilgisi verir; <strong>hukuki danışmanlık değildir</strong>. Dolandırıcılığa
+      uğradıysanız vakit kaybetmeden bankanızı arayın ve savcılığa şikâyette bulunun.</p></section>
+  </div>
+</Base>

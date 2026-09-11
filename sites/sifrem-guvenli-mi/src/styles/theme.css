@@ -1,0 +1,26 @@
+/* Palet: terminal — kömür siyahı + neon yeşil */
+:root {
+  --bg: #f4f6f4; --bg-2: #e8ece8; --panel: #ffffff; --panel-2: #f1f4f1;
+  --line: #dbe1db; --line-2: #bdc6bd;
+  --ink: #0f1410; --ink-2: #47524a; --ink-3: #7b857e;
+  --accent: #1f7a3f; --accent-bg: #e2f3e8; --on-accent: #ffffff;
+  --ok: #1f7a3f; --ok-bg: #e2f3e8; --ok-ink: #155c2e;
+  --no: #a82b25; --no-bg: #fae7e5; --no-ink: #7f1f1a;
+  --mid: #94670f; --mid-bg: #fbf1da; --mid-ink: #6e4c08;
+  --r: 5px; --r-lg: 10px; --max: 1060px;
+  --font: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+:root[data-theme="dark"] {
+  --bg: #0a0d0b; --bg-2: #111614; --panel: #101512; --panel-2: #171e1a;
+  --line: #1f2823; --line-2: #2e3a33;
+  --ink: #e9f2ec; --ink-2: #a2b3a9; --ink-3: #74847b;
+  --accent: #4ade80; --accent-bg: #0f2b1b; --on-accent: #06120b;
+  --ok: #4ade80; --ok-bg: #0f2b1b; --ok-ink: #86efac;
+  --no: #f87171; --no-bg: #2d1413; --no-ink: #fca5a5;
+  --mid: #fbbf24; --mid-bg: #2c2209; --mid-ink: #fcd97a;
+}
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif }
+h1, h2, h3, .kick, .tag, .total .big, .bar-num { font-family: var(--mono) }
+h1 { letter-spacing: -0.03em }
+.kick { letter-spacing: .1em }

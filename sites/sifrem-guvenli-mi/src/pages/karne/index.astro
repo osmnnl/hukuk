@@ -1,0 +1,108 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url } from "../../lib/url";
+
+const sorular = [
+  { id: "2fa_mail", a: "E-posta hesabında iki adımlı doğrulamayı aç.", p: 3, t: "E-posta hesabında iki adımlı doğrulama açık mı?", d: "E-posta, diğer bütün hesapların sıfırlama kapısıdır.", slug: "iki-adimli-dogrulama" },
+  { id: "tekrar", a: "Aynı şifreyi kullandığın hesapları ayrıştır; en azından e-posta ve bankacılık benzersiz olsun.", p: 3, t: "Her önemli hesabında farklı bir şifre mi var?", d: "Bir sızıntı, aynı şifreyi kullandığın her yeri açar.", slug: "ayni-sifre" },
+  { id: "yonetici", a: "Bir parola yöneticisi kur ve şifreleri oraya taşı.", p: 2, t: "Şifrelerini bir parola yöneticisinde mi tutuyorsun?", d: "Hatırlamayı bırakınca şifreler uzayıp rastgeleleşir.", slug: "parola-yoneticisi" },
+  { id: "uzunluk", a: "Ana şifrelerini 12 karakterin üzerine çıkar.", p: 2, t: "Ana şifrelerin 12 karakterden uzun mu?", d: "Uzunluk, karmaşıklıktan daha çok iş görür.", slug: "sifre-uzunlugu" },
+  { id: "kurtarma", a: "Kurtarma e-postanı ve telefonunu güncelle.", p: 2, t: "Kurtarma e-postan ve telefonun güncel mi?", d: "Terk edilmiş numara, hesabın açık anahtarıdır.", slug: "kurtarma-bilgileri" },
+  { id: "guncelleme", a: "Telefon ve tarayıcı için otomatik güncellemeyi aç.", p: 2, t: "Telefon ve tarayıcı güncellemelerini hemen kuruyor musun?", d: "Yama çıktığı an açık herkesçe bilinir hâle gelir.", slug: "cihaz-guncelleme" },
+  { id: "kilit", a: "Telefonuna ekran kilidi koy.", p: 1, t: "Telefonunda ekran kilidi var mı?", d: "Kilitsiz cihaz, kayıtlı bütün oturumlar demektir.", slug: "ortak-bilgisayar" },
+  { id: "otp", a: "Doğrulama kodunu kimseyle paylaşma — isteyen herkes dolandırıcıdır.", p: 3, t: "Doğrulama kodunu bugüne kadar hiç kimseyle paylaşmadın, değil mi?", d: "Kodu isteyen herkes dolandırıcıdır — istisnası yok.", slug: "otp-paylasma" },
+  { id: "oturum", a: "Hesaplarının aktif oturum listesini kontrol et, tanımadıklarını kapat.", p: 1, t: "Aktif oturumlarını son bir yılda kontrol ettin mi?", d: "Tanımadığın oturum, ele geçirmenin ilk işareti.", slug: "aktif-oturumlar" },
+  { id: "yedek", a: "2FA yedek kodlarını indir ve güvenli bir yerde sakla.", p: 1, t: "2FA yedek kodlarını güvenli bir yerde saklıyor musun?", d: "Telefonu kaybedince hesaba dönüş yolun budur.", slug: "iki-adimli-dogrulama" },
+  { id: "apk", a: "Uygulamaları yalnız resmî mağazadan kur.", p: 2, t: "Uygulamaları yalnız resmî mağazadan mı kuruyorsun?", d: "Mağaza dışı kurulum, en yaygın zararlı yazılım yoludur.", slug: "zararli-uygulama" },
+  { id: "guvenliksoru", a: "Güvenlik sorularına gerçek cevap yerine rastgele bir değer yaz ve kaydet.", p: 1, t: "Güvenlik sorularına gerçek cevaplar yerine rastgele değer mi yazıyorsun?", d: "Gerçek cevaplar çoğu zaman sosyal medyada yazıyor.", slug: "guvenlik-sorulari" },
+];
+const maxPuan = sorular.reduce((a, s) => a + s.p, 0);
+---
+<Base
+  title="Güvenlik karnesi — hesabın ne kadar korunuyor?"
+  description="12 soruda hesap güvenliğinizi puanlayın: iki adımlı doğrulama, şifre tekrarı, kurtarma bilgileri, cihaz güvenliği."
+  path="/karne/"
+>
+  <section class="hero" style="padding-bottom:14px">
+    <div class="wrap narrow">
+      <p class="kick">{sorular.length} soru · {maxPuan} puan</p>
+      <h1>Güvenlik<br />karnen</h1>
+      <p class="lede">Şifrenin gücü tek başına bir şey ifade etmiyor. Asıl soru şu: biri şifreni ele geçirse, hesabına girebilir mi?</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <div class="panel" style="position:sticky;top:8px;z-index:5">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+        <div>
+          <p class="kick" style="margin:0 0 2px">Puan</p>
+          <p id="puan" style="margin:0;font-weight:800;font-size:20px;font-family:var(--mono)"></p>
+        </div>
+        <p id="yorumKisa" style="margin:0;text-align:right;font-size:13px;color:var(--ink-2);max-width:52%"></p>
+      </div>
+      <div class="meter"><i id="cubuk"></i></div>
+    </div>
+
+    <div class="panel" style="padding:4px 14px;margin-top:14px">
+      {sorular.map((s) => (
+        <label class="chk">
+          <input type="checkbox" data-id={s.id} data-p={s.p} />
+          <span><b>{s.t}</b><small>{s.d} · <a href={url("/" + s.slug + "/")}>ayrıntı</a></small></span>
+        </label>
+      ))}
+    </div>
+
+    <div class="panel" id="oneri" style="margin-top:14px" hidden>
+      <p class="kick">Önce bunu yap</p>
+      <p id="oneriMetin" style="margin:6px 0 12px;line-height:1.6"></p>
+      <a class="btn" id="oneriLink" href="#">Nasıl yapılır →</a>
+    </div>
+
+    <p class="note">Yanıtlarınız yalnız bu cihazda saklanır, hiçbir yere gönderilmez.</p>
+  </div>
+
+  <style>
+    .meter { height: 8px; border-radius: 5px; background: var(--bg-2); overflow: hidden; margin-top: 12px }
+    .meter i { display: block; height: 100%; width: 0; border-radius: 5px; transition: width .25s, background .25s }
+    .chk { display: flex; gap: 12px; align-items: flex-start; padding: 13px 0; border-bottom: 1px solid var(--line); cursor: pointer }
+    .chk:last-child { border-bottom: 0 }
+    .chk input { margin-top: 3px; width: 19px; height: 19px; flex: 0 0 auto; accent-color: var(--accent) }
+    .chk b { display: block; font-size: 15px; line-height: 1.35 }
+    .chk small { display: block; margin-top: 3px; color: var(--ink-3); font-size: 13px; line-height: 1.5 }
+    .chk small a { color: var(--ink-3); text-decoration: underline }
+    .chk input:checked + span b { color: var(--ok-ink) }
+  </style>
+
+  <script is:inline define:vars={{ sorular, maxPuan, base: url("/") }}>
+    const kutular = [...document.querySelectorAll(".chk input")];
+    const $ = (id) => document.getElementById(id);
+    const KEY = "guvenlik-karne";
+
+    function yaz() {
+      const isaretli = kutular.filter((k) => k.checked);
+      const p = isaretli.reduce((a, k) => a + Number(k.dataset.p), 0);
+      const oran = p / maxPuan;
+      $("puan").textContent = `${p} / ${maxPuan}`;
+      $("cubuk").style.width = oran * 100 + "%";
+      $("cubuk").style.background = oran >= 0.8 ? "var(--ok)" : oran >= 0.5 ? "var(--mid)" : "var(--no)";
+      $("yorumKisa").textContent = oran >= 0.85 ? "Hesapların iyi korunuyor." : oran >= 0.5 ? "Fena değil, açık kalemler var." : "Kolay ele geçirilebilir durumdasın.";
+
+      const eksik = sorular.filter((s) => !isaretli.some((k) => k.dataset.id === s.id)).sort((a, b) => b.p - a.p)[0];
+      if (eksik) {
+        $("oneriMetin").textContent = eksik.a;
+        $("oneriLink").href = base + eksik.slug + "/";
+        $("oneri").hidden = false;
+      } else {
+        $("oneri").hidden = true;
+      }
+      try { localStorage.setItem(KEY, JSON.stringify(isaretli.map((k) => k.dataset.id))); } catch {}
+    }
+
+    try {
+      const kayit = JSON.parse(localStorage.getItem(KEY) || "[]");
+      kutular.forEach((k) => { if (kayit.includes(k.dataset.id)) k.checked = true; });
+    } catch {}
+    kutular.forEach((k) => k.addEventListener("change", yaz));
+    yaz();
+  </script>
+</Base>

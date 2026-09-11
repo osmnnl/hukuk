@@ -1,0 +1,160 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url } from "../../lib/url";
+
+const yaygin = ["123456","123456789","12345678","password","qwerty","111111","123123","1234567890","1234567","abc123","000000","iloveyou","admin","123321","qwerty123","1q2w3e4r","654321","555555","dragon","monkey","sunshine","princess","football","charlie","aa123456","donald","letmein","zaq12wsx","password1","qazwsx","şifre","sifre","sifre123","parola","ankara","istanbul","galatasaray","fenerbahce","besiktas","trabzonspor","merhaba","seni seviyorum","canim","askim","bebegim","anne","baba","turkiye","türkiye","asdasd","asd123","112233","159357","123qwe","qweasd","mustafa","ahmet","mehmet","ayse","fatma","emre","murat","hasan","huseyin","zeynep","elif","deniz"];
+const kelimeler = ["sifre","parola","password","admin","user","test","hosgeldin","merhaba","seviyorum","askim","canim","bebek","melek","yildiz","gunes","deniz","kalp","hayat","sevgi","dostluk","kartal","aslan","kaplan","sampiyon","futbol","basketbol","okul","ogretmen","doktor","muhendis","ankara","istanbul","izmir","bursa","adana","antalya","trabzon","konya","turkiye","anadolu"];
+---
+<Base
+  title="Şifre testi — şifrem ne kadar sürede kırılır?"
+  description="Şifrenizi yazın: tahmin edilebilirliğini, entropi değerini ve kaba kuvvetle ne kadar sürede bulunacağını görün. Hiçbir veri gönderilmez."
+  path="/test/"
+>
+  <section class="hero" style="padding-bottom:14px">
+    <div class="wrap narrow">
+      <p class="kick">Şifre testi · tamamen cihazında</p>
+      <h1>Şifren ne kadar<br />sürede kırılır?</h1>
+      <p class="lede">Yazdığınız şifre hiçbir yere gönderilmez, kaydedilmez ve bu sayfadan çıkmaz — site statiktir, arkasında sunucu yoktur.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <div class="panel">
+      <div class="field">
+        <label for="sifre">Şifre</label>
+        <input id="sifre" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Yazdıkça ölçer…" />
+        <p class="hint">
+          <label style="display:inline-flex;gap:7px;align-items:center;cursor:pointer">
+            <input type="checkbox" id="goster" style="width:16px;height:16px;accent-color:var(--accent)" /> Şifreyi göster
+          </label>
+        </p>
+      </div>
+
+      <div id="sonuc" hidden>
+        <div class="total">
+          <p class="lbl" id="seviye"></p>
+          <p class="big num" id="sure"></p>
+          <p class="sub" id="altBilgi"></p>
+        </div>
+        <div class="meter"><i id="cubuk"></i></div>
+        <div class="lines" id="detay"></div>
+        <div id="uyarilar" style="margin-top:14px"></div>
+      </div>
+
+      <p id="bosMesaj" style="color:var(--ink-3);line-height:1.6;margin:10px 0 0">
+        Gerçek şifrenizi yazmak istemiyorsanız benzer yapıda bir örnek yazın — sonuç yine de anlamlı olur.
+      </p>
+    </div>
+
+    <section class="sec" style="margin-top:26px">
+      <h2>Bu süre neye göre hesaplanıyor?</h2>
+      <p>Şifrenin karakter havuzu ve uzunluğundan bir <strong>entropi</strong> değeri çıkarılıyor, sonra tahmin
+      edilebilir kalıplar (sözlük kelimesi, yıl, klavye dizisi, tekrar) bu değerden düşülüyor. Süre,
+      saldırganın sızmış bir veritabanı üzerinde <strong>saniyede 10 milyar</strong> deneme yaptığı
+      varsayımıyla veriliyor — hızlı özetleme kullanan bir servis için gerçekçi bir senaryo.</p>
+      <p>Gerçek dünyada süre bundan çok daha kısa olabilir: şifre sızmış listelerde varsa deneme sayısı
+      milyarlarca değil, birkaç binle ölçülür. Bu yüzden buradaki sonuç bir <strong>üst sınır</strong>
+      tahminidir, garanti değil.</p>
+    </section>
+    <p class="note">Bu araç eğitim amaçlıdır. Gerçek şifrelerinizi herhangi bir web sitesine — bu site dahil —
+    yazmak zorunda değilsiniz; benzer yapıda bir örnek aynı bilgiyi verir.</p>
+  </div>
+
+  <style>
+    .meter { height: 9px; border-radius: 5px; background: var(--bg-2); overflow: hidden; margin: 14px 0 18px }
+    .meter i { display: block; height: 100%; width: 0; border-radius: 5px; transition: width .25s, background .25s }
+  </style>
+
+  <script is:inline define:vars={{ yaygin, kelimeler }}>
+    const $ = (id) => document.getElementById(id);
+    const nrm = (s) => s.toLocaleLowerCase("tr").replace(/ı/g, "i").replace(/ş/g, "s").replace(/ğ/g, "g").replace(/ü/g, "u").replace(/ö/g, "o").replace(/ç/g, "c");
+    const HIZ = 1e10;
+
+    function havuz(s) {
+      let n = 0;
+      if (/[a-z]/.test(s)) n += 26;
+      if (/[A-Z]/.test(s)) n += 26;
+      if (/[0-9]/.test(s)) n += 10;
+      if (/[^a-zA-Z0-9çğıöşüÇĞİÖŞÜ]/.test(s)) n += 33;
+      if (/[çğıöşüÇĞİÖŞÜ]/.test(s)) n += 12;
+      return n || 1;
+    }
+
+    function klavyeDizisi(s) {
+      const siralar = ["qwertyuiop", "asdfghjkl", "zxcvbnm", "1234567890", "abcdefghijklmnopqrstuvwxyz"];
+      const t = nrm(s);
+      for (const dizi of siralar)
+        for (let i = 0; i + 4 <= dizi.length; i++) {
+          const p = dizi.slice(i, i + 4);
+          if (t.includes(p) || t.includes([...p].reverse().join(""))) return true;
+        }
+      return false;
+    }
+
+    function analiz(s) {
+      const t = nrm(s);
+      const uyari = [];
+      let bit = s.length * Math.log2(havuz(s));
+
+      if (yaygin.includes(t)) { bit = Math.min(bit, 8); uyari.push("Bu şifre en yaygın şifreler listesinde — saniyeler içinde bulunur."); }
+      const kelime = kelimeler.find((k) => t.includes(k) && k.length >= 4);
+      if (kelime) { bit -= Math.min(14, kelime.length * 2.2); uyari.push(`İçinde sözlükte bulunan bir kelime var ("${kelime}") — saldırgan sözlükten başlar.`); }
+      if (/(19|20)\d{2}/.test(s)) { bit -= 6; uyari.push("İçinde yıl gibi görünen bir sayı var; doğum ve mezuniyet yılları ilk denenenler arasında."); }
+      if (klavyeDizisi(s)) { bit -= 10; uyari.push("Klavye üzerinde ardışık bir dizi içeriyor (qwerty, asdf, 1234 gibi)."); }
+      if (/^(.)\1+$/.test(s)) { bit = Math.min(bit, 6); uyari.push("Tek karakterin tekrarından oluşuyor."); }
+      if (/(.)\1{2,}/.test(s)) { bit -= 4; uyari.push("Aynı karakter üst üste tekrar ediyor."); }
+      if (/^[A-ZÇĞİÖŞÜ][a-zçğıöşü]+\d{1,4}[!.?*_-]?$/.test(s)) { bit -= 8; uyari.push("Klasik kalıp: baş harf büyük + kelime + rakam + sembol. Kırma araçları bu kalıbı özel olarak dener."); }
+      if (s.length < 8) uyari.push("Sekiz karakterin altındaki şifreler, karmaşık olsalar bile modern donanımla hızla denenir.");
+      if (s.length >= 16 && !uyari.length) uyari.push("Uzunluk iyi. Yine de bu şifreyi başka bir yerde kullanmadığınızdan emin olun.");
+      return { bit: Math.max(bit, 1), uyari };
+    }
+
+    function sureYaz(sn) {
+      if (sn < 1) return "anında";
+      if (sn > 3.156e13) return "pratik olarak kırılamaz";
+      if (sn > 3.156e10) return "binlerce yıl";
+      const b = [["yüzyıl", 3.156e9], ["yıl", 3.156e7], ["ay", 2.628e6], ["gün", 86400], ["saat", 3600], ["dakika", 60], ["saniye", 1]];
+      for (const [ad, s] of b) {
+        if (sn >= s) {
+          const v = sn / s;
+          if (v > 1e6) return `${(v / 1e6).toLocaleString("tr-TR", { maximumFractionDigits: 0 })} milyon ${ad}`;
+          return `${v.toLocaleString("tr-TR", { maximumFractionDigits: v < 10 ? 1 : 0 })} ${ad}`;
+        }
+      }
+      return "anında";
+    }
+
+    function ol() {
+      const s = $("sifre").value;
+      if (!s) { $("sonuc").hidden = true; $("bosMesaj").hidden = false; return; }
+      $("bosMesaj").hidden = true;
+      const { bit, uyari } = analiz(s);
+      const sn = Math.pow(2, bit - 1) / HIZ;
+
+      const seviyeler = [[28, "Çok zayıf", "var(--no)"], [40, "Zayıf", "var(--no)"], [56, "Orta", "var(--mid)"], [75, "Güçlü", "var(--ok)"], [1e9, "Çok güçlü", "var(--ok)"]];
+      const [, ad, renk] = seviyeler.find(([e]) => bit < e);
+
+      $("seviye").textContent = ad;
+      $("sure").textContent = sureYaz(sn);
+      $("altBilgi").textContent = "saniyede 10 milyar deneme yapan bir saldırgan için tahmini süre";
+      $("cubuk").style.width = Math.min(100, (bit / 90) * 100) + "%";
+      $("cubuk").style.background = renk;
+
+      $("detay").innerHTML = [
+        ["Uzunluk", `${s.length} karakter`],
+        ["Karakter havuzu", `${havuz(s)} olasılık`],
+        ["Tahmini entropi", `${bit.toFixed(0)} bit`],
+        ["Yavaş özetleyen serviste", sureYaz(Math.pow(2, bit - 1) / 1e4)],
+      ].map(([k, v]) => `<div class="line"><span class="k">${k}</span><span class="v">${v}</span></div>`).join("");
+
+      $("uyarilar").innerHTML = uyari.length
+        ? uyari.map((u) => `<div class="tipbox" style="margin-bottom:8px">${u}</div>`).join("")
+        : "";
+      $("sonuc").hidden = false;
+    }
+
+    $("sifre").addEventListener("input", ol);
+    $("goster").addEventListener("change", (e) => { $("sifre").type = e.target.checked ? "text" : "password"; });
+    window.addEventListener("pagehide", () => { $("sifre").value = ""; });
+  </script>
+</Base>

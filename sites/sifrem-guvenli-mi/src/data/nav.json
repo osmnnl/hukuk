@@ -1,0 +1,6 @@
+[
+  { "href": "/", "label": "Ana sayfa" },
+  { "href": "/liste/", "label": "Tüm sorular" },
+  { "href": "/test/", "label": "Şifre testi" },
+  { "href": "/karne/", "label": "Güvenlik karnesi" }
+]

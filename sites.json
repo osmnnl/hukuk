@@ -122,5 +122,17 @@
       "Tapumu oku",
       "Terim testi"
     ]
+  },
+  {
+    "slug": "sifrem-guvenli-mi",
+    "name": "Şifrem Güvenli mi?",
+    "question": "Kaç saniyede kırılır?",
+    "blurb": "Şifre gücü, iki adımlı doğrulama, sızıntı ve dolandırıcılık — hesabını gerçekte ne koruyor?",
+    "icon": "🔐",
+    "accent": "#1f7a3f",
+    "tools": [
+      "Şifre testi",
+      "Güvenlik karnesi"
+    ]
   }
 ]
