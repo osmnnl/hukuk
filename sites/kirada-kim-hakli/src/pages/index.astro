@@ -1,0 +1,98 @@
+---
+import Base from "../layouts/Base.astro";
+import SearchBox from "../components/SearchBox.astro";
+import CaseCard from "../components/CaseCard.astro";
+import Duel from "../components/Duel.astro";
+import { cases, surprising, byVerdict } from "../lib/cases";
+import { url, absUrl } from "../lib/url";
+
+const populer = ["sozlesme-bitti-cik-diyor","sozlesmede-yuksek-artis-yazili","depozito-iade-edilmiyor","ev-sahibi-kendi-oturacak","kombi-bozuldu-kim-oder","evi-satildi-cik-deniyor"]
+  .map((s) => cases.find((c) => c.slug === s)!);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "WebSite", "@id": absUrl("/") + "#website", name: "Kirada kim haklı?", url: absUrl("/"), inLanguage: "tr-TR" },
+    { "@type": "FAQPage", mainEntity: populer.map((c) => ({ "@type": "Question", name: c.question, acceptedAnswer: { "@type": "Answer", text: c.summary } })) },
+  ],
+};
+---
+<Base
+  title="Kirada kim haklı? — kiracı mı, ev sahibi mi?"
+  description="Tahliye, kira artışı, depozito, onarım, ihtar… Kira uyuşmazlıklarında kim haklı? Senaryoyu oku, taraf seç, kanunun ne dediğini gör. Tahliye testi, artış hesaplayıcı ve ihtarname oluşturucu da burada."
+  path="/"
+  jsonLd={jsonLd}
+>
+  <section class="hero">
+    <div class="wrap">
+      <p class="kicker">{cases.length} senaryo · kiracı ⟷ ev sahibi</p>
+      <h1>Kirada<br />kim haklı?</h1>
+      <p class="lede">
+        İki tarafın da iddiası var. Sen karar ver, sonra kanunun ne dediğini gör —
+        gerçek uyuşmazlıkların çoğunda cevap beklenenden farklı çıkıyor.
+      </p>
+      <Duel mode="random" title="Bugünün senaryosu" />
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="head"><h2>Hesapla, kontrol et, yaz</h2></div>
+      <div class="grid g3">
+        <a class="tool" href={url("/tahliye-testi/")}>
+          <span class="ic">🚪</span>
+          <span><h3>Tahliye testi</h3><p>4 soru: bu durumda tahliye mümkün mü?</p></span>
+        </a>
+        <a class="tool" href={url("/kira-artisi/")}>
+          <span class="ic">📈</span>
+          <span><h3>Artış hesabı</h3><p>Yasal üst sınır ne kadar? Fazla mı ödüyorsun?</p></span>
+        </a>
+        <a class="tool" href={url("/ihtarname/")}>
+          <span class="ic">✉️</span>
+          <span><h3>İhtar oluştur</h3><p>Formu doldur, kopyalanabilir taslak çıksın.</p></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Durumunu ara</h2></div>
+      <SearchBox />
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:16px">
+    <div class="wrap">
+      <div class="head">
+        <h2>En çok tartışılanlar</h2>
+        <a href={url("/senaryolar/")}>Tüm senaryolar ({cases.length}) →</a>
+      </div>
+      <div class="grid g2">{populer.map((c) => <CaseCard item={c} />)}</div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Çoğu kişinin yanıldığı {surprising.length} senaryo</h2></div>
+      <div class="grid g2">{surprising.slice(0, 6).map((c) => <CaseCard item={c} hide />)}</div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="grid g2">
+        <div class="card">
+          <span class="tag tag-kiraci">Kiracı haklı</span>
+          <h3>{byVerdict("kiraci").length} senaryoda kiracı haklı çıkıyor</h3>
+          <p>Sözleşme süresinin dolması, yüksek artış maddesi, evin satılması… Hepsinde kiracı korunuyor.</p>
+        </div>
+        <div class="card">
+          <span class="tag tag-evsahibi">Ev sahibi haklı</span>
+          <h3>{byVerdict("evsahibi").length} senaryoda ev sahibi haklı</h3>
+          <p>Depozitoyu kiraya saymak, izinsiz alt kira, erken çıkış… Bunlarda kiracı yanılıyor.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

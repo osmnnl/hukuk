@@ -1,0 +1,13 @@
+---
+interface Props { placeholder?: string }
+const { placeholder = "Durumunuzu yazın: \"depozito\", \"tahliye\", \"zam\"…" } = Astro.props;
+---
+<div class="search" data-search>
+  <div class="sbox">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="color:var(--ink-3);flex-shrink:0">
+      <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" stroke-linecap="round" />
+    </svg>
+    <input type="search" autocomplete="off" spellcheck="false" placeholder={placeholder} aria-label="Senaryo ara" />
+  </div>
+  <div class="results" data-results></div>
+</div>

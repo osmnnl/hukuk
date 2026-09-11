@@ -1,0 +1,6 @@
+---
+import { verdictShort, type Verdict } from "../lib/cases";
+interface Props { v: Verdict; lg?: boolean }
+const { v, lg = false } = Astro.props;
+---
+<span class={`tag tag-${v}${lg ? " tag-lg" : ""}`}>{verdictShort[v]}</span>

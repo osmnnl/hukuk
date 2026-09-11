@@ -1,0 +1,181 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url } from "../../lib/url";
+---
+<Base
+  title="İhtarname oluşturucu — kira ihtarı, depozito ve artış bildirimi"
+  description="Formu doldurun, kopyalanabilir ihtarname taslağı çıksın: kira ödenmemesi ihtarı, depozito iadesi talebi, kira artışı bildirimi ve tahliye bildirimi."
+  path="/ihtarname/"
+>
+  <section class="hero" style="padding-bottom:20px">
+    <div class="wrap narrow">
+      <p class="kicker">Taslak oluşturucu</p>
+      <h1 style="font-size:clamp(27px,5.4vw,42px)">İhtar metnini<br />hazırla</h1>
+      <p class="lede">Formu doldurun, metin anında oluşsun. Kopyalayıp notere götürebilir veya iadeli taahhütlü gönderebilirsiniz.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:38px">
+    <div class="panel">
+      <div class="field">
+        <label for="tur">Ne göndermek istiyorsunuz?</label>
+        <select id="tur">
+          <option value="kira">Kira ödenmemesi ihtarı (ev sahibinden kiracıya)</option>
+          <option value="depozito">Depozito iadesi talebi (kiracıdan ev sahibine)</option>
+          <option value="artis">Kira artışı bildirimi (ev sahibinden kiracıya)</option>
+          <option value="tahliyeBildirim">Sözleşmeyi yenilememe bildirimi (kiracıdan ev sahibine)</option>
+          <option value="onarim">Onarım / ayıp bildirimi (kiracıdan ev sahibine)</option>
+        </select>
+      </div>
+
+      <div class="grid g2" style="gap:0 14px">
+        <div class="field"><label for="gonderen">Gönderen ad soyad</label><input id="gonderen" type="text" placeholder="Ad Soyad" /></div>
+        <div class="field"><label for="alici">Muhatap ad soyad</label><input id="alici" type="text" placeholder="Ad Soyad" /></div>
+      </div>
+      <div class="field"><label for="adres">Kiralananın adresi</label><input id="adres" type="text" placeholder="Mahalle, cadde, no, daire, ilçe/il" /></div>
+      <div class="grid g2" style="gap:0 14px">
+        <div class="field"><label for="baslangic">Kira sözleşmesi tarihi</label><input id="baslangic" type="date" /></div>
+        <div class="field"><label for="tutar">Aylık kira (TL)</label><input id="tutar" type="number" min="0" step="1" placeholder="18000" /></div>
+      </div>
+
+      <div class="field" data-only="kira"><label for="aylar">Ödenmeyen ay(lar)</label><input id="aylar" type="text" placeholder="Örn. Ocak ve Şubat 2026" /></div>
+      <div class="field" data-only="kira"><label for="borc">Toplam borç (TL)</label><input id="borc" type="number" min="0" step="1" placeholder="36000" /></div>
+      <div class="field" data-only="depozito"><label for="depozitoT">Depozito tutarı (TL)</label><input id="depozitoT" type="number" min="0" step="1" placeholder="36000" /></div>
+      <div class="field" data-only="depozito"><label for="cikis">Tahliye / anahtar teslim tarihi</label><input id="cikis" type="date" /></div>
+      <div class="field" data-only="artis"><label for="yeniKira">Yeni kira bedeli (TL)</label><input id="yeniKira" type="number" min="0" step="1" placeholder="25000" /></div>
+      <div class="field" data-only="artis"><label for="oran">Uygulanan oran (%)</label><input id="oran" type="number" min="0" step="0.01" placeholder="42.15" /></div>
+      <div class="field" data-only="artis"><label for="donem">Yeni dönemin başlangıcı</label><input id="donem" type="date" /></div>
+      <div class="field" data-only="tahliyeBildirim"><label for="cikisTarih">Çıkış tarihi</label><input id="cikisTarih" type="date" /></div>
+      <div class="field" data-only="onarim"><label for="sorun">Sorunun tanımı</label><textarea id="sorun" placeholder="Örn. Salon penceresinden su sızıyor, duvarda rutubet oluştu."></textarea></div>
+
+      <button class="btn" type="button" id="olustur" style="width:100%">Metni oluştur</button>
+
+      <div id="cikti" hidden style="margin-top:20px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+          <p style="font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:900;margin:0">Taslak</p>
+          <button class="copy" type="button" id="kopyala" style="margin-left:auto">Metni kopyala</button>
+          <button class="copy" type="button" id="indir">.txt indir</button>
+        </div>
+        <div class="doc" id="metin"></div>
+      </div>
+    </div>
+
+    <p class="note" style="margin-top:18px">
+      <strong>Bu bir taslaktır, hukuki görüş değildir.</strong> Metin genel bir örnektir; somut olayınıza göre
+      eksik veya fazla kalabilir. Özellikle kira ödenmemesi ihtarında süre, muhatap ve tebligat usulü sonucu
+      doğrudan etkiler — göndermeden önce bir avukata kontrol ettirmeniz önerilir. İhtarın noterden çekilmesi
+      ve tebliğ parçasının saklanması ispat açısından en güvenli yoldur.
+    </p>
+  </div>
+
+  <script is:inline>
+    (() => {
+      const q = (id) => document.getElementById(id);
+      const tur = q("tur");
+      const show = () => document.querySelectorAll("[data-only]").forEach((el) => (el.hidden = el.dataset.only !== tur.value));
+      tur.addEventListener("change", show); show();
+
+      const d = (v) => v ? new Intl.DateTimeFormat("tr-TR", { day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date(v)) : "…";
+      const tl = (v) => v ? new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2 }).format(Number(v)) + " TL" : "… TL";
+      const val = (id, fb = "…") => (q(id)?.value || "").trim() || fb;
+      const bugun = new Intl.DateTimeFormat("tr-TR", { day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date());
+
+      const head = (baslik) =>
+`İHTARNAME
+
+KEŞİDECİ        : ${val("gonderen")}
+MUHATAP         : ${val("alici")}
+KONU            : ${baslik}
+TARİH           : ${bugun}
+
+KİRALANAN       : ${val("adres")}
+SÖZLEŞME TARİHİ : ${d(q("baslangic").value)}
+AYLIK KİRA      : ${tl(q("tutar").value)}
+
+`;
+
+      const foot = () =>
+`
+
+Gereğinin bilgilerinize sunulmasını rica ederim.
+
+${val("gonderen")}
+İmza
+
+SAYIN NOTER;
+Üç nüshadan ibaret işbu ihtarnamenin bir nüshasının muhataba tebliğini, bir nüshasının dairenizde saklanmasını, tebliğ şerhli bir nüshasının da tarafıma verilmesini talep ederim.`;
+
+      const T = {
+        kira: () => head("Ödenmeyen kira bedellerinin 30 gün içinde ödenmesi ihtarıdır") +
+`Yukarıda bilgileri yazılı taşınmazda kiracı sıfatıyla bulunmaktasınız.
+
+${val("aylar")} dönemine ait toplam ${tl(q("borc").value)} tutarındaki kira bedeli, ödeme gününde ödenmemiştir.
+
+6098 sayılı Türk Borçlar Kanunu'nun 315. maddesi uyarınca, işbu ihtarnamenin tarafınıza tebliğinden itibaren OTUZ (30) GÜN içinde belirtilen kira borcunun tamamını ödemenizi ihtar ederim.
+
+Bu süre içinde ödeme yapılmaması hâlinde kira sözleşmesinin feshedileceğini, tahliye ve alacağın tahsili için yasal yollara başvurulacağını, doğacak tüm yargılama gideri ve vekâlet ücretinin tarafınıza ait olacağını bildiririm.` + foot(),
+
+        depozito: () => head("Depozito (güvence bedeli) iadesi talebidir") +
+`Yukarıda bilgileri yazılı taşınmazda kiracı olarak bulundum ve kiralananı ${d(q("cikis").value)} tarihinde tahliye ederek anahtarı teslim ettim.
+
+Kira sözleşmesi kapsamında tarafınıza ${tl(q("depozitoT").value)} tutarında güvence bedeli (depozito) ödenmiştir. Kiralanan, olağan kullanımdan doğan yıpranma dışında herhangi bir zarar bulunmaksızın teslim edilmiş olup, tarafınıza ödenmemiş herhangi bir borcum bulunmamaktadır.
+
+6098 sayılı Türk Borçlar Kanunu'nun 342. maddesi uyarınca, güvence bedelinin işbu ihtarnamenin tebliğinden itibaren ON (10) GÜN içinde aşağıda belirteceğim banka hesabına iadesini talep ederim.
+
+Aksi hâlde alacağın tahsili için icra takibi başlatılacağını ve doğacak tüm giderlerin tarafınıza ait olacağını bildiririm.
+
+IBAN: TR__ ____ ____ ____ ____ ____ __` + foot(),
+
+        artis: () => head("Yeni kira döneminde uygulanacak kira bedelinin bildirimidir") +
+`Yukarıda bilgileri yazılı taşınmaza ilişkin kira sözleşmesi, ${d(q("donem").value)} tarihinde başlayacak yeni dönem için yenilenmektedir.
+
+6098 sayılı Türk Borçlar Kanunu'nun 344. maddesi uyarınca, bir önceki kira yılına ait tüketici fiyat endeksinin on iki aylık ortalamalara göre değişim oranı olan %${val("oran")} esas alınarak, yeni dönem aylık kira bedeli ${tl(q("yeniKira").value)} olarak belirlenmiştir.
+
+Yeni dönem kira bedelinin belirtilen tarihten itibaren bu tutar üzerinden ödenmesini bildiririm.` + foot(),
+
+        tahliyeBildirim: () => head("Kira sözleşmesinin yenilenmeyeceğine ilişkin bildirimdir") +
+`Yukarıda bilgileri yazılı taşınmazda kiracı sıfatıyla bulunmaktayım.
+
+6098 sayılı Türk Borçlar Kanunu'nun 347. maddesi uyarınca, kira sözleşmesini yenilemek istemediğimi ve kiralananı ${d(q("cikisTarih").value)} tarihinde tahliye ederek anahtarı teslim edeceğimi bildiririm.
+
+Anahtar teslimi sırasında tutanak düzenlenmesini, kiralananın durumunun birlikte tespit edilmesini ve güvence bedelinin (depozito) iadesini talep ederim.` + foot(),
+
+        onarim: () => head("Kiralanandaki ayıbın giderilmesi talebidir") +
+`Yukarıda bilgileri yazılı taşınmazda kiracı sıfatıyla bulunmaktayım.
+
+Kiralananda aşağıdaki sorun ortaya çıkmıştır:
+
+${val("sorun")}
+
+6098 sayılı Türk Borçlar Kanunu'nun 301. maddesi uyarınca kiraya veren, kiralananı kullanıma elverişli hâlde bulundurmakla yükümlüdür.
+
+Söz konusu ayıbın işbu ihtarnamenin tebliğinden itibaren makul süre içinde ve en geç ON BEŞ (15) GÜN içinde giderilmesini talep ederim.
+
+Aksi hâlde kanunun tanıdığı haklar kapsamında ayıbın giderilmesini, kira bedelinden indirim yapılmasını ve doğan zararın tazminini talep edeceğimi bildiririm.` + foot(),
+      };
+
+      q("olustur").addEventListener("click", () => {
+        q("metin").textContent = T[tur.value]();
+        q("cikti").hidden = false;
+        q("cikti").scrollIntoView({ block: "nearest", behavior: "smooth" });
+      });
+
+      q("kopyala").addEventListener("click", async (e) => {
+        try {
+          await navigator.clipboard.writeText(q("metin").textContent);
+          const b = e.currentTarget, o = b.textContent;
+          b.textContent = "Kopyalandı ✓"; setTimeout(() => (b.textContent = o), 1800);
+        } catch {}
+      });
+
+      q("indir").addEventListener("click", () => {
+        const blob = new Blob([q("metin").textContent], { type: "text/plain;charset=utf-8" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "ihtarname-taslak.txt";
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      });
+    })();
+  </script>
+</Base>

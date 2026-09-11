@@ -1,0 +1,14 @@
+{
+  "name": "bosanmasebebimi",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Boşanma davalarında kusur sözlüğü — sence kusur mu?",
+  "scripts": {
+    "dev": "astro dev",
+    "validate": "node scripts/validate.mjs",
+    "build": "node scripts/validate.mjs && astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": { "astro": "^5.13.0" }
+}

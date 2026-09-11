@@ -1,0 +1,164 @@
+---
+import Base from "../../layouts/Base.astro";
+import { quizPool, verdictShort } from "../../lib/cases";
+import { url } from "../../lib/url";
+
+const pool = quizPool.map((c) => ({ s: c.slug, q: c.question, v: c.verdict, m: c.summary, t: c.title }));
+---
+<Base
+  title="Kusur testi — boşanmada hangi davranış kusur? | 12 soruluk test"
+  description="12 soruda boşanma hukuku sezginizi ölçün. Hangi davranış Yargıtay uygulamasında kusur sayılıyor, hangisi sayılmıyor?"
+  path="/test/"
+>
+  <section class="hero" style="padding-bottom:16px">
+    <div class="wrap narrow">
+      <p class="eyebrow">Kusur testi</p>
+      <h1 style="font-size:clamp(28px,5.6vw,42px)">12 soru.<br />Hukuk sezgin ne kadar iyi?</h1>
+      <p class="lede">Her soruda bir davranış göreceksin. Boşanma davasında kusur sayılır mı, sayılmaz mı, duruma mı bağlı?</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:40px">
+    <div class="stage" data-quiz>
+      <!-- giriş -->
+      <div data-screen="intro">
+        <p style="color:var(--ink-2);margin:0 0 20px">
+          Test her seferinde farklı sorulardan oluşur. Yaklaşık 2 dakika sürer, kayıt gerekmez.
+        </p>
+        <button class="btn" type="button" data-start>Teste başla →</button>
+      </div>
+
+      <!-- soru -->
+      <div data-screen="play" hidden>
+        <div class="bar"><i data-bar style="width:0%"></i></div>
+        <p class="sub" style="color:var(--ink-3);font-size:13.5px;margin:0 0 8px"><b data-n>1</b> / 12</p>
+        <p class="q" data-q style="font-size:clamp(19px,3.8vw,25px);font-weight:750;line-height:1.3;margin:0 0 20px"></p>
+        <div class="guess-opts">
+          <button type="button" data-pick="kusur"><span class="k">1</span>Kusur sayılır</button>
+          <button type="button" data-pick="kosullu"><span class="k">2</span>Duruma göre değişir</button>
+          <button type="button" data-pick="degil"><span class="k">3</span>Kusur sayılmaz</button>
+        </div>
+        <div class="reveal" data-reveal hidden>
+          <div class="verdict-row"><span class="tag tag-lg" data-tag></span><strong data-res style="font-size:15.5px"></strong></div>
+          <p data-sum></p>
+          <button class="btn" type="button" data-next style="width:100%">Sonraki soru →</button>
+        </div>
+      </div>
+
+      <!-- sonuç -->
+      <div data-screen="done" hidden>
+        <p class="eyebrow">Sonuç</p>
+        <p class="score"><span data-score>0</span><span style="color:var(--ink-3);font-size:.5em">/12</span></p>
+        <p class="score-sub" data-verdict></p>
+        <div class="grid" style="gap:10px;margin-bottom:20px" data-review></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn" type="button" data-again>Tekrar dene</button>
+          <button class="btn btn-2" type="button" data-share>Sonucu paylaş</button>
+          <a class="btn btn-2" href={url("/senaryolar/")}>Sözlüğe göz at</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" id="quiz-pool" is:inline set:html={JSON.stringify(pool)} />
+
+  <script is:inline define:vars={{ baseUrl: url("/") }}>
+    (() => {
+      const root = document.querySelector("[data-quiz]");
+      const pool = JSON.parse(document.getElementById("quiz-pool").textContent);
+      const LABEL = { kusur: "KUSUR", degil: "KUSUR DEĞİL", kosullu: "DURUMA GÖRE" };
+      const N = 12;
+      const screens = {
+        intro: root.querySelector('[data-screen="intro"]'),
+        play: root.querySelector('[data-screen="play"]'),
+        done: root.querySelector('[data-screen="done"]'),
+      };
+      const show = (k) => Object.entries(screens).forEach(([n, el]) => (el.hidden = n !== k));
+
+      let qs = [], i = 0, right = 0, log = [], locked = false;
+
+      const shuffle = (a) => { const x = [...a]; for (let i = x.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [x[i], x[j]] = [x[j], x[i]]; } return x; };
+
+      function start() {
+        qs = shuffle(pool).slice(0, N);
+        i = 0; right = 0; log = [];
+        show("play");
+        render();
+      }
+
+      function render() {
+        locked = false;
+        const q = qs[i];
+        root.querySelector("[data-n]").textContent = i + 1;
+        root.querySelector("[data-bar]").style.width = `${(i / N) * 100}%`;
+        root.querySelector("[data-q]").textContent = q.q;
+        root.querySelector("[data-reveal]").hidden = true;
+        root.querySelectorAll("[data-pick]").forEach((b) => { b.disabled = false; b.removeAttribute("data-state"); });
+      }
+
+      root.querySelectorAll("[data-pick]").forEach((btn) => btn.addEventListener("click", () => {
+        if (locked) return;
+        locked = true;
+        const q = qs[i];
+        const ok = btn.dataset.pick === q.v;
+        if (ok) right++;
+        log.push({ ...q, ok });
+
+        root.querySelectorAll("[data-pick]").forEach((b) => {
+          b.disabled = true;
+          if (b.dataset.pick === q.v) b.dataset.state = "right";
+          else if (b === btn) b.dataset.state = "wrong";
+          else b.dataset.state = "muted";
+        });
+
+        const rev = root.querySelector("[data-reveal]");
+        const tag = rev.querySelector("[data-tag]");
+        tag.className = `tag tag-lg tag-${q.v}`;
+        tag.textContent = LABEL[q.v];
+        rev.querySelector("[data-res]").textContent = ok ? "Doğru 🎉" : "Yanlış";
+        rev.querySelector("[data-sum]").textContent = q.m;
+        rev.querySelector("[data-next]").textContent = i === N - 1 ? "Sonucu gör →" : "Sonraki soru →";
+        rev.hidden = false;
+      }));
+
+      root.querySelector("[data-next]").addEventListener("click", () => {
+        if (i === N - 1) finish(); else { i++; render(); }
+      });
+
+      function finish() {
+        show("done");
+        root.querySelector("[data-score]").textContent = right;
+        const msg = right >= 11 ? "Etkileyici — hukukçu sezgisi." :
+                    right >= 9  ? "Çok iyi. Çoğu insandan öndesin." :
+                    right >= 6  ? "Fena değil. Ortalama bu civarda." :
+                    right >= 3  ? "Beklenen aralıkta — sezgiler çoğu zaman yanıltıyor." :
+                                  "Bu konuda sezgiler gerçekten işe yaramıyor.";
+        root.querySelector("[data-verdict]").textContent = msg;
+
+        root.querySelector("[data-review]").innerHTML = log.map((l) =>
+          `<a class="card" href="${baseUrl}${l.s}/" style="display:flex;align-items:center;gap:12px;padding:13px 15px">
+             <span style="font-size:17px">${l.ok ? "✅" : "❌"}</span>
+             <span style="flex:1;min-width:0"><span style="font-weight:650;font-size:14.5px">${l.t}</span></span>
+             <span class="tag tag-${l.v}">${LABEL[l.v]}</span>
+           </a>`).join("");
+      }
+
+      root.querySelector("[data-start]").addEventListener("click", start);
+      root.querySelector("[data-again]").addEventListener("click", start);
+      root.querySelector("[data-share]").addEventListener("click", async (e) => {
+        const text = `Boşanma kusur testinde 12 soruda ${right} doğru yaptım. Sen kaç yaparsın?`;
+        const shareUrl = location.origin + baseUrl + "test/";
+        try {
+          if (navigator.share) await navigator.share({ title: "Kusur testi", text, url: shareUrl });
+          else { await navigator.clipboard.writeText(`${text} ${shareUrl}`); const b = e.currentTarget; const o = b.textContent; b.textContent = "Kopyalandı ✓"; setTimeout(() => (b.textContent = o), 1800); }
+        } catch {}
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (screens.play.hidden) return;
+        if (["1", "2", "3"].includes(e.key)) root.querySelectorAll("[data-pick]")[Number(e.key) - 1]?.click();
+        if (e.key === "Enter" && !root.querySelector("[data-reveal]").hidden) root.querySelector("[data-next]").click();
+      });
+    })();
+  </script>
+</Base>

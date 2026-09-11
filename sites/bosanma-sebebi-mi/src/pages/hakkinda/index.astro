@@ -1,0 +1,45 @@
+---
+import Base from "../../layouts/Base.astro";
+import { cases, frames } from "../../lib/cases";
+---
+<Base title="Hakkında — Boşanma sebebi mi?" description="Bu site ne yapar, veriler nereden gelir, sınırları nelerdir?" path="/hakkinda/">
+  <div class="wrap narrow" style="padding-bottom:40px">
+    <section class="hero" style="padding:40px 0 6px">
+      <p class="eyebrow">Hakkında</p>
+      <h1 style="font-size:clamp(27px,5.4vw,40px)">Bu site ne yapar?</h1>
+      <p class="lede">
+        Boşanma davalarında sık karşılaşılan davranışları tek tek ele alır ve her biri için tek bir soruyu
+        cevaplar: <strong>bu davranış kusur sayılır mı?</strong> Cevap; dayanak madde, süre ve ispat bilgisiyle verilir.
+      </p>
+    </section>
+
+    <section class="sec"><h2>Neden önce tahmin?</h2>
+      <p>Kusur değerlendirmesi sezgiyle çoğu zaman örtüşmüyor. Cevabı görmeden önce tahmin etmek, hangi
+      varsayımlarınızın yanlış olduğunu fark etmenin en hızlı yolu. Skorunuz yalnızca kendi tarayıcınızda tutulur.</p></section>
+
+    <section class="sec"><h2>Kapsam</h2>
+      <p>Şu an {cases.length} senaryo, {Object.keys(frames).length} hukuki çerçeve altında toplanmış durumda:
+      {Object.values(frames).map((f) => f.category).join(", ")}.</p></section>
+
+    <section class="sec"><h2>Kaynaklar</h2>
+      <ul class="laws">
+        <li><b>4721 sayılı Türk Medeni Kanunu</b> <code>m.161-166</code> — boşanma sebepleri</li>
+        <li><b>4721 sayılı TMK</b> <code>m.174-175</code> — tazminat ve yoksulluk nafakası</li>
+        <li><b>6284 sayılı Kanun</b> — şiddetin önlenmesi ve koruyucu tedbirler</li>
+        <li><b>6100 sayılı HMK</b> — yargılama usulü ve deliller</li>
+        <li>Yargıtay Hukuk Genel Kurulu ve 2. Hukuk Dairesi'nin yerleşik uygulaması</li>
+      </ul></section>
+
+    <section class="sec"><h2>Kusur ağırlığı ne demek?</h2>
+      <p>Her senaryoda 5 üzerinden bir ağırlık gösterilir. Bu, kanunda yer alan bir ölçü değildir; içtihat
+      eğilimini özetleyen bir göstergedir ve "kusur terazisi" oyununda kullanılır. Somut olayda kusur
+      dağılımını yalnızca mahkeme belirler.</p></section>
+
+    <section class="sec" style="border-bottom:0"><h2>Sınırları</h2>
+      <p>Buradaki içerik <strong>hukuki danışmanlık değildir</strong>. Boşanma davalarında sonucu belirleyen şey
+      delil durumu ve olayın kendine özgü koşullarıdır; aynı davranış farklı dosyalarda farklı
+      değerlendirilebilir. Süre kaybı riski taşıyan durumlarda bir avukata danışın.</p>
+      <p>Şiddet, tehdit veya baskı altındaysanız beklemeyin: <strong>ALO 183</strong> (ücretsiz, 7/24),
+      acil durumda <strong>155</strong> veya <strong>112</strong>.</p></section>
+  </div>
+</Base>

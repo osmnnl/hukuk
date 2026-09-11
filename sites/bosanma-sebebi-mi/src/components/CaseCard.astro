@@ -1,0 +1,12 @@
+---
+import Verdict from "./Verdict.astro";
+import { url } from "../lib/url";
+import type { Case } from "../lib/cases";
+interface Props { item: Case; hideVerdict?: boolean }
+const { item, hideVerdict = false } = Astro.props;
+---
+<a class="card" href={url(`/${item.slug}/`)}>
+  {hideVerdict ? <span class="tag tag-soft">Tahmin et →</span> : <Verdict v={item.verdict} />}
+  <h3>{item.title}</h3>
+  <p>{hideVerdict ? item.question : item.summary}</p>
+</a>

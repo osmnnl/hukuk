@@ -1,0 +1,13 @@
+{
+  "name": "hukuk",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Günlük hayatta hakkını bil — bağımsız hukuk mikro siteleri, tek repoda",
+  "workspaces": ["sites/*", "hub"],
+  "scripts": {
+    "build": "node scripts/build-all.mjs",
+    "validate": "node scripts/build-all.mjs --validate-only",
+    "dev": "node scripts/dev.mjs"
+  }
+}

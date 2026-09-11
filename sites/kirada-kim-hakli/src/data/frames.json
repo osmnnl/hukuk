@@ -1,0 +1,74 @@
+{
+  "artis": {
+    "topic": "Kira Artışı",
+    "short": "TBK 344",
+    "basis": [
+      { "law": "6098 sayılı TBK", "article": "m.344", "note": "Kira bedelinin belirlenmesi ve artış sınırı" },
+      { "law": "6098 sayılı TBK", "article": "m.345", "note": "Kira tespit davası" }
+    ],
+    "explain": "Yenilenen kira dönemlerinde uygulanacak artış, bir önceki kira yılına ait tüketici fiyat endeksinin on iki aylık ortalamalara göre değişim oranını geçemez. Sözleşmede daha yüksek bir oran yazsa bile bu sınır uygulanır.",
+    "where": "Anlaşılamazsa kira tespit davası — Sulh Hukuk Mahkemesi. Dava öncesi arabuluculuk zorunludur.",
+    "deadline": "Kira tespit davası, yeni dönemin başlangıcından en geç otuz gün önce bildirim yapılmışsa yeni dönemin başından itibaren etkili olur."
+  },
+  "tahliye": {
+    "topic": "Tahliye",
+    "short": "TBK 347-352",
+    "basis": [
+      { "law": "6098 sayılı TBK", "article": "m.347", "note": "Belirli süreli sözleşmede uzama ve on yıllık uzama süresi" },
+      { "law": "6098 sayılı TBK", "article": "m.350", "note": "Gereksinim, yeniden inşa ve imar nedeniyle tahliye" },
+      { "law": "6098 sayılı TBK", "article": "m.351", "note": "Yeni malikin gereksinimi" },
+      { "law": "6098 sayılı TBK", "article": "m.352", "note": "Tahliye taahhüdü, iki haklı ihtar, kiracının konutu olması" }
+    ],
+    "explain": "Kiraya veren, sözleşme süresinin dolmasına dayanarak kiracıyı çıkaramaz. Tahliye ancak kanunda sayılan sınırlı sebeplerle ve kural olarak dava yoluyla mümkündür; kiracıyı kendiliğinden çıkarmak hukuka aykırıdır.",
+    "where": "Sulh Hukuk Mahkemesi. Dava öncesi arabuluculuk zorunludur.",
+    "deadline": "Gereksinim ve yeniden inşa sebebiyle dava, belirli süreli sözleşmelerde sürenin sonunda, belirsiz süreli sözleşmelerde fesih dönemine ve bildirim sürelerine uyularak açılır."
+  },
+  "odeme": {
+    "topic": "Kira Ödememe ve İhtar",
+    "short": "TBK 315",
+    "basis": [
+      { "law": "6098 sayılı TBK", "article": "m.315", "note": "Kiracının temerrüdü ve süre verme" },
+      { "law": "6098 sayılı TBK", "article": "m.352/2", "note": "Bir kira yılı içinde iki haklı ihtar" },
+      { "law": "2004 sayılı İİK", "article": "m.269", "note": "İlamsız tahliye takibi" }
+    ],
+    "explain": "Kira bedeli ödenmediğinde kiraya veren yazılı olarak süre verir; konut ve çatılı işyeri kiralarında bu süre en az otuz gündür. Süre içinde ödenmezse sözleşme feshedilebilir ve tahliye istenebilir.",
+    "where": "İcra dairesi (ilamsız tahliye takibi) veya Sulh Hukuk Mahkemesi.",
+    "deadline": "Konut ve çatılı işyeri kiralarında verilecek süre en az otuz gündür; bu süre yazılı bildirimin kiracıya ulaşmasıyla işlemeye başlar."
+  },
+  "depozito": {
+    "topic": "Depozito ve Güvence",
+    "short": "TBK 342",
+    "basis": [
+      { "law": "6098 sayılı TBK", "article": "m.342", "note": "Güvence bedeli: üst sınır ve bankaya yatırma" }
+    ],
+    "explain": "Konut ve çatılı işyeri kiralarında güvence bedeli en fazla üç aylık kira bedeli kadar olabilir. Para olarak kararlaştırıldıysa, kiracının onayı olmadan çekilmemek üzere vadeli bir hesaba yatırılması gerekir.",
+    "where": "İade edilmezse Sulh Hukuk Mahkemesi veya icra takibi. Dava öncesi arabuluculuk zorunludur.",
+    "deadline": "Kira sona erdikten sonra kiraya veren makul sürede talepte bulunmazsa banka, kiracının istemiyle güvenceyi geri verir."
+  },
+  "bakim": {
+    "topic": "Onarım ve Kullanım",
+    "short": "TBK 301-319",
+    "basis": [
+      { "law": "6098 sayılı TBK", "article": "m.301", "note": "Kiralananı kullanıma elverişli bulundurma borcu" },
+      { "law": "6098 sayılı TBK", "article": "m.317", "note": "Temizlik ve bakım giderleri kiracıya aittir" },
+      { "law": "6098 sayılı TBK", "article": "m.316", "note": "Özenle kullanma ve komşulara saygı" },
+      { "law": "6098 sayılı TBK", "article": "m.320", "note": "Kiralananın olduğu gibi geri verilmesi" }
+    ],
+    "explain": "Büyük ve yapısal onarımlar kiraya verene, olağan bakım ve küçük giderler kiracıya aittir. Kiracı kiralananı özenle kullanmak ve sözleşme sonunda aldığı hâlde geri vermekle yükümlüdür; olağan kullanımdan doğan eskime kiracıdan istenemez.",
+    "where": "Sulh Hukuk Mahkemesi. Dava öncesi arabuluculuk zorunludur.",
+    "deadline": "Ayıp ve eksiklikleri kiraya verene gecikmeksizin bildirmek gerekir; bildirilmeyen ayıptan doğan büyüyen zarardan kiracı sorumlu olabilir."
+  },
+  "sozlesme": {
+    "topic": "Sözleşme ve Taraflar",
+    "short": "TBK 299-347",
+    "basis": [
+      { "law": "6098 sayılı TBK", "article": "m.299", "note": "Kira sözleşmesinin tanımı" },
+      { "law": "6098 sayılı TBK", "article": "m.322", "note": "Alt kira ve kullanım hakkının devri" },
+      { "law": "6098 sayılı TBK", "article": "m.310", "note": "Kiralananın el değiştirmesi: sözleşme yeni malike geçer" },
+      { "law": "6098 sayılı TBK", "article": "m.346", "note": "Kiracı aleyhine düzenleme yasağı" }
+    ],
+    "explain": "Kira sözleşmesi yazılı olmak zorunda değildir; sözlü sözleşme de geçerlidir. Kiracı aleyhine, kira bedeli ve yan giderler dışında ödeme yükümlülüğü getiren kayıtlar geçersizdir.",
+    "where": "Sulh Hukuk Mahkemesi. Dava öncesi arabuluculuk zorunludur.",
+    "deadline": "Belirli süreli sözleşmede kiracı, sürenin bitiminden en az on beş gün önce bildirimde bulunmazsa sözleşme aynı koşullarla bir yıl uzar."
+  }
+}

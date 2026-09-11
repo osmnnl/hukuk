@@ -1,0 +1,29 @@
+[
+  {
+    "slug": "tuketici-hakkim",
+    "name": "Tüketici Hakkım",
+    "question": "Bu durumda hakkım var mı?",
+    "blurb": "Ayıplı ürün, iade, kargo, garanti, abonelik, seyahat… Tüketici uyuşmazlıklarında ne talep edebilirsiniz?",
+    "icon": "🛒",
+    "accent": "#4ade80",
+    "tools": ["Senaryo sözlüğü", "Başvuru rehberi"]
+  },
+  {
+    "slug": "bosanma-sebebi-mi",
+    "name": "Boşanma sebebi mi?",
+    "question": "Sence bu davranış kusur mu?",
+    "blurb": "Boşanma davalarında hangi davranış kusur sayılır? Önce tahmin edin, sonra Yargıtay uygulamasını görün.",
+    "icon": "💔",
+    "accent": "#a78bd6",
+    "tools": ["Tahmin oyunu", "12 soruluk test", "Kusur terazisi"]
+  },
+  {
+    "slug": "kirada-kim-hakli",
+    "name": "Kirada kim haklı?",
+    "question": "Kiracı mı, ev sahibi mi?",
+    "blurb": "Tahliye, kira artışı, depozito, onarım… İki tarafın da iddiası var; siz karar verin.",
+    "icon": "🔑",
+    "accent": "#1f5fd8",
+    "tools": ["Kim haklı?", "Tahliye testi", "Artış hesabı", "İhtarname"]
+  }
+]

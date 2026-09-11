@@ -1,0 +1,48 @@
+---
+import Base from "../../layouts/Base.astro";
+import SearchBox from "../../components/SearchBox.astro";
+import Side from "../../components/Side.astro";
+import { cases, topics } from "../../lib/cases";
+import { url } from "../../lib/url";
+---
+<Base title="Tüm senaryolar — kirada kim haklı?" description={`Kira uyuşmazlıklarında ${cases.length} senaryo: tahliye, artış, depozito, onarım, ihtar ve sözleşme.`} path="/senaryolar/">
+  <section class="hero" style="padding-bottom:18px">
+    <div class="wrap">
+      <p class="kicker">Senaryo listesi</p>
+      <h1 style="font-size:clamp(27px,5.4vw,42px)">Tüm uyuşmazlıklar</h1>
+      <p class="lede">{cases.length} senaryo, 6 başlık altında. Arayın veya konuya göre daraltın.</p>
+      <SearchBox placeholder="Senaryo ara…" />
+    </div>
+  </section>
+  <div class="wrap" style="padding-bottom:38px">
+    <div class="filters" id="f">
+      <button type="button" data-c="*" aria-pressed="true">Tümü</button>
+      {topics.map((t) => <button type="button" data-c={t} aria-pressed="false">{t}</button>)}
+    </div>
+    <p class="count" id="cnt">{cases.length} senaryo</p>
+    {topics.map((t) => (
+      <section data-group={t} style="padding-top:20px">
+        <div class="head"><h2>{t}</h2></div>
+        <div class="grid g2">
+          {cases.filter((c) => c.topic === t).map((c) => (
+            <a class="card" href={url(`/${c.slug}/`)}><Side v={c.verdict} /><h3>{c.title}</h3><p>{c.summary}</p></a>
+          ))}
+        </div>
+      </section>
+    ))}
+  </div>
+  <script is:inline>
+    const groups = [...document.querySelectorAll("[data-group]")];
+    const cnt = document.getElementById("cnt");
+    const total = groups.reduce((n, g) => n + g.querySelectorAll(".card").length, 0);
+    document.getElementById("f")?.addEventListener("click", (e) => {
+      const b = e.target.closest("button[data-c]"); if (!b) return;
+      const c = b.dataset.c;
+      document.querySelectorAll("#f button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+      let shown = 0;
+      groups.forEach((g) => { const m = c === "*" || g.dataset.group === c; g.hidden = !m; if (m) shown += g.querySelectorAll(".card").length; });
+      cnt.textContent = `${shown} senaryo${c === "*" ? "" : ` · ${c}`}`;
+    });
+    cnt.textContent = `${total} senaryo`;
+  </script>
+</Base>

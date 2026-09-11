@@ -1,0 +1,210 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url } from "../../lib/url";
+---
+<Base
+  title="Tahliye testi — bu durumda kiracı çıkarılabilir mi?"
+  description="4 soruda değerlendirin: kira sözleşmesi bitti diye çıkarılabilir misiniz? Gereksinim, satış, tahliye taahhüdü, kira ödememe… Hangi usul ve hangi süreler işler?"
+  path="/tahliye-testi/"
+>
+  <section class="hero" style="padding-bottom:20px">
+    <div class="wrap narrow">
+      <p class="kicker">Karar aracı</p>
+      <h1 style="font-size:clamp(27px,5.4vw,42px)">Tahliye mümkün mü?</h1>
+      <p class="lede">Dört soru. Sonunda hangi sebebe dayanıldığını, usulün ne olduğunu ve hangi sürelerin işlediğini görürsünüz.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:38px">
+    <div class="panel" data-wiz>
+      <div class="steps-n" data-steps><i></i><i></i><i></i><i></i></div>
+      <div data-q>
+        <p style="font-size:clamp(18px,3.6vw,23px);font-weight:800;letter-spacing:-.02em;margin:0 0 6px" data-title></p>
+        <p style="color:var(--ink-3);font-size:13.5px;margin:0 0 18px" data-sub></p>
+        <div class="opts" data-opts></div>
+        <button class="btn btn-2" type="button" data-back style="margin-top:14px;display:none">← Geri</button>
+      </div>
+
+      <div data-out hidden>
+        <p class="kicker">Değerlendirme</p>
+        <p class="big" data-head></p>
+        <p style="color:var(--ink-2);margin:0 0 18px" data-body></p>
+        <div class="out" style="margin-bottom:16px">
+          <p style="font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:900;margin:0 0 8px">Usul ve süreler</p>
+          <ul style="margin:0;padding-left:20px;font-size:14.5px;color:var(--ink-2);line-height:1.7" data-steps-list></ul>
+        </div>
+        <div data-links style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px"></div>
+        <button class="btn" type="button" data-again>Baştan başla</button>
+      </div>
+    </div>
+
+    <p class="note" style="margin-top:18px">
+      Bu araç genel bir değerlendirme yapar; sözleşmenizin içeriği ve olayın ayrıntıları sonucu değiştirebilir.
+      Tahliye davası açmadan veya evi boşaltmadan önce güncel mevzuatı kontrol edin ya da bir avukata danışın.
+    </p>
+  </div>
+
+  <script is:inline define:vars={{ baseUrl: url("/") }}>
+    (() => {
+      const root = document.querySelector("[data-wiz]");
+      const Q = {
+        rol: {
+          title: "Bu durumda hangi taraftasınız?",
+          sub: "Cevap ikisi için de aynı; yalnız anlatımı size göre düzenliyoruz.",
+          opts: [["kiraci", "Kiracıyım"], ["evsahibi", "Ev sahibiyim"]],
+          next: () => "sure",
+        },
+        sure: {
+          title: "Kira ilişkisi kaç yıldır sürüyor?",
+          sub: "İlk sözleşme tarihinden bugüne kadar geçen süre.",
+          opts: [["kisa", "10 yıldan az"], ["uzun", "10 yıl veya daha fazla"]],
+          next: () => "sebep",
+        },
+        sebep: {
+          title: "Tahliye hangi gerekçeye dayanıyor?",
+          sub: "Ev sahibinin öne sürdüğü sebep.",
+          opts: [
+            ["sureBitti", "Sözleşme süresi doldu"],
+            ["ihtiyac", "Ev sahibi veya yakını oturacak"],
+            ["satis", "Ev yeni satın alındı"],
+            ["odenmedi", "Kira ödenmedi"],
+            ["taahhut", "Tahliye taahhütnamesi var"],
+            ["tadilat", "Esaslı tadilat / yeniden inşa"],
+          ],
+          next: (a) => (a.sebep === "taahhut" ? "taahhutZaman" : a.sebep === "odenmedi" ? "ihtar" : "son"),
+        },
+        taahhutZaman: {
+          title: "Taahhütname ne zaman imzalandı?",
+          sub: "Kiralananın teslim edildiği tarihe göre.",
+          opts: [["sonra", "Eve girdikten sonra, ayrı bir tarihte"], ["birlikte", "Sözleşmeyle aynı anda / eve girmeden"]],
+          next: () => "son",
+        },
+        ihtar: {
+          title: "Yazılı ihtar çekildi mi?",
+          sub: "Konut ve çatılı işyerinde en az 30 günlük süre verilmesi gerekir.",
+          opts: [["evet30", "Evet, en az 30 gün süre verildi"], ["evetKisa", "İhtar var ama süre 30 günden az"], ["hayir", "İhtar çekilmedi"]],
+          next: () => "son",
+        },
+      };
+
+      const V = {
+        sureBitti: {
+          h: "Hayır — tahliye edilemez",
+          b: "Kiraya veren yalnızca sözleşme süresinin dolmasına dayanarak kiracıyı çıkaramaz. Kiracı bildirimde bulunmazsa sözleşme aynı koşullarla bir yıl uzar.",
+          s: ["Sözleşme kendiliğinden bir yıl uzar (TBK m.347).", "Kiracı çıkmak isterse sürenin bitiminden en az 15 gün önce yazılı bildirim yapmalı.", "Ev sahibinin başka bir kanuni sebebi varsa ayrıca değerlendirilir."],
+          l: ["sozlesme-bitti-cik-diyor"],
+        },
+        sureBittiUzun: {
+          h: "Evet — ama 3 ay önceden bildirimle",
+          b: "On yıllık uzama süresi dolduktan sonra kiraya veren, sebep göstermeksizin sözleşmeyi sona erdirebilir. Bunun için her uzama yılının bitiminden en az üç ay önce yazılı bildirim şarttır.",
+          s: ["On yıllık uzama süresinin dolması beklenir (TBK m.347).", "Her uzama yılının bitiminden en az 3 ay önce yazılı bildirim yapılır.", "Bildirim yapılmazsa sözleşme bir yıl daha uzar."],
+          l: ["sozlesme-bitti-cik-diyor"],
+        },
+        ihtiyac: {
+          h: "Koşulları varsa evet — dava yoluyla",
+          b: "Kiraya veren; kendisi, eşi, altsoyu, üstsoyu veya bakmakla yükümlü olduğu kişiler için konut gereksinimi varsa dava açabilir. Gereksinimin gerçek, samimi ve zorunlu olması aranır.",
+          s: ["Belirli süreli sözleşmede sürenin sonunda dava açılır (TBK m.350).", "Gereksinimin zorunlu ve samimi olduğu ispatlanmalıdır.", "Dava öncesi arabuluculuk zorunludur.", "Haklı sebep yoksa taşınmaz 3 yıl geçmeden eski kiracıdan başkasına kiralanamaz."],
+          l: ["ev-sahibi-kendi-oturacak"],
+        },
+        satis: {
+          h: "Evet — ama bildirim ve 6 aylık süre şartıyla",
+          b: "Yeni malik gereksinim sebebiyle tahliye isteyecekse, edinme tarihinden itibaren bir ay içinde durumu kiracıya yazılı bildirmeli ve altı ay sonra dava açmalıdır.",
+          s: ["Satışla sözleşme yeni malike geçer (TBK m.310).", "Edinmeden itibaren 1 ay içinde yazılı bildirim yapılmalı.", "Bildirimden 6 ay sonra dava açılabilir (TBK m.351).", "Bildirim yapılmadıysa bu yol kapanır; sözleşme sonunu beklemek gerekir."],
+          l: ["evi-satildi-cik-deniyor"],
+        },
+        odenmedi30: {
+          h: "Evet — usul tamamlanmışsa",
+          b: "Yazılı ihtarla en az 30 gün süre verilmiş ve bu sürede ödeme yapılmamışsa sözleşme feshedilip tahliye istenebilir.",
+          s: ["Yazılı ihtar tebliğ tarihinden itibaren en az 30 gün süre verilir (TBK m.315).", "Süre içinde ödenmezse fesih ve tahliye yoluna gidilir.", "Alternatif: bir kira yılında iki haklı ihtar varsa yıl bitiminden itibaren 1 ay içinde dava (TBK m.352/2)."],
+          l: ["kira-gec-odendi-tahliye", "ihtarname-cekmeden-dava"],
+        },
+        odenmedihata: {
+          h: "Şu hâliyle hayır — usul eksik",
+          b: "Konut ve çatılı işyeri kiralarında verilecek süre en az 30 gündür. Süre yetersizse veya ihtar hiç çekilmemişse açılan dava usulden reddedilir.",
+          s: ["İhtar noterden çekilip tebliğ parçası saklanmalı.", "Süre, ihtarın kiracıya tebliğ edildiği tarihte başlar.", "Usul tamamlanmadan açılan dava reddedilir; süreç baştan işletilir."],
+          l: ["ihtarname-cekmeden-dava"],
+        },
+        taahhutGecerli: {
+          h: "Evet — taahhüt geçerli görünüyor",
+          b: "Kiralananın tesliminden sonra, ayrı bir tarihte ve yazılı olarak verilen tahliye taahhüdü geçerlidir. Kiraya veren taahhüt edilen tarihten itibaren bir ay içinde harekete geçmelidir.",
+          s: ["Taahhüt edilen tarihten itibaren 1 ay içinde icra veya dava yoluna başvurulur (TBK m.352/1).", "Süre kaçırılırsa o taahhüde dayanılamaz.", "Taahhüdün serbest iradeyle verildiği tartışma konusu olabilir."],
+          l: ["tahliye-taahhudu-imzalattim"],
+        },
+        taahhutGecersiz: {
+          h: "Hayır — taahhüt geçersiz sayılır",
+          b: "Kiralananın teslimiyle aynı anda veya teslimden önce alınan tahliye taahhüdü geçerli değildir. Uygulamada bu, en sık rastlanan geçersizlik sebebidir.",
+          s: ["Taahhütnamedeki düzenleme tarihi ile teslim tarihi karşılaştırılır.", "Teslimle aynı anda alınan taahhüt sonuç doğurmaz.", "Ev sahibinin başka bir kanuni sebebi varsa ayrıca değerlendirilir."],
+          l: ["tahliye-taahhudu-imzalattim"],
+        },
+        tadilat: {
+          h: "Sadece kullanım imkânsızsa evet",
+          b: "Yeniden inşa veya imar amacıyla esaslı onarım, genişletme ya da değiştirme gerekiyorsa ve bu işler sırasında kiralananın kullanımı imkânsızsa dava yoluyla tahliye istenebilir. Kozmetik tadilat yeterli değildir.",
+          s: ["Ruhsat ve proje ibraz edilmelidir (TBK m.350/2).", "İşlerin kullanımı imkânsız kıldığı teknik olarak değerlendirilir.", "Dava öncesi arabuluculuk zorunludur."],
+          l: ["ev-sahibi-tadilat-yapacagim-diyor"],
+        },
+      };
+
+      const order = ["rol", "sure", "sebep"];
+      let stack = ["rol"], ans = {};
+
+      const elTitle = root.querySelector("[data-title]");
+      const elSub = root.querySelector("[data-sub]");
+      const elOpts = root.querySelector("[data-opts]");
+      const elBack = root.querySelector("[data-back]");
+      const qBox = root.querySelector("[data-q]");
+      const outBox = root.querySelector("[data-out]");
+
+      function paintSteps() {
+        const bars = root.querySelectorAll("[data-steps] i");
+        bars.forEach((b, i) => b.classList.toggle("on", i < stack.length));
+      }
+
+      function render() {
+        const key = stack[stack.length - 1];
+        if (key === "son") return finish();
+        const q = Q[key];
+        elTitle.textContent = q.title;
+        elSub.textContent = q.sub;
+        elOpts.innerHTML = q.opts.map(([v, l]) => `<button type="button" data-v="${v}">${l}</button>`).join("");
+        elBack.style.display = stack.length > 1 ? "inline-flex" : "none";
+        qBox.hidden = false; outBox.hidden = true;
+        paintSteps();
+      }
+
+      elOpts.addEventListener("click", (e) => {
+        const b = e.target.closest("button[data-v]"); if (!b) return;
+        const key = stack[stack.length - 1];
+        ans[key] = b.dataset.v;
+        stack.push(Q[key].next(ans));
+        render();
+      });
+      elBack.addEventListener("click", () => { stack.pop(); render(); });
+      root.querySelector("[data-again]").addEventListener("click", () => { stack = ["rol"]; ans = {}; render(); });
+
+      function resolve() {
+        const s = ans.sebep;
+        if (s === "sureBitti") return ans.sure === "uzun" ? V.sureBittiUzun : V.sureBitti;
+        if (s === "ihtiyac") return V.ihtiyac;
+        if (s === "satis") return V.satis;
+        if (s === "tadilat") return V.tadilat;
+        if (s === "taahhut") return ans.taahhutZaman === "sonra" ? V.taahhutGecerli : V.taahhutGecersiz;
+        if (s === "odenmedi") return ans.ihtar === "evet30" ? V.odenmedi30 : V.odenmedihata;
+        return V.sureBitti;
+      }
+
+      function finish() {
+        const v = resolve();
+        qBox.hidden = true; outBox.hidden = false;
+        root.querySelector("[data-head]").textContent = v.h;
+        root.querySelector("[data-body]").textContent = v.b;
+        root.querySelector("[data-steps-list]").innerHTML = v.s.map((x) => `<li>${x}</li>`).join("");
+        root.querySelector("[data-links]").innerHTML = v.l
+          .map((slug) => `<a class="btn btn-2" href="${baseUrl}${slug}/">İlgili senaryo →</a>`).join("")
+          + `<a class="btn btn-2" href="${baseUrl}ihtarname/">İhtar oluştur</a>`;
+        paintSteps();
+      }
+
+      render();
+    })();
+  </script>
+</Base>

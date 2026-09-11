@@ -1,0 +1,116 @@
+---
+import { cases } from "../lib/cases";
+import { url } from "../lib/url";
+
+/** Ana hook: iki iddia gösterilir, kullanıcı taraf seçer, sonra cevap açılır. */
+interface Props { slug?: string; mode?: "single" | "random"; title?: string }
+const { slug, mode = "single", title } = Astro.props;
+
+const payload = mode === "random"
+  ? cases.map((c) => ({ s: c.slug, t: c.title, k: c.kiraci, e: c.evsahibi, v: c.verdict, m: c.summary }))
+  : (() => { const c = cases.find((x) => x.slug === slug)!; return [{ s: c.slug, t: c.title, k: c.kiraci, e: c.evsahibi, v: c.verdict, m: c.summary }]; })();
+---
+<div class="duel" data-duel data-mode={mode}>
+  {title && <p class="kicker" style="margin:0 0 9px">{title}</p>}
+  <p class="case" data-case></p>
+  <p class="hint">Sence kim haklı? Seç, sonra kanunun ne dediğini gör.</p>
+
+  <div class="sides">
+    <button class="side side-k" type="button" data-pick="kiraci">
+      <span class="who">Kiracı</span>
+      <span class="claim" data-claim-k></span>
+    </button>
+    <button class="side side-e" type="button" data-pick="evsahibi">
+      <span class="who">Ev sahibi</span>
+      <span class="claim" data-claim-e></span>
+    </button>
+  </div>
+  <div class="both"><button type="button" data-pick="ikisi">İkisi de kısmen haklı</button></div>
+
+  <div class="reveal" data-reveal hidden>
+    <div class="row">
+      <span class="tag tag-lg" data-tag></span>
+      <strong data-res style="font-size:15.5px"></strong>
+    </div>
+    <p data-sum></p>
+    <a data-link href="#" style="font-size:15px">Tam açıklama, dayanak madde ve ipucu →</a>
+  </div>
+
+  <div class="tally" data-tally hidden>
+    <span>Doğru tahmin: <b data-r>0</b> / <b data-t>0</b></span>
+    {mode === "random" && <button class="btn btn-2" type="button" data-next style="margin-left:auto;padding:8px 16px;font-size:13.5px">Yeni senaryo</button>}
+  </div>
+</div>
+
+<script type="application/json" data-duel-data is:inline set:html={JSON.stringify(payload)} />
+
+<script is:inline define:vars={{ baseUrl: url("/") }}>
+  (() => {
+    const root = document.querySelector("[data-duel]");
+    const el = document.querySelector("[data-duel-data]");
+    if (!root || !el) return;
+    const items = JSON.parse(el.textContent);
+    const random = root.dataset.mode === "random";
+    const LABEL = { kiraci: "KİRACI HAKLI", evsahibi: "EV SAHİBİ HAKLI", ikisi: "İKİSİ DE KISMEN" };
+    const picks = [...root.querySelectorAll("[data-pick]")];
+    const reveal = root.querySelector("[data-reveal]");
+    const tally = root.querySelector("[data-tally]");
+    let cur = null, done = false;
+
+    const stats = () => { try { return JSON.parse(localStorage.getItem("kh-score") || '{"r":0,"t":0}'); } catch { return { r: 0, t: 0 }; } };
+    const paint = () => {
+      const s = stats();
+      if (!s.t) return;
+      tally.hidden = false;
+      tally.querySelector("[data-r]").textContent = s.r;
+      tally.querySelector("[data-t]").textContent = s.t;
+    };
+
+    function pick() {
+      let seen = [];
+      try { seen = JSON.parse(localStorage.getItem("kh-seen") || "[]"); } catch {}
+      const fresh = items.filter((i) => !seen.includes(i.s));
+      const pool = fresh.length ? fresh : items;
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    function load(item) {
+      cur = item; done = false;
+      root.querySelector("[data-case]").textContent = item.t;
+      root.querySelector("[data-claim-k]").textContent = item.k;
+      root.querySelector("[data-claim-e]").textContent = item.e;
+      reveal.hidden = true;
+      picks.forEach((b) => { b.disabled = false; b.removeAttribute("data-state"); });
+      paint();
+    }
+
+    picks.forEach((btn) => btn.addEventListener("click", () => {
+      if (done || !cur) return;
+      done = true;
+      const ok = btn.dataset.pick === cur.v;
+      picks.forEach((b) => {
+        b.disabled = true;
+        if (b.dataset.pick === cur.v) b.dataset.state = "right";
+        else if (b === btn) b.dataset.state = "wrong";
+        else b.dataset.state = "muted";
+      });
+      const tag = reveal.querySelector("[data-tag]");
+      tag.className = `tag tag-lg tag-${cur.v}`;
+      tag.textContent = LABEL[cur.v];
+      reveal.querySelector("[data-res]").textContent = ok ? "Bildin 🎯" : "Çoğu kişi burada yanılıyor";
+      reveal.querySelector("[data-sum]").textContent = cur.m;
+      reveal.querySelector("[data-link]").href = baseUrl + cur.s + "/";
+      reveal.hidden = false;
+      try {
+        const s = stats();
+        localStorage.setItem("kh-score", JSON.stringify({ r: s.r + (ok ? 1 : 0), t: s.t + 1 }));
+        const seen = JSON.parse(localStorage.getItem("kh-seen") || "[]");
+        if (!seen.includes(cur.s)) { seen.push(cur.s); localStorage.setItem("kh-seen", JSON.stringify(seen.slice(-120))); }
+      } catch {}
+      paint();
+    }));
+
+    root.querySelector("[data-next]")?.addEventListener("click", () => load(pick()));
+    load(random ? pick() : items[0]);
+  })();
+</script>

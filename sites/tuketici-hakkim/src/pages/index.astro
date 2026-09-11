@@ -1,0 +1,118 @@
+---
+import Base from "../layouts/Base.astro";
+import SearchBox from "../components/SearchBox.astro";
+import CaseCard from "../components/CaseCard.astro";
+import HeroNetwork from "../components/HeroNetwork.astro";
+import { cases, categories } from "../lib/cases";
+import { url, absUrl } from "../lib/url";
+
+const chips = [
+  "internetten-aldigim-urunu-iade",
+  "kargo-kayboldu",
+  "ayakkabi-tabani-ayrildi",
+  "abonelik-iptal-edilmiyor",
+  "ucus-rotar-iptal-tazminat",
+  "hakem-heyeti-mi-mahkeme-mi",
+].map((s) => cases.find((c) => c.slug === s)!);
+
+const populer = [
+  "internetten-aldigim-urunu-iade",
+  "telefon-ekrani-kendiliginden-bozuldu",
+  "kargo-kayboldu",
+  "magazadan-aldigim-urunu-iade",
+  "abonelik-iptal-edilmiyor",
+  "kampanya-fiyati-uygulanmadi",
+].map((s) => cases.find((c) => c.slug === s)!);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": absUrl("/") + "#website",
+      name: "Tüketici Hakkım",
+      url: absUrl("/"),
+      inLanguage: "tr-TR",
+      potentialAction: {
+        "@type": "SearchAction",
+        target: absUrl("/senaryolar/") + "?q={search_term_string}",
+        "query-input": "required name=search_term_string",
+      },
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: populer.map((c) => ({
+        "@type": "Question",
+        name: c.question,
+        acceptedAnswer: { "@type": "Answer", text: c.summary },
+      })),
+    },
+  ],
+};
+---
+
+<Base
+  title="Tüketici Hakkım — Bu durumda hakkım var mı?"
+  description="Ayıplı ürün, iade, kargo, garanti, abonelik ve seyahat uyuşmazlıklarında hakkınız var mı? Senaryo yazın, kanun maddesi ve başvuru adımlarıyla net cevabı görün."
+  path="/"
+  jsonLd={jsonLd}
+>
+  <section class="hero">
+    <HeroNetwork />
+    <div class="wrap">
+      <h1>Hakkım var mı?</h1>
+      <p class="lede">
+        Tüketici uyuşmazlıklarında durumunuzu yazın; kanun maddesi, süre ve başvuru adımlarıyla
+        net bir cevap alın.
+      </p>
+      <SearchBox />
+      <div class="chips">
+        {chips.map((c) => <a class="chip" href={url(`/${c.slug}/`)}>{c.title}</a>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="block-head">
+        <h2>En çok sorulanlar</h2>
+        <a href={url("/senaryolar/")}>Tüm senaryolar ({cases.length}) →</a>
+      </div>
+      <div class="grid grid-2">
+        {populer.map((c) => <CaseCard item={c} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="block-head"><h2>Konuya göre</h2></div>
+      <div class="grid grid-3">
+        {categories.map((cat) => {
+          const n = cases.filter((c) => c.category === cat).length;
+          return (
+            <a class="card" href={url(`/senaryolar/#${encodeURIComponent(cat)}`)}>
+              <h3 style="margin-bottom:4px">{cat}</h3>
+              <p>{n} senaryo</p>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap narrow">
+      <div class="cta">
+        <div>
+          <h3>Nereye başvuracağınızı bilmiyor musunuz?</h3>
+          <p>
+            Tutarınıza göre Tüketici Hakem Heyeti mi, Tüketici Mahkemesi mi görevli — ve başvuruyu
+            e-Devlet'ten nasıl yaparsınız?
+          </p>
+        </div>
+        <a class="btn" href={url("/basvuru-rehberi/")}>Başvuru rehberi</a>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,126 @@
+---
+import Base from "../../layouts/Base.astro";
+import { scalePairs } from "../../lib/cases";
+import { url } from "../../lib/url";
+
+const pairs = scalePairs.map((p) => ({
+  a: { s: p.a.slug, t: p.a.title, w: p.a.weight },
+  b: { s: p.b.slug, t: p.b.title, w: p.b.weight },
+}));
+---
+<Base
+  title="Kusur terazisi — hangisi daha ağır kusur? | Boşanma sebebi mi?"
+  description="İki davranış yan yana: boşanma davasında hangisi daha ağır kusur sayılır? Seçin, uygulamadaki karşılığını görün."
+  path="/terazi/"
+>
+  <section class="hero" style="padding-bottom:16px">
+    <div class="wrap narrow">
+      <p class="eyebrow">Kusur terazisi</p>
+      <h1 style="font-size:clamp(28px,5.6vw,42px)">Hangisi daha<br />ağır kusur?</h1>
+      <p class="lede">İki davranıştan birini seç. Boşanma davalarında kusur dağılımı tazminatı ve nafakayı doğrudan belirler.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:40px">
+    <div class="stage" data-scale>
+      <p style="color:var(--ink-3);font-size:13.5px;margin:0 0 14px"><b data-n>1</b> / <span data-tot></span> · Doğru: <b data-right>0</b></p>
+      <p style="font-size:17px;font-weight:700;margin:0 0 18px">Yargıtay uygulamasında hangisi genellikle daha ağır kusur sayılır?</p>
+
+      <div class="vs">
+        <button type="button" data-side="a"></button>
+        <button type="button" data-side="b"></button>
+      </div>
+
+      <div class="reveal" data-reveal hidden>
+        <p data-exp style="font-weight:600;color:var(--ink)"></p>
+        <p style="font-size:14px">Ağırlık, içtihat eğilimine dayanan bir göstergedir; somut olayın koşulları sonucu değiştirebilir.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn" type="button" data-next>Sonraki ikili →</button>
+          <a class="btn btn-2" data-la href="#">Soldaki</a>
+          <a class="btn btn-2" data-lb href="#">Sağdaki</a>
+        </div>
+      </div>
+
+      <div data-end hidden style="text-align:center">
+        <p class="eyebrow">Bitti</p>
+        <p class="score"><span data-score>0</span><span style="color:var(--ink-3);font-size:.5em">/<span data-tot2></span></span></p>
+        <p class="score-sub">Kusur ağırlığı sezgisi çoğu zaman içtihattan farklı çıkıyor.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+          <button class="btn" type="button" data-again>Yeniden oyna</button>
+          <a class="btn btn-2" href={url("/test/")}>Kusur testine geç</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" id="pairs" is:inline set:html={JSON.stringify(pairs)} />
+
+  <script is:inline define:vars={{ baseUrl: url("/") }}>
+    (() => {
+      const root = document.querySelector("[data-scale]");
+      const all = JSON.parse(document.getElementById("pairs").textContent);
+      const shuffle = (a) => { const x = [...a]; for (let i = x.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [x[i], x[j]] = [x[j], x[i]]; } return x; };
+      const btnA = root.querySelector('[data-side="a"]');
+      const btnB = root.querySelector('[data-side="b"]');
+      const rev = root.querySelector("[data-reveal]");
+      const end = root.querySelector("[data-end]");
+      let list = [], i = 0, right = 0, locked = false;
+
+      function start() {
+        list = shuffle(all).slice(0, 10);
+        i = 0; right = 0;
+        end.hidden = true;
+        root.querySelector(".vs").hidden = false;
+        root.querySelector("[data-tot]").textContent = list.length;
+        render();
+      }
+
+      function render() {
+        locked = false;
+        const p = list[i];
+        btnA.textContent = p.a.t; btnB.textContent = p.b.t;
+        [btnA, btnB].forEach((b) => { b.disabled = false; b.removeAttribute("data-state"); });
+        root.querySelector("[data-n]").textContent = i + 1;
+        root.querySelector("[data-right]").textContent = right;
+        rev.hidden = true;
+      }
+
+      function answer(side) {
+        if (locked) return;
+        locked = true;
+        const p = list[i];
+        const heavier = p.a.w > p.b.w ? "a" : "b";
+        const ok = side === heavier;
+        if (ok) right++;
+        (heavier === "a" ? btnA : btnB).dataset.state = "right";
+        if (!ok) (side === "a" ? btnA : btnB).dataset.state = "wrong";
+        [btnA, btnB].forEach((b) => (b.disabled = true));
+
+        const hv = heavier === "a" ? p.a : p.b;
+        const lw = heavier === "a" ? p.b : p.a;
+        root.querySelector("[data-exp]").textContent =
+          `${ok ? "Doğru." : "Yanılttı."} Uygulamada “${hv.t}” (${hv.w}/5) genellikle “${lw.t}” (${lw.w}/5) davranışından daha ağır kusur sayılır.`;
+        const la = rev.querySelector("[data-la]"), lb = rev.querySelector("[data-lb]");
+        la.href = baseUrl + p.a.s + "/"; la.textContent = p.a.t.length > 22 ? p.a.t.slice(0, 22) + "…" : p.a.t;
+        lb.href = baseUrl + p.b.s + "/"; lb.textContent = p.b.t.length > 22 ? p.b.t.slice(0, 22) + "…" : p.b.t;
+        rev.querySelector("[data-next]").textContent = i === list.length - 1 ? "Sonucu gör →" : "Sonraki ikili →";
+        rev.hidden = false;
+        root.querySelector("[data-right]").textContent = right;
+      }
+
+      btnA.addEventListener("click", () => answer("a"));
+      btnB.addEventListener("click", () => answer("b"));
+      rev.querySelector("[data-next]").addEventListener("click", () => {
+        if (i === list.length - 1) {
+          root.querySelector(".vs").hidden = true;
+          rev.hidden = true;
+          end.hidden = false;
+          root.querySelector("[data-score]").textContent = right;
+          root.querySelector("[data-tot2]").textContent = list.length;
+        } else { i++; render(); }
+      });
+      root.querySelector("[data-again]").addEventListener("click", start);
+      start();
+    })();
+  </script>
+</Base>

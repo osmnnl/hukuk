@@ -1,0 +1,112 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url } from "../../lib/url";
+---
+<Base
+  title="Kira artışı hesaplama — yasal üst sınır ne kadar?"
+  description="Mevcut kiranızı ve TÜFE oranını girin: yasal üst sınıra göre yeni kira, artış tutarı ve fazla ödeme kontrolü. Kira artış oranı TBK m.344'e göre hesaplanır."
+  path="/kira-artisi/"
+>
+  <section class="hero" style="padding-bottom:20px">
+    <div class="wrap narrow">
+      <p class="kicker">Hesaplayıcı</p>
+      <h1 style="font-size:clamp(27px,5.4vw,42px)">Yasal artış<br />ne kadar?</h1>
+      <p class="lede">
+        Yenilenen kira dönemlerinde artış, bir önceki kira yılına ait <strong>TÜFE on iki aylık ortalama
+        değişim oranını</strong> geçemez. Sözleşmede daha yüksek oran yazsa bile bu sınır uygulanır.
+      </p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:38px">
+    <div class="panel">
+      <div class="field">
+        <label for="kira">Mevcut aylık kira (TL)</label>
+        <input id="kira" type="number" inputmode="decimal" min="0" step="1" placeholder="Örn. 18000" />
+      </div>
+      <div class="field">
+        <label for="tufe">TÜFE 12 aylık ortalama değişim oranı (%)</label>
+        <input id="tufe" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Örn. 42.15" />
+        <p class="hint">
+          Kira yılınızın bittiği aya ait oranı kullanın. Güncel değer için
+          <a href="https://data.tuik.gov.tr/" target="_blank" rel="noopener nofollow">TÜİK</a>
+          tüketici fiyat endeksi haber bültenine bakın — "on iki aylık ortalamalara göre değişim" satırı.
+        </p>
+      </div>
+      <div class="field">
+        <label for="istenen">Ev sahibinin istediği yeni kira (TL) — isteğe bağlı</label>
+        <input id="istenen" type="number" inputmode="decimal" min="0" step="1" placeholder="Örn. 27000" />
+        <p class="hint">Girerseniz yasal sınırı aşıp aşmadığını da hesaplarız.</p>
+      </div>
+      <button class="btn" type="button" id="hesapla" style="width:100%">Hesapla</button>
+
+      <div id="sonuc" hidden style="margin-top:22px">
+        <div class="out">
+          <p style="font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:900;margin:0 0 2px">Yasal üst sınıra göre yeni kira</p>
+          <p class="big" id="yeni"></p>
+          <p style="margin:0;color:var(--ink-2);font-size:14.5px" id="detay"></p>
+        </div>
+        <div id="karsilastirma" hidden style="margin-top:14px"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+          <a class="btn btn-2" href={url("/sozlesmede-yuksek-artis-yazili/")}>Sözleşmede yüksek oran yazıyorsa</a>
+          <a class="btn btn-2" href={url("/kira-artisi-hesaplama-hatasi/")}>Fazla ödediysem?</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:18px;box-shadow:none">
+      <h2 style="font-size:16px;font-weight:900;margin:0 0 10px">Bilinmesi gerekenler</h2>
+      <ul style="margin:0;padding-left:20px;color:var(--ink-2);font-size:14.5px;line-height:1.75">
+        <li>Sınırı aşan artış geçersizdir; aşan kısım ödendiyse iadesi istenebilir.</li>
+        <li>Beş yıldan uzun süren kira ilişkilerinde hâkim, emsal kiraları da gözeterek bedeli yeniden belirleyebilir (kira tespit davası).</li>
+        <li>Dönemsel olarak yasa ile geçici artış tavanları getirilebilmiştir; hesap öncesi yürürlükteki düzenlemeyi kontrol edin.</li>
+        <li>Artış talebi yazılı bildirilmelidir; tespit davasının yeni dönem başından etkili olması için dönem başından en az 30 gün önce bildirim gerekir.</li>
+      </ul>
+    </div>
+
+    <p class="note" style="margin-top:18px">
+      Bu hesaplayıcı girdiğiniz orana göre aritmetik bir sonuç üretir; güncel oranı ve yürürlükteki
+      istisnaları doğrulamak size aittir. Sonuç hukuki görüş değildir.
+    </p>
+  </div>
+
+  <script is:inline>
+    (() => {
+      const tl = (n) => new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 2 }).format(n);
+      const q = (id) => document.getElementById(id);
+      q("hesapla").addEventListener("click", () => {
+        const kira = parseFloat(q("kira").value);
+        const tufe = parseFloat(q("tufe").value);
+        if (!(kira > 0) || !(tufe >= 0)) { alert("Kira ve TÜFE oranını girin."); return; }
+
+        const yeni = kira * (1 + tufe / 100);
+        const fark = yeni - kira;
+        q("yeni").textContent = tl(yeni);
+        q("detay").textContent = `Aylık artış ${tl(fark)} · Yıllık fark ${tl(fark * 12)} · Uygulanan oran %${tufe.toLocaleString("tr-TR")}`;
+
+        const istenen = parseFloat(q("istenen").value);
+        const kk = q("karsilastirma");
+        if (istenen > 0) {
+          const asim = istenen - yeni;
+          if (asim > 0.5) {
+            const oran = ((istenen / kira - 1) * 100).toLocaleString("tr-TR", { maximumFractionDigits: 2 });
+            kk.innerHTML = `<div class="out" style="border-color:var(--amber)">
+              <p style="font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber-ink);font-weight:900;margin:0 0 6px">Yasal sınır aşılıyor</p>
+              <p style="margin:0 0 6px;font-weight:800;font-size:17px">Aylık ${tl(asim)} fazla isteniyor</p>
+              <p style="margin:0;color:var(--ink-2);font-size:14.5px">İstenen artış oranı %${oran}; yasal üst sınır %${tufe.toLocaleString("tr-TR")}. Aşan kısım talep edilemez, ödendiyse iadesi istenebilir. Yıllık fazla: ${tl(asim * 12)}.</p></div>`;
+          } else {
+            kk.innerHTML = `<div class="out" style="border-color:#17803d">
+              <p style="font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:#17803d;font-weight:900;margin:0 0 6px">Sınır içinde</p>
+              <p style="margin:0;color:var(--ink-2);font-size:14.5px">İstenen tutar yasal üst sınırı aşmıyor.</p></div>`;
+          }
+          kk.hidden = false;
+        } else kk.hidden = true;
+
+        q("sonuc").hidden = false;
+        q("sonuc").scrollIntoView({ block: "nearest", behavior: "smooth" });
+      });
+      ["kira", "tufe", "istenen"].forEach((id) =>
+        document.getElementById(id).addEventListener("keydown", (e) => { if (e.key === "Enter") document.getElementById("hesapla").click(); }));
+    })();
+  </script>
+</Base>

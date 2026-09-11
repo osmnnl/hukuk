@@ -1,0 +1,31 @@
+---
+import Base from "../../layouts/Base.astro";
+import { surprising, notFault, aloneEnough, cases } from "../../lib/cases";
+import { url } from "../../lib/url";
+
+const lists = [
+  { slug: "kusur-sanilan", ico: "🙃", title: "Kusur sanılan ama olmayanlar", count: notFault.length, desc: "Herkesin boşanma sebebi sandığı ama uygulamada kusur sayılmayan davranışlar." },
+  { slug: "tek-basina", ico: "⚡", title: "Tek başına dava sebebi olabilenler", count: aloneEnough.length, desc: "Başka bir olguya gerek kalmadan boşanma sebebi olarak kabul edilebilen davranışlar." },
+  { slug: "sasirtici", ico: "💡", title: "Çoğu kişinin yanıldığı senaryolar", count: surprising.length, desc: "Sezginin en çok şaşırdığı başlıklar — tahmin etmeden bakmayın." },
+  { slug: "en-agir", ico: "⚠️", title: "En ağır kusur sayılanlar", count: cases.filter(c => c.weight >= 4).length, desc: "Tazminat ve nafaka sonuçlarını en çok etkileyen davranışlar." },
+];
+---
+<Base title="Listeler — boşanmada kusur sözlüğü" description="Kusur sanılan ama olmayanlar, tek başına dava sebebi olabilenler, en ağır kusurlar ve çoğu kişinin yanıldığı senaryolar." path="/listeler/">
+  <section class="hero" style="padding-bottom:10px">
+    <div class="wrap">
+      <p class="eyebrow">Listeler</p>
+      <h1 style="font-size:clamp(28px,5.6vw,42px)">Tahminleri bozan derlemeler</h1>
+      <p class="lede">Aynı sözlük, farklı açılardan. En çok şaşırtan başlıklarla başlayın.</p>
+    </div>
+  </section>
+  <div class="wrap" style="padding-bottom:40px">
+    <div class="grid g2">
+      {lists.map((l) => (
+        <a class="feature" href={url(`/listeler/${l.slug}/`)}>
+          <span class="ico">{l.ico}</span>
+          <span><h3>{l.title}</h3><p>{l.desc}</p><p style="color:var(--ink-3);margin-top:6px;font-size:13px">{l.count} senaryo</p></span>
+        </a>
+      ))}
+    </div>
+  </div>
+</Base>

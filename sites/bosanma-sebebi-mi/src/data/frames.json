@@ -1,0 +1,85 @@
+{
+  "evlilik-birligi": {
+    "category": "Evlilik Birliğinin Sarsılması",
+    "short": "TMK 166",
+    "basis": [
+      { "law": "4721 sayılı TMK", "article": "m.166/1", "note": "Evlilik birliğinin temelinden sarsılması" },
+      { "law": "4721 sayılı TMK", "article": "m.174", "note": "Maddi ve manevi tazminat" },
+      { "law": "4721 sayılı TMK", "article": "m.175", "note": "Yoksulluk nafakası" }
+    ],
+    "explain": "Boşanma davalarının büyük çoğunluğu bu genel sebebe dayanır. Ortak hayatı sürdürmesi kendisinden beklenemeyecek derecede birliğin sarsılması aranır; davacının kusuru daha ağırsa davalı itiraz edebilir.",
+    "evidence": "Tanık beyanı, mesaj ve arama kayıtları, kamera görüntüsü, sosyal medya paylaşımı, hastane ve kolluk kayıtları.",
+    "deadline": "Genel sebep için hak düşürücü süre yoktur; ancak affedilen veya hoşgörüyle karşılanan davranış dava sebebi yapılamaz.",
+    "consequence": "Kusur dağılımı; tazminat, yoksulluk nafakası ve bazı hâllerde velayet değerlendirmesinde belirleyici olur."
+  },
+  "zina": {
+    "category": "Zina",
+    "short": "TMK 161",
+    "basis": [
+      { "law": "4721 sayılı TMK", "article": "m.161", "note": "Zina özel boşanma sebebidir" },
+      { "law": "4721 sayılı TMK", "article": "m.174/2", "note": "Manevi tazminat" }
+    ],
+    "explain": "Zina, mutlak boşanma sebeplerindendir: ispatlandığında hâkim birliğin sarsılıp sarsılmadığını ayrıca araştırmaz. İspat edilemeyen hâllerde olay çoğu zaman güven sarsıcı davranış olarak değerlendirilir.",
+    "evidence": "Otel kaydı, fotoğraf ve video, tanık, mesaj içeriği; hukuka aykırı yolla elde edilen deliller değerlendirme dışı bırakılabilir.",
+    "deadline": "Öğrenmeden itibaren 6 ay, her hâlde olaydan itibaren 5 yıl. Affeden dava açamaz.",
+    "consequence": "Zina ispatlanırsa kusur ağırdır; manevi tazminat ve yoksulluk nafakası talepleri bundan doğrudan etkilenir."
+  },
+  "hayata-kast": {
+    "category": "Şiddet ve Onur Kırıcı Davranış",
+    "short": "TMK 162",
+    "basis": [
+      { "law": "4721 sayılı TMK", "article": "m.162", "note": "Hayata kast, pek kötü veya onur kırıcı davranış" },
+      { "law": "6284 sayılı Kanun", "article": "-", "note": "Ailenin korunması ve kadına yönelik şiddetin önlenmesi" }
+    ],
+    "explain": "Eşin canına kastetme, işkence düzeyine varan davranışlar ve onur kırıcı muameleler özel boşanma sebebidir. Bu hâllerde koruyucu ve önleyici tedbir kararı ayrıca ve acilen istenebilir.",
+    "evidence": "Darp raporu, hastane kaydı, kolluk tutanağı, 6284 sayılı Kanun kapsamındaki tedbir kararları, tanık.",
+    "deadline": "Öğrenmeden itibaren 6 ay, her hâlde olaydan itibaren 5 yıl. Af hâlinde dava hakkı düşer.",
+    "consequence": "Ağır kusur sayılır; tazminat, nafaka ve velayet değerlendirmesini güçlü biçimde etkiler."
+  },
+  "suc-haysiyetsiz": {
+    "category": "Suç İşleme ve Haysiyetsiz Hayat",
+    "short": "TMK 163",
+    "basis": [
+      { "law": "4721 sayılı TMK", "article": "m.163", "note": "Küçük düşürücü suç işleme ve haysiyetsiz hayat sürme" }
+    ],
+    "explain": "Eşlerden birinin küçük düşürücü bir suç işlemesi veya haysiyetsiz bir hayat sürmesi, diğer eş için ortak hayatı çekilmez kılıyorsa boşanma sebebidir. Süreklilik ve çekilmezlik birlikte aranır.",
+    "evidence": "Ceza mahkemesi kararı, iddianame, kolluk kayıtları, tanık beyanı.",
+    "deadline": "Hak düşürücü süre yoktur; davranış devam ettiği sürece dava açılabilir.",
+    "consequence": "Kusur ağır kabul edilir; tazminat ve nafaka taleplerini etkiler."
+  },
+  "terk": {
+    "category": "Terk",
+    "short": "TMK 164",
+    "basis": [
+      { "law": "4721 sayılı TMK", "article": "m.164", "note": "Terk sebebiyle boşanma ve ihtar usulü" }
+    ],
+    "explain": "Eşlerden biri ortak hayatı sürdürmek için diğerini terk ettiğinde veya haklı sebep olmaksızın eve dönmediğinde uygulanır. Usulüne uygun ihtar çekilmesi ve sürelerin eksiksiz işlemesi şarttır; usul hatası davayı düşürür.",
+    "evidence": "Noter veya mahkeme aracılığıyla çekilen ihtar, tebligat parçası, bağımsız konutun hazır olduğunu gösteren belgeler.",
+    "deadline": "Ayrılık en az 6 ay sürmeli, ihtar bu sürenin 4. ayından sonra çekilmeli ve ihtardan sonra 2 ay içinde dönülmemiş olmalıdır.",
+    "consequence": "Terk eden eş kusurlu sayılır; ihtarın samimi ve usulüne uygun olması aranır."
+  },
+  "akil-hastaligi": {
+    "category": "Akıl Hastalığı",
+    "short": "TMK 165",
+    "basis": [
+      { "law": "4721 sayılı TMK", "article": "m.165", "note": "Akıl hastalığı sebebiyle boşanma" }
+    ],
+    "explain": "Eşlerden biri akıl hastasıysa ve bu yüzden ortak hayat diğer eş için çekilmez hâle gelmişse boşanma istenebilir. Hastalığın geçmesine olanak bulunmadığının resmî sağlık kurulu raporuyla tespiti zorunludur.",
+    "evidence": "Resmî sağlık kurulu raporu, tedavi kayıtları, tanık beyanı.",
+    "deadline": "Hak düşürücü süre yoktur; çekilmezlik hâli sürdüğü sürece dava açılabilir.",
+    "consequence": "Hastalık kusur sayılmaz; bu sebep kusura değil, çekilmezlik olgusuna dayanır."
+  },
+  "usul": {
+    "category": "Dava ve Süreç",
+    "short": "Usul",
+    "basis": [
+      { "law": "4721 sayılı TMK", "article": "m.166/3", "note": "Anlaşmalı boşanma" },
+      { "law": "4721 sayılı TMK", "article": "m.166/4", "note": "Fiili ayrılık sebebiyle boşanma" },
+      { "law": "6100 sayılı HMK", "article": "-", "note": "Yargılama usulü, deliller ve yetki" }
+    ],
+    "explain": "Boşanma davasının nasıl açılacağı, hangi mahkemenin yetkili olduğu, delillerin nasıl sunulacağı ve sürecin nasıl işlediğine ilişkin kurallar.",
+    "evidence": "Dava dilekçesi, delil listesi, tanık listesi, protokol (anlaşmalı boşanmada).",
+    "deadline": "Anlaşmalı boşanma için evliliğin en az 1 yıl sürmüş olması; fiili ayrılık sebebiyle dava için reddedilen boşanma kararından sonra 3 yıl geçmesi gerekir.",
+    "consequence": "Usule aykırılık, esasen haklı bir talebin bile reddedilmesine yol açabilir."
+  }
+}

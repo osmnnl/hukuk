@@ -1,0 +1,132 @@
+---
+import { cases, verdictLabel } from "../lib/cases";
+import { url } from "../lib/url";
+
+/**
+ * Ana hook: önce tahmin, sonra cevap.
+ * mode="single" → belirli bir senaryo (detay sayfası)
+ * mode="random" → her ziyarette farklı senaryo (ana sayfa)
+ */
+interface Props { slug?: string; mode?: "single" | "random"; title?: string }
+const { slug, mode = "single", title } = Astro.props;
+
+const pool = cases.filter((c) => c.frame !== "usul");
+const payload = mode === "random"
+  ? pool.map((c) => ({ s: c.slug, q: c.question, v: c.verdict, m: c.summary }))
+  : (() => { const c = cases.find((x) => x.slug === slug)!; return [{ s: c.slug, q: c.question, v: c.verdict, m: c.summary }]; })();
+---
+
+<div class="guess" data-guess data-mode={mode}>
+  {title && <p class="eyebrow" style="margin:0 0 10px">{title}</p>}
+  <p class="q" data-q></p>
+  <p class="sub">Önce sen tahmin et — sonra Yargıtay uygulamasındaki karşılığını gör.</p>
+  <div class="guess-opts">
+    <button type="button" data-pick="kusur"><span class="k">1</span>Kusur sayılır</button>
+    <button type="button" data-pick="kosullu"><span class="k">2</span>Duruma göre değişir</button>
+    <button type="button" data-pick="degil"><span class="k">3</span>Kusur sayılmaz</button>
+  </div>
+
+  <div class="reveal" data-reveal hidden>
+    <div class="verdict-row">
+      <span class="tag tag-lg" data-tag></span>
+      <strong data-result style="font-size:16px"></strong>
+    </div>
+    <p data-summary></p>
+    <a class="more" data-link href="#">Ayrıntılı açıklama ve dayanak madde →</a>
+  </div>
+
+  <div class="streak" data-streak hidden>
+    <span>Skorun: <b data-right>0</b> / <b data-total>0</b></span>
+    {mode === "random" && <button class="btn btn-2" type="button" data-next style="margin-left:auto;padding:8px 18px;font-size:13.5px">Yeni soru</button>}
+  </div>
+</div>
+
+<script type="application/json" data-guess-data is:inline set:html={JSON.stringify(payload)} />
+
+<script is:inline define:vars={{ baseUrl: url("/"), labels: verdictLabel }}>
+  (() => {
+    const root = document.querySelector("[data-guess]");
+    const dataEl = document.querySelector("[data-guess-data]");
+    if (!root || !dataEl) return;
+
+    const items = JSON.parse(dataEl.textContent);
+    const random = root.dataset.mode === "random";
+    const qEl = root.querySelector("[data-q]");
+    const opts = [...root.querySelectorAll("[data-pick]")];
+    const reveal = root.querySelector("[data-reveal]");
+    const streak = root.querySelector("[data-streak]");
+    let current = null, answered = false;
+
+    const stats = () => {
+      try { return JSON.parse(localStorage.getItem("bs-score") || '{"r":0,"t":0}'); }
+      catch { return { r: 0, t: 0 }; }
+    };
+    const paintStreak = () => {
+      const s = stats();
+      if (!s.t) return;
+      streak.hidden = false;
+      streak.querySelector("[data-right]").textContent = s.r;
+      streak.querySelector("[data-total]").textContent = s.t;
+    };
+
+    /** Görülmemiş soruları önceliklendir — her ziyarette yeni içerik. */
+    function pick() {
+      let seen = [];
+      try { seen = JSON.parse(localStorage.getItem("bs-seen") || "[]"); } catch {}
+      const fresh = items.filter((i) => !seen.includes(i.s));
+      const pool = fresh.length ? fresh : items;
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    function load(item) {
+      current = item;
+      answered = false;
+      qEl.textContent = item.q;
+      reveal.hidden = true;
+      opts.forEach((b) => { b.disabled = false; b.removeAttribute("data-state"); });
+      paintStreak();
+    }
+
+    opts.forEach((btn) => btn.addEventListener("click", () => {
+      if (answered || !current) return;
+      answered = true;
+      const picked = btn.dataset.pick;
+      const ok = picked === current.v;
+
+      opts.forEach((b) => {
+        b.disabled = true;
+        if (b.dataset.pick === current.v) b.dataset.state = "right";
+        else if (b === btn) b.dataset.state = "wrong";
+        else b.dataset.state = "muted";
+      });
+
+      const tag = reveal.querySelector("[data-tag]");
+      tag.className = `tag tag-lg tag-${current.v}`;
+      tag.textContent = { kusur: "KUSUR", degil: "KUSUR DEĞİL", kosullu: "DURUMA GÖRE" }[current.v];
+      reveal.querySelector("[data-result]").textContent = ok ? "Bildin 🎉" : "Çoğu kişi de yanılıyor";
+      reveal.querySelector("[data-summary]").textContent = current.m;
+      reveal.querySelector("[data-link]").href = baseUrl + current.s + "/";
+      reveal.hidden = false;
+
+      try {
+        const s = stats();
+        localStorage.setItem("bs-score", JSON.stringify({ r: s.r + (ok ? 1 : 0), t: s.t + 1 }));
+        const seen = JSON.parse(localStorage.getItem("bs-seen") || "[]");
+        if (!seen.includes(current.s)) {
+          seen.push(current.s);
+          localStorage.setItem("bs-seen", JSON.stringify(seen.slice(-120)));
+        }
+      } catch {}
+      paintStreak();
+    }));
+
+    root.querySelector("[data-next]")?.addEventListener("click", () => load(pick()));
+    document.addEventListener("keydown", (e) => {
+      if (["1", "2", "3"].includes(e.key) && document.activeElement?.tagName !== "INPUT") {
+        opts[Number(e.key) - 1]?.click();
+      }
+    });
+
+    load(random ? pick() : items[0]);
+  })();
+</script>

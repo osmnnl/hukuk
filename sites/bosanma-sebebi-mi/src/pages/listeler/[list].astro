@@ -1,0 +1,44 @@
+---
+import Base from "../../layouts/Base.astro";
+import CaseCard from "../../components/CaseCard.astro";
+import { surprising, notFault, aloneEnough, cases, type Case } from "../../lib/cases";
+import { url } from "../../lib/url";
+
+export function getStaticPaths() {
+  const defs = [
+    { list: "kusur-sanilan", title: "Kusur sanılan ama olmayanlar", lede: "Sık sık “bu kesin boşanma sebebidir” denilen ama uygulamada tek başına kusur sayılmayan davranışlar.", items: notFault, hide: true },
+    { list: "tek-basina", title: "Tek başına dava sebebi olabilenler", lede: "Başka bir olguya ihtiyaç duyulmadan, kendi başına boşanma sebebi olarak kabul edilebilen davranışlar.", items: aloneEnough, hide: false },
+    { list: "sasirtici", title: "Çoğu kişinin yanıldığı senaryolar", lede: "Cevabı görmeden önce tahmin edin — bu başlıklarda sezgi çoğu zaman yanılıyor.", items: surprising, hide: true },
+    { list: "en-agir", title: "En ağır kusur sayılanlar", lede: "Kusur ağırlığı yüksek olan bu davranışlar tazminat, nafaka ve velayet değerlendirmesini en çok etkileyenler.", items: cases.filter((c) => c.weight >= 4), hide: false },
+  ];
+  return defs.map((d) => ({ params: { list: d.list }, props: d }));
+}
+interface Props { title: string; lede: string; items: Case[]; hide: boolean; list: string }
+const { title, lede, items, hide, list } = Astro.props as Props;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: title,
+  numberOfItems: items.length,
+  itemListElement: items.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.title })),
+};
+---
+<Base title={`${title} — Boşanma sebebi mi?`} description={lede} path={`/listeler/${list}/`} jsonLd={jsonLd}>
+  <section class="hero" style="padding-bottom:10px">
+    <div class="wrap">
+      <nav class="crumbs" style="padding-top:0"><a href={url("/listeler/")}>Listeler</a><span>/</span>{title}</nav>
+      <h1 style="font-size:clamp(27px,5.4vw,40px)">{title}</h1>
+      <p class="lede">{lede}</p>
+      <p style="color:var(--ink-3);font-size:14px;margin:0">{items.length} senaryo</p>
+    </div>
+  </section>
+  <div class="wrap" style="padding-bottom:40px">
+    <div class="grid g2">{items.map((c) => <CaseCard item={c} hideVerdict={hide} />)}</div>
+    <div class="feature" style="margin-top:24px">
+      <span class="ico">🎯</span>
+      <span><h3>Sezgini test et</h3><p>12 soruluk kusur testinde kaç doğru yapacaksın?</p></span>
+      <a class="btn" href={url("/test/")} style="margin-left:auto">Teste git</a>
+    </div>
+  </div>
+</Base>

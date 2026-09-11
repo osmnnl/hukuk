@@ -1,0 +1,59 @@
+---
+import Base from "../../layouts/Base.astro";
+import SearchBox from "../../components/SearchBox.astro";
+import Verdict from "../../components/Verdict.astro";
+import { cases, categories } from "../../lib/cases";
+import { url } from "../../lib/url";
+---
+<Base
+  title="Kusur sözlüğü — tüm senaryolar | Boşanma sebebi mi?"
+  description={`Boşanma davalarında kusur sayılan ve sayılmayan ${cases.length} davranış; her biri dayanak madde, süre ve ispat bilgisiyle.`}
+  path="/senaryolar/"
+>
+  <section class="hero" style="padding-bottom:8px">
+    <div class="wrap">
+      <p class="eyebrow">Kusur sözlüğü</p>
+      <h1 style="font-size:clamp(28px,5.6vw,42px)">A'dan Z'ye davranışlar</h1>
+      <p class="lede">Sözlükte <strong>{cases.length}</strong> senaryo var. Arayın veya konuya göre daraltın.</p>
+      <SearchBox placeholder="Davranış ara…" />
+      <div class="filters" id="f">
+        <button type="button" data-c="*" aria-pressed="true">Tümü</button>
+        {categories.map((c) => <button type="button" data-c={c} aria-pressed="false">{c}</button>)}
+      </div>
+      <p class="count" id="cnt">{cases.length} senaryo</p>
+    </div>
+  </section>
+
+  <div class="wrap" style="padding-bottom:40px">
+    {categories.map((cat) => (
+      <section data-group={cat} style="padding-top:22px">
+        <div class="head"><h2>{cat}</h2></div>
+        <div class="grid g2">
+          {cases.filter((c) => c.category === cat).map((c) => (
+            <a class="card" href={url(`/${c.slug}/`)}>
+              <Verdict v={c.verdict} />
+              <h3>{c.title}</h3>
+              <p>{c.summary}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    ))}
+  </div>
+
+  <script is:inline>
+    const groups = [...document.querySelectorAll("[data-group]")];
+    const cnt = document.getElementById("cnt");
+    const total = groups.reduce((n, g) => n + g.querySelectorAll(".card").length, 0);
+    document.getElementById("f")?.addEventListener("click", (e) => {
+      const b = e.target.closest("button[data-c]");
+      if (!b) return;
+      const c = b.dataset.c;
+      document.querySelectorAll("#f button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+      let shown = 0;
+      groups.forEach((g) => { const m = c === "*" || g.dataset.group === c; g.hidden = !m; if (m) shown += g.querySelectorAll(".card").length; });
+      cnt.textContent = `${shown} senaryo${c === "*" ? "" : ` · ${c}`}`;
+    });
+    cnt.textContent = `${total} senaryo`;
+  </script>
+</Base>
