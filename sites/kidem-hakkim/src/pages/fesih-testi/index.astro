@@ -1,0 +1,179 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url } from "../../lib/url";
+---
+<Base
+  title="Haklı fesih testi — tazminat alabilir miyim?"
+  description="Birkaç soruda değerlendirin: ayrılışınız kıdem tazminatı doğuruyor mu, işe iade davası açabilir misiniz, hangi süreler işliyor?"
+  path="/fesih-testi/"
+>
+  <section class="hero" style="padding-bottom:16px">
+    <div class="wrap narrow">
+      <p class="kick">Karar aracı</p>
+      <h1>Tazminat<br />alabilir misin?</h1>
+      <p class="lede">Ayrılış şeklinize göre hangi hakların doğduğunu, hangi sürelerin işlediğini ve ilk adımın ne olduğunu gösterir.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <div class="panel" data-wiz>
+      <div data-q>
+        <p style="font-size:clamp(18px,3.6vw,23px);font-weight:800;letter-spacing:-.02em;margin:0 0 6px" data-title></p>
+        <p style="color:var(--ink-3);font-size:13.5px;margin:0 0 18px" data-sub></p>
+        <div class="grid" style="gap:9px" data-opts></div>
+        <button class="btn btn-2" type="button" data-back style="margin-top:14px;display:none">← Geri</button>
+      </div>
+
+      <div data-out hidden>
+        <p class="kick">Sonuç</p>
+        <p style="font-size:clamp(22px,5vw,32px);font-weight:850;letter-spacing:-.03em;line-height:1.15;margin:6px 0 10px" data-head></p>
+        <p style="color:var(--ink-2);margin:0 0 18px" data-body></p>
+        <ul class="checks" data-rights style="margin-bottom:16px"></ul>
+        <div class="note" style="border-color:var(--amber);margin-bottom:16px" data-sure></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap" data-links></div>
+        <button class="btn btn-2" type="button" data-again style="margin-top:12px">Baştan başla</button>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline define:vars={{ baseUrl: url("/") }}>
+    (() => {
+      const root = document.querySelector("[data-wiz]");
+      const Q = {
+        kim: {
+          t: "İş sözleşmesi nasıl sona erdi?",
+          s: "Ayrılışı kimin başlattığı, hangi hakların doğduğunu belirler.",
+          o: [["isveren", "İşveren çıkardı"], ["ben", "Ben ayrıldım"], ["anlasma", "Karşılıklı anlaşma (ikale)"]],
+          n: (a) => (a.kim === "isveren" ? "sebep" : a.kim === "ben" ? "nedenim" : "son"),
+        },
+        sebep: {
+          t: "İşveren gerekçe olarak ne gösterdi?",
+          s: "Gerekçenin türü, kıdem hakkını ve işe iade ihtimalini değiştirir.",
+          o: [
+            ["yok", "Gerekçe gösterilmedi / belirsiz"],
+            ["performans", "Performans veya ekonomik sebep"],
+            ["disiplin", "Disiplin / haklı sebep iddiası (devamsızlık, güven ihlali)"],
+          ],
+          n: () => "sure",
+        },
+        nedenim: {
+          t: "Ayrılma sebebiniz hangisi?",
+          s: "Bazı sebepler istifa olmasına rağmen kıdem hakkı doğurur.",
+          o: [
+            ["haklı", "Ücret ödenmedi / sigortasız çalıştırıldım / mobbing"],
+            ["askerlik", "Askerlik, emeklilik veya evlilik (kadın işçi, 1 yıl içinde)"],
+            ["kisisel", "Kişisel sebep — başka iş, taşınma vb."],
+          ],
+          n: () => "sure",
+        },
+        sure: {
+          t: "Ne kadar süre çalıştınız?",
+          s: "Kıdem tazminatı için en az 1 yıl, işe iade için en az 6 ay gerekir.",
+          o: [["az", "1 yıldan az"], ["orta", "1-5 yıl"], ["uzun", "5 yıldan fazla"]],
+          n: (a) => (a.kim === "isveren" ? "isyeri" : "son"),
+        },
+        isyeri: {
+          t: "İşyerinde kaç kişi çalışıyor?",
+          s: "İşe iade davası için işyerinde en az 30 işçi şartı aranır.",
+          o: [["az", "30'dan az"], ["cok", "30 veya daha fazla"], ["bilmiyorum", "Bilmiyorum"]],
+          n: () => "son",
+        },
+      };
+
+      const R = {
+        isverenNormal: {
+          h: "Kıdem ve ihbar tazminatı hakkın var",
+          b: "İşveren haklı bir sebep göstermeden feshettiğinde, bir yıllık kıdemi olan işçi kıdem tazminatına hak kazanır. Ayrıca bildirim sürelerine uyulmadıysa ihbar tazminatı da doğar.",
+          r: ["Kıdem tazminatı (1 yıl ve üzeri kıdemde)", "İhbar tazminatı (kıdeme göre 2-8 hafta)", "Kullanılmayan yıllık izin ücreti", "Ödenmemiş fazla mesai ve tatil ücretleri", "İşsizlik ödeneği başvurusu"],
+          s: "İşsizlik ödeneği için fesihten itibaren <strong>30 gün</strong> içinde İŞKUR'a başvurun. Alacak davalarında zamanaşımı 5 yıldır.",
+        },
+        isverenIade: {
+          h: "İşe iade davası açabilirsin",
+          b: "En az 30 işçi çalıştıran işyerinde, en az 6 aylık kıdemi olan işçinin feshi geçerli bir sebebe dayanmak zorundadır. Gerekçe gösterilmemiş veya belgelenmemişse fesih geçersiz sayılabilir.",
+          r: ["İşe iade davası", "4-8 aylık ücret tutarında işe başlatmama tazminatı", "En çok 4 aya kadar boşta geçen süre ücreti", "Kıdem ve ihbar tazminatı", "Kullanılmayan izin ücreti"],
+          s: "⏳ <strong>En kritik süre burada:</strong> fesih bildiriminden itibaren <strong>1 ay</strong> içinde arabulucuya başvurmazsanız işe iade hakkınız tamamen kapanır. Bu süre hak düşürücüdür.",
+        },
+        isverenDisiplin: {
+          h: "Tartışmalı — ispat yükü işverende",
+          b: "İşveren haklı nedenle fesih iddiasında bulunuyorsa, bu sebebi somut biçimde ispatlamak zorundadır. Tutanaklar gerçeği yansıtmıyorsa veya savunmanız alınmadıysa fesih geçersiz sayılabilir ve tazminat hakkınız doğar.",
+          r: ["Feshin geçersizliği iddiası", "Kıdem ve ihbar tazminatı (fesih haksız bulunursa)", "İşe iade (koşulları varsa)", "Kullanılmayan izin ücreti"],
+          s: "İşveren, haklı nedenle fesih hakkını olayı öğrendiği tarihten itibaren <strong>6 iş günü</strong> içinde kullanmak zorundadır. Bu süre geçmişse fesih haklı sayılmaz.",
+        },
+        istifaHakli: {
+          h: "Haklı nedenle fesih — kıdem tazminatı doğar",
+          b: "Ücretin ödenmemesi, sigortasız çalıştırma, mobbing veya çalışma koşullarında esaslı değişiklik gibi sebepler işçiye haklı nedenle derhal fesih hakkı verir. Bu, istifa gibi görünse de kıdem tazminatı doğurur.",
+          r: ["Kıdem tazminatı (1 yıl ve üzeri kıdemde)", "Ödenmemiş ücret, fazla mesai ve tatil alacakları", "Kullanılmayan izin ücreti", "Mobbing varsa manevi tazminat"],
+          s: "Fesih bildiriminizde gerekçeyi <strong>açıkça yazın</strong> — \"kişisel nedenlerle\" ifadesi sonradan haklı fesih iddianızı çürütür. Haklı fesih hakkı, sebebi öğrendikten sonra 6 iş günü içinde kullanılmalıdır.",
+        },
+        istifaOzel: {
+          h: "Kıdem tazminatı hakkın var",
+          b: "Askerlik, emeklilik ve kadın işçinin evlilik tarihinden itibaren bir yıl içinde ayrılması, istifa olmasına rağmen kanunen kıdem tazminatı doğuran istisnalardır.",
+          r: ["Kıdem tazminatı (1 yıl ve üzeri kıdemde)", "Kullanılmayan yıllık izin ücreti", "Askerlik dönüşü eski işe öncelikli başvuru"],
+          s: "Belgeyi dilekçenize ekleyin: sevk belgesi, SGK'nın \"kıdem tazminatı alabilir\" yazısı veya evlilik cüzdanı. Evlilikte <strong>1 yıllık</strong> süre hak düşürücüdür.",
+        },
+        istifaKisisel: {
+          h: "Kıdem tazminatı doğmaz",
+          b: "Kişisel sebeplerle yapılan istifada kıdem ve ihbar tazminatı doğmaz. Ancak çalıştığınız döneme ait diğer alacaklarınız aynen durur.",
+          r: ["Kullanılmayan yıllık izin ücreti", "Ödenmemiş ücret, fazla mesai ve tatil ücretleri", "Varsa prim ve ikramiye alacakları"],
+          s: "Bildirim sürelerine uymadan ayrılırsanız <strong>işverene ihbar tazminatı ödemek</strong> zorunda kalabilirsiniz. Gerçekte haklı bir nedeniniz varsa testi o seçenekle tekrarlayın.",
+        },
+        ikale: {
+          h: "İkale — şartlarına dikkat",
+          b: "Karşılıklı anlaşmayla (ikale) sona erdirmede kural olarak kıdem ve ihbar tazminatı ile işe iade hakkı doğmaz. Bu nedenle anlaşmanın işçiye \"makul yarar\" sağlaması aranır.",
+          r: ["Sözleşmede kararlaştırılan ödemeler", "Kullanılmayan izin ücreti", "Makul yarar yoksa ikalenin geçersizliği iddiası"],
+          s: "İkale teklifini imzalamadan önce mutlaka hesaplatın: kıdem + ihbar + izin toplamından düşük bir teklif, çoğu zaman aleyhinizedir. İşsizlik ödeneği de çoğu ikalede alınamaz.",
+        },
+      };
+
+      let stack = ["kim"], ans = {};
+      const elT = root.querySelector("[data-title]"), elS = root.querySelector("[data-sub]");
+      const elO = root.querySelector("[data-opts]"), elB = root.querySelector("[data-back]");
+      const qb = root.querySelector("[data-q]"), ob = root.querySelector("[data-out]");
+
+      function render() {
+        const k = stack[stack.length - 1];
+        if (k === "son") return finish();
+        const q = Q[k];
+        elT.textContent = q.t; elS.textContent = q.s;
+        elO.innerHTML = q.o.map(([v, l]) =>
+          `<button class="card" type="button" data-v="${v}" style="text-align:left;cursor:pointer;font-family:inherit;font-size:15.5px;font-weight:650;width:100%">${l}</button>`).join("");
+        elB.style.display = stack.length > 1 ? "inline-flex" : "none";
+        qb.hidden = false; ob.hidden = true;
+      }
+      elO.addEventListener("click", (e) => {
+        const b = e.target.closest("button[data-v]"); if (!b) return;
+        const k = stack[stack.length - 1];
+        ans[k] = b.dataset.v;
+        stack.push(Q[k].n(ans));
+        render();
+      });
+      elB.addEventListener("click", () => { stack.pop(); render(); });
+      root.querySelector("[data-again]").addEventListener("click", () => { stack = ["kim"]; ans = {}; render(); });
+
+      function resolve() {
+        if (ans.kim === "anlasma") return R.ikale;
+        if (ans.kim === "ben") {
+          if (ans.nedenim === "haklı") return R.istifaHakli;
+          if (ans.nedenim === "askerlik") return R.istifaOzel;
+          return R.istifaKisisel;
+        }
+        if (ans.sebep === "disiplin") return R.isverenDisiplin;
+        if (ans.isyeri === "cok" && ans.sure !== "az") return R.isverenIade;
+        return R.isverenNormal;
+      }
+
+      function finish() {
+        const v = resolve();
+        qb.hidden = true; ob.hidden = false;
+        root.querySelector("[data-head]").textContent = v.h;
+        root.querySelector("[data-body]").textContent = v.b;
+        root.querySelector("[data-rights]").innerHTML = v.r.map((x) => `<li>${x}</li>`).join("");
+        root.querySelector("[data-sure]").innerHTML = v.s;
+        root.querySelector("[data-links]").innerHTML =
+          `<a class="btn" href="${baseUrl}hesapla/">Ne kadar alacağımı hesapla →</a>` +
+          `<a class="btn btn-2" href="${baseUrl}haklarim/">Tüm haklarıma bak</a>`;
+      }
+      render();
+    })();
+  </script>
+</Base>

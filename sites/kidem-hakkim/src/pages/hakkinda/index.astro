@@ -1,0 +1,38 @@
+---
+import Base from "../../layouts/Base.astro";
+import { cases, frames } from "../../lib/cases";
+---
+<Base title="Hakkında — Kıdem Hakkım" description="Bu site ne yapar, hesaplayıcı nasıl çalışır, sınırları nelerdir?" path="/hakkinda/">
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <section class="hero" style="padding:36px 0 6px">
+      <p class="kick">Hakkında</p>
+      <h1 style="font-size:clamp(26px,5.2vw,38px)">Bu site ne yapar?</h1>
+      <p class="lede">İşten ayrılırken doğan hakları tek tek ele alır ve iki soruya cevap verir:
+      <strong>hakkın var mı</strong> ve <strong>ne kadar</strong>.</p>
+    </section>
+    <section class="sec"><h2>Kapsam</h2>
+      <p>{cases.length} durum, {Object.keys(frames).length} başlık altında: {Object.values(frames).map((f) => f.topic).join(", ")}.</p></section>
+    <section class="sec"><h2>Hesaplayıcı nasıl çalışır</h2>
+      <p>Kıdem tazminatı giydirilmiş brüt ücret üzerinden, çalışma gün sayısı 365'e bölünerek hesaplanır ve
+      girdiğiniz tavanla sınırlanır. Kıdemden yalnızca damga vergisi (binde 7,59) kesilir, gelir vergisi kesilmez.
+      İhbar tazminatı kıdeme göre 2-8 hafta üzerinden hesaplanır ve gelir vergisi + damga vergisine tabidir.
+      Yıllık izin ücreti çıplak brüt ücret üzerinden hesaplanır.</p>
+      <p>Kıdem tavanı ve vergi dilimi <strong>sizden istenir</strong>, siteye gömülü değildir — bu değerler her yıl
+      (tavan yılda iki kez) değişir ve statik bir sitede otomatik güncellenemez. Uydurma bir rakam vermek
+      yerine güncel değeri sizin doğrulamanızı tercih ettik.</p></section>
+    <section class="sec"><h2>Kaynaklar</h2>
+      <ul class="laws">
+        <li><b>4857 sayılı İş Kanunu</b> <code>m.17-21</code> — fesih, ihbar, işe iade</li>
+        <li><b>1475 sayılı İş Kanunu</b> <code>m.14</code> — kıdem tazminatı (yürürlükteki tek madde)</li>
+        <li><b>4857 sayılı İş Kanunu</b> <code>m.32-47</code> — ücret, fazla çalışma, tatiller</li>
+        <li><b>4857 sayılı İş Kanunu</b> <code>m.53-63</code> — yıllık izin ve çalışma süreleri</li>
+        <li><b>5510 sayılı Kanun</b> — sigortalılık ve prim yükümlülükleri</li>
+        <li><b>7036 sayılı İş Mahkemeleri Kanunu</b> — zorunlu arabuluculuk</li>
+      </ul></section>
+    <section class="sec" style="border-bottom:0"><h2>Sınırları</h2>
+      <p>Buradaki içerik <strong>hukuki danışmanlık değildir</strong>. İş davalarında sonucu belirleyen şey
+      delil durumu ve olayın ayrıntısıdır. Özellikle dikkat: işe iade için <strong>1 ay</strong>, haklı nedenle
+      fesih için <strong>6 iş günü</strong> gibi süreler hak düşürücüdür — kaçırılırsa hak tamamen kapanır.
+      İbraname veya ikale imzalamadan önce mutlaka hesaplatın ve bir avukata danışın.</p></section>
+  </div>
+</Base>

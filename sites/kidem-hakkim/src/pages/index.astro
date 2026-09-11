@@ -1,0 +1,73 @@
+---
+import Base from "../layouts/Base.astro";
+import SearchBox from "../components/SearchBox.astro";
+import CaseCard from "../components/CaseCard.astro";
+import { cases, surprising } from "../lib/cases";
+import { url, absUrl } from "../lib/url";
+
+const populer = ["istifa-edersem-kidem-alir-miyim","fazla-mesai-odenmiyor","ucretim-gec-yatiyor","sebep-soylenmeden-cikarildim","yillik-izin-kullandirilmiyor","sigortasiz-calistiriliyorum"]
+  .map((s) => cases.find((c) => c.slug === s)!);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "WebSite", "@id": absUrl("/") + "#website", name: "Kıdem Hakkım", url: absUrl("/"), inLanguage: "tr-TR" },
+    { "@type": "FAQPage", mainEntity: populer.map((c) => ({ "@type": "Question", name: c.question, acceptedAnswer: { "@type": "Answer", text: c.summary } })) },
+  ],
+};
+---
+<Base
+  title="Kıdem Hakkım — işten ayrıldım, ne alacağım?"
+  description="Kıdem, ihbar, fazla mesai, yıllık izin, işe iade… İşten ayrılırken hangi hakların doğar? Tazminatını hesapla, fesih türünü test et, haklarını tek tek gör."
+  path="/"
+  jsonLd={jsonLd}
+>
+  <section class="hero">
+    <div class="wrap">
+      <p class="kick">{cases.length} durum · hesaplayıcı · fesih testi</p>
+      <h1>İşten ayrıldın.<br />Ne alacaksın?</h1>
+      <p class="lede">
+        Kıdem, ihbar, kullanılmayan izin, fazla mesai… Çoğu işçi hak ettiğinin altında imza atıyor,
+        çünkü ne alacağını bilmiyor. Önce hesapla, sonra imzala.
+      </p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn" href={url("/hesapla/")}>Tazminatımı hesapla →</a>
+        <a class="btn btn-2" href={url("/fesih-testi/")}>Hakkım var mı, test et</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:20px">
+    <div class="wrap">
+      <div class="grid g3">
+        <a class="tool" href={url("/hesapla/")}><span class="ic">🧮</span><span><h3>Tazminat hesabı</h3><p>Kıdem + ihbar + izin, kesintileriyle.</p></span></a>
+        <a class="tool" href={url("/fesih-testi/")}><span class="ic">🧭</span><span><h3>Fesih testi</h3><p>Hangi hakların doğdu, hangi süre işliyor?</p></span></a>
+        <a class="tool" href={url("/haklarim/")}><span class="ic">📋</span><span><h3>{cases.length} durum</h3><p>Mesai, izin, mobbing, sigorta, işe iade.</p></span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Durumunu ara</h2></div>
+      <SearchBox />
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:10px">
+    <div class="wrap">
+      <div class="head">
+        <h2>En çok sorulanlar</h2>
+        <a href={url("/haklarim/")}>Tüm durumlar ({cases.length}) →</a>
+      </div>
+      <div class="grid g2">{populer.map((c) => <CaseCard item={c} />)}</div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Çoğu çalışanın bilmediği {surprising.length} hak</h2></div>
+      <div class="grid g2">{surprising.slice(0, 6).map((c) => <CaseCard item={c} hide />)}</div>
+    </div>
+  </section>
+</Base>

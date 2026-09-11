@@ -1,0 +1,214 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url } from "../../lib/url";
+---
+<Base
+  title="Kıdem ve ihbar tazminatı hesaplama — ne kadar alırım?"
+  description="İşe giriş-çıkış tarihini ve brüt ücretini gir: kıdem tazminatı, ihbar tazminatı ve kullanılmayan yıllık izin ücreti tek ekranda, kesintileriyle birlikte."
+  path="/hesapla/"
+>
+  <section class="hero" style="padding-bottom:14px">
+    <div class="wrap narrow">
+      <p class="kick">Hesaplayıcı</p>
+      <h1>Ne kadar<br />alacaksın?</h1>
+      <p class="lede">Kıdem, ihbar ve kullanılmayan izin ücreti — kesintileri düşülmüş hâliyle, kalem kalem.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <div class="panel">
+      <div class="row2">
+        <div class="field"><label for="giris">İşe giriş tarihi</label><input id="giris" type="date" /></div>
+        <div class="field"><label for="cikis">İşten çıkış tarihi</label><input id="cikis" type="date" /></div>
+      </div>
+
+      <div class="field">
+        <label for="brut">Aylık brüt ücret (TL)</label>
+        <input id="brut" type="number" inputmode="decimal" min="0" step="1" placeholder="45000" />
+        <p class="hint">Bordrodaki brüt tutar. Net değil.</p>
+      </div>
+
+      <div class="field">
+        <label for="yan">Aylık yan haklar (TL) — isteğe bağlı</label>
+        <input id="yan" type="number" inputmode="decimal" min="0" step="1" placeholder="Yemek + yol + düzenli prim" />
+        <p class="hint">Kıdem tazminatı <strong>giydirilmiş</strong> ücret üzerinden hesaplanır: süreklilik gösteren yemek, yol, yakacak ve düzenli primler eklenir.</p>
+      </div>
+
+      <div class="field">
+        <label for="tavan">Kıdem tazminatı tavanı (yıllık, TL)</label>
+        <input id="tavan" type="number" inputmode="decimal" min="0" step="1" placeholder="Güncel tavanı girin" />
+        <p class="hint">
+          Her yıl için ödenecek tutar bu tavanı aşamaz; yılda iki kez güncellenir.
+          Güncel değeri <a href="https://www.csgb.gov.tr/" target="_blank" rel="noopener nofollow">Çalışma ve Sosyal Güvenlik Bakanlığı</a>
+          duyurularından doğrulayın. Boş bırakırsanız tavan uygulanmaz.
+        </p>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="izin">Kullanılmayan yıllık izin (gün)</label>
+          <input id="izin" type="number" inputmode="numeric" min="0" step="1" placeholder="0" />
+        </div>
+        <div class="field">
+          <label for="vergi">Gelir vergisi dilimi</label>
+          <select id="vergi">
+            <option value="15">%15 (ilk dilim)</option>
+            <option value="20">%20</option>
+            <option value="27">%27</option>
+            <option value="35">%35</option>
+            <option value="40">%40</option>
+          </select>
+          <p class="hint">İhbar ve izin ücretinden kesilir. Kıdemden gelir vergisi <strong>kesilmez</strong>.</p>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="fesih">Fesih türü</label>
+        <select id="fesih">
+          <option value="isveren">İşveren çıkardı (haklı sebep yok)</option>
+          <option value="haklı">Ben haklı nedenle feshettim</option>
+          <option value="askerlik">Askerlik / emeklilik / evlilik</option>
+          <option value="istifa">İstifa ettim</option>
+          <option value="isverenHakli">İşveren haklı nedenle çıkardı</option>
+        </select>
+        <p class="hint">Kıdem ve ihbar hakkının doğup doğmadığını belirler.</p>
+      </div>
+
+      <button class="btn" type="button" id="hesapla" style="width:100%">Hesapla</button>
+
+      <div id="sonuc" hidden style="margin-top:22px">
+        <div class="total">
+          <p class="lbl">Toplam net (yaklaşık)</p>
+          <p class="big num" id="toplam"></p>
+          <p class="sub" id="ozet"></p>
+        </div>
+        <div class="lines" id="kalemler"></div>
+        <div id="uyari" style="margin-top:14px"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+          <button class="btn btn-2" type="button" id="kopyala">Dökümü kopyala</button>
+          <a class="btn btn-2" href={url("/fesih-testi/")}>Fesih türümü bilmiyorum</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="note" style="margin-top:18px">
+      Bu hesaplayıcı yaklaşık bir sonuç üretir. Gerçek tutar; giydirilmiş ücretin kapsamı, kıdem tavanı,
+      gelir vergisi kümülatif matrahı ve varsa toplu iş sözleşmesi hükümlerine göre değişir.
+      Damga vergisi binde 7,59 olarak uygulanmıştır. Dava veya ibra öncesi bir avukata doğrulatın.
+    </p>
+  </div>
+
+  <script is:inline>
+    (() => {
+      const q = (id) => document.getElementById(id);
+      const tl = (n) => new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 2 }).format(n);
+      const gun = (a, b) => Math.round((b - a) / 86400000);
+      const DAMGA = 0.00759;
+
+      function ihbarHaftasi(g) {
+        if (g < 183) return 2;
+        if (g < 548) return 4;
+        if (g < 1095) return 6;
+        return 8;
+      }
+
+      q("hesapla").addEventListener("click", () => {
+        const g1 = q("giris").value, g2 = q("cikis").value;
+        const brut = parseFloat(q("brut").value) || 0;
+        const yan = parseFloat(q("yan").value) || 0;
+        const tavan = parseFloat(q("tavan").value) || 0;
+        const izinGun = parseFloat(q("izin").value) || 0;
+        const vergi = parseFloat(q("vergi").value) / 100;
+        const fesih = q("fesih").value;
+
+        if (!g1 || !g2 || brut <= 0) { alert("Giriş tarihi, çıkış tarihi ve brüt ücret zorunlu."); return; }
+        const d1 = new Date(g1), d2 = new Date(g2);
+        const toplamGun = gun(d1, d2);
+        if (toplamGun <= 0) { alert("Çıkış tarihi giriş tarihinden sonra olmalı."); return; }
+
+        const giydirilmis = brut + yan;
+        const gunlukGiydirilmis = giydirilmis / 30;
+        const gunlukCiplak = brut / 30;
+
+        // --- kıdem ---
+        const kidemHak = toplamGun >= 365 && ["isveren", "haklı", "askerlik"].includes(fesih);
+        const kidemEsas = tavan > 0 ? Math.min(giydirilmis, tavan) : giydirilmis;
+        const kidemBrut = kidemHak ? kidemEsas * (toplamGun / 365) : 0;
+        const kidemDamga = kidemBrut * DAMGA;
+        const kidemNet = kidemBrut - kidemDamga;
+
+        // --- ihbar (yalnız işveren feshinde işçiye ödenir) ---
+        const ihbarHak = fesih === "isveren";
+        const hafta = ihbarHaftasi(toplamGun);
+        const ihbarBrut = ihbarHak ? gunlukGiydirilmis * hafta * 7 : 0;
+        const ihbarVergi = ihbarBrut * vergi;
+        const ihbarDamga = ihbarBrut * DAMGA;
+        const ihbarNet = ihbarBrut - ihbarVergi - ihbarDamga;
+
+        // --- yıllık izin (her fesihte ödenir) ---
+        const izinBrut = gunlukCiplak * izinGun;
+        const izinVergi = izinBrut * vergi;
+        const izinDamga = izinBrut * DAMGA;
+        const izinNet = izinBrut - izinVergi - izinDamga;
+
+        const toplam = kidemNet + ihbarNet + izinNet;
+        const yil = Math.floor(toplamGun / 365);
+        const kalanGun = toplamGun % 365;
+
+        q("toplam").textContent = tl(toplam);
+        q("ozet").textContent = `${yil} yıl ${Math.floor(kalanGun / 30)} ay ${kalanGun % 30} gün kıdem · toplam ${toplamGun.toLocaleString("tr-TR")} gün`;
+
+        const satir = (b, s, v, cls = "") =>
+          `<div class="line ${cls}"><span class="k"><b>${b}</b><small>${s}</small></span><span class="v">${v}</span></div>`;
+
+        let html = "";
+        html += kidemHak
+          ? satir("Kıdem tazminatı", `${tl(kidemEsas)} × ${(toplamGun / 365).toFixed(2)} yıl${tavan > 0 && giydirilmis > tavan ? " · tavan uygulandı" : ""} · damga −${tl(kidemDamga)}`, tl(kidemNet))
+          : satir("Kıdem tazminatı", toplamGun < 365 ? "1 yıldan az kıdem — hak doğmadı" : "Bu fesih türünde kıdem doğmaz", "—");
+        html += ihbarHak
+          ? satir("İhbar tazminatı", `${hafta} hafta × ${tl(gunlukGiydirilmis)}/gün · vergi −${tl(ihbarVergi)} · damga −${tl(ihbarDamga)}`, tl(ihbarNet))
+          : satir("İhbar tazminatı", fesih === "istifa" ? "İstifada işçiye ihbar ödenmez (aksine siz ödeyebilirsiniz)" : "Bu fesih türünde ihbar doğmaz", "—");
+        html += izinGun > 0
+          ? satir("Yıllık izin ücreti", `${izinGun} gün × ${tl(gunlukCiplak)}/gün (çıplak ücret) · kesintiler −${tl(izinVergi + izinDamga)}`, tl(izinNet))
+          : satir("Yıllık izin ücreti", "Kullanılmayan izin girilmedi", "—");
+        html += satir("Toplam net", "Yaklaşık — kümülatif vergi matrahına göre değişebilir", tl(toplam), "sum");
+        q("kalemler").innerHTML = html;
+
+        let uyari = "";
+        if (fesih === "istifa" && toplamGun >= 365)
+          uyari = "İstifada kıdem doğmaz; ancak ödenmeyen ücret, sigortasızlık veya mobbing gibi bir <strong>haklı nedeniniz</strong> varsa fesih türünü değiştirip yeniden hesaplayın.";
+        else if (fesih === "isverenHakli")
+          uyari = "İşverenin haklı nedenle feshi iddiası çoğu davada tartışılır. Gerekçe belgelenmemişse kıdem ve ihbar hakkınız doğabilir.";
+        else if (toplamGun < 365 && toplamGun > 300)
+          uyari = "Bir yıla çok az kaldı — kıdem tazminatı için <strong>365 gün</strong> şartı aranır.";
+        if (tavan <= 0 && kidemHak)
+          uyari += (uyari ? "<br><br>" : "") + "Kıdem tavanı girilmedi; yüksek ücretlerde gerçek tutar bu sonuçtan <strong>düşük</strong> çıkar.";
+        q("uyari").innerHTML = uyari ? `<div class="note" style="border-color:var(--amber)">${uyari}</div>` : "";
+
+        q("sonuc").hidden = false;
+        q("sonuc").scrollIntoView({ block: "nearest", behavior: "smooth" });
+
+        window.__dokum = [
+          "KIDEM / İHBAR / İZİN HESABI (yaklaşık)",
+          `Çalışma: ${g1} → ${g2}  (${yil} yıl ${Math.floor(kalanGun / 30)} ay ${kalanGun % 30} gün)`,
+          `Brüt ücret: ${tl(brut)}   Yan haklar: ${tl(yan)}   Giydirilmiş: ${tl(giydirilmis)}`,
+          "",
+          `Kıdem tazminatı (net): ${kidemHak ? tl(kidemNet) : "—"}`,
+          `İhbar tazminatı (net): ${ihbarHak ? tl(ihbarNet) + `  (${hafta} hafta)` : "—"}`,
+          `Yıllık izin ücreti (net): ${izinGun > 0 ? tl(izinNet) : "—"}`,
+          `TOPLAM (net): ${tl(toplam)}`,
+          "",
+          "Not: Yaklaşık hesaptır; kıdem tavanı, kümülatif vergi matrahı ve giydirilmiş ücretin kapsamı sonucu değiştirir.",
+        ].join("\n");
+      });
+
+      q("kopyala").addEventListener("click", async (e) => {
+        try {
+          await navigator.clipboard.writeText(window.__dokum || "");
+          const b = e.currentTarget, o = b.textContent;
+          b.textContent = "Kopyalandı ✓"; setTimeout(() => (b.textContent = o), 1800);
+        } catch {}
+      });
+    })();
+  </script>
+</Base>

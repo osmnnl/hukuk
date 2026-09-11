@@ -1,0 +1,74 @@
+{
+  "fesih": {
+    "topic": "Fesih ve Bildirim",
+    "short": "İş K. 17-19",
+    "basis": [
+      { "law": "4857 sayılı İş Kanunu", "article": "m.17", "note": "Süreli fesih ve ihbar önelleri" },
+      { "law": "4857 sayılı İş Kanunu", "article": "m.19", "note": "Fesih bildiriminin yazılı yapılması ve savunma alınması" },
+      { "law": "4857 sayılı İş Kanunu", "article": "m.18", "note": "Feshin geçerli sebebe dayandırılması" }
+    ],
+    "explain": "Belirsiz süreli iş sözleşmesini fesheden taraf, kanunda yazılı bildirim sürelerine uymak zorundadır. İşveren feshi yazılı yapmalı, sebebini açık ve kesin olarak belirtmelidir.",
+    "deadline": "İhbar önelleri kıdeme göre 2-8 hafta arasındadır. İşe iade davası için fesih bildiriminden itibaren 1 ay içinde arabulucuya başvurulmalıdır.",
+    "where": "İş Mahkemesi. Dava öncesi arabuluculuk zorunludur."
+  },
+  "kidem": {
+    "topic": "Kıdem ve İhbar",
+    "short": "1475 s. K. m.14",
+    "basis": [
+      { "law": "1475 sayılı İş Kanunu", "article": "m.14", "note": "Kıdem tazminatı (yürürlükteki tek madde)" },
+      { "law": "4857 sayılı İş Kanunu", "article": "m.17", "note": "İhbar tazminatı" },
+      { "law": "4857 sayılı İş Kanunu", "article": "m.24-25", "note": "Haklı nedenle derhal fesih" }
+    ],
+    "explain": "Kıdem tazminatı, en az bir yıllık çalışması olan işçiye belirli fesih hâllerinde ödenir. Her tam yıl için 30 günlük giydirilmiş brüt ücret esas alınır ve yasal tavanı aşamaz.",
+    "deadline": "Kıdem ve ihbar tazminatı alacaklarında zamanaşımı 5 yıldır; süre fesih tarihinden işlemeye başlar.",
+    "where": "İş Mahkemesi. Dava öncesi arabuluculuk zorunludur."
+  },
+  "ucret": {
+    "topic": "Ücret ve Fazla Mesai",
+    "short": "İş K. 32-46",
+    "basis": [
+      { "law": "4857 sayılı İş Kanunu", "article": "m.32", "note": "Ücretin ödenmesi" },
+      { "law": "4857 sayılı İş Kanunu", "article": "m.41", "note": "Fazla çalışma ve %50 zamlı ücret" },
+      { "law": "4857 sayılı İş Kanunu", "article": "m.46-47", "note": "Hafta tatili ve genel tatil ücreti" }
+    ],
+    "explain": "Haftalık 45 saati aşan çalışma fazla çalışmadır ve normal saat ücretinin %50 fazlasıyla ödenir. Ücreti ödenmeyen işçi, ödeme gününden itibaren 20 gün geçerse iş görmekten kaçınabilir.",
+    "deadline": "Ücret alacaklarında zamanaşımı 5 yıldır. Ücret ödenmezse 20 günlük gecikme haklı fesih sebebi oluşturur.",
+    "where": "İş Mahkemesi; ayrıca Çalışma ve Sosyal Güvenlik Bakanlığı'na (ALO 170) şikâyet."
+  },
+  "izin": {
+    "topic": "Yıllık İzin ve Çalışma Süreleri",
+    "short": "İş K. 53-63",
+    "basis": [
+      { "law": "4857 sayılı İş Kanunu", "article": "m.53", "note": "Yıllık ücretli izin hakkı ve süreleri" },
+      { "law": "4857 sayılı İş Kanunu", "article": "m.59", "note": "Sözleşme sona erince kullanılmayan iznin ücrete dönüşmesi" },
+      { "law": "4857 sayılı İş Kanunu", "article": "m.63", "note": "Haftalık çalışma süresi: 45 saat" }
+    ],
+    "explain": "Bir yıllık çalışmayı dolduran işçi yıllık ücretli izne hak kazanır. İzin süresi kıdeme göre 14, 20 veya 26 iş günüdür; 18 yaşından küçük ve 50 yaşından büyük işçilerde en az 20 gündür.",
+    "deadline": "Kullanılmayan izin ücreti yalnızca sözleşme sona erdiğinde istenebilir; zamanaşımı fesihten itibaren 5 yıldır.",
+    "where": "İş Mahkemesi. Dava öncesi arabuluculuk zorunludur."
+  },
+  "iseiade": {
+    "topic": "İşe İade",
+    "short": "İş K. 18-21",
+    "basis": [
+      { "law": "4857 sayılı İş Kanunu", "article": "m.18", "note": "İş güvencesi kapsamı: 30+ işçi, 6 ay kıdem" },
+      { "law": "4857 sayılı İş Kanunu", "article": "m.20", "note": "Fesih bildirimine itiraz ve süre" },
+      { "law": "4857 sayılı İş Kanunu", "article": "m.21", "note": "Geçersiz feshin sonuçları: işe başlatmama tazminatı" }
+    ],
+    "explain": "En az otuz işçi çalıştıran işyerinde, en az altı aylık kıdemi olan ve belirsiz süreli sözleşmeyle çalışan işçinin feshi geçerli bir sebebe dayanmak zorundadır. Aksi hâlde işe iade istenebilir.",
+    "deadline": "Fesih bildiriminden itibaren 1 ay içinde arabulucuya başvurulmalıdır; anlaşma sağlanamazsa son tutanaktan itibaren 2 hafta içinde dava açılır. Süreler hak düşürücüdür.",
+    "where": "İş Mahkemesi. Arabuluculuk dava şartıdır."
+  },
+  "sgk": {
+    "topic": "Sigorta ve Bildirim",
+    "short": "5510 s. K.",
+    "basis": [
+      { "law": "5510 sayılı Kanun", "article": "m.8", "note": "Sigortalı işe giriş bildirgesi" },
+      { "law": "5510 sayılı Kanun", "article": "m.102", "note": "Eksik bildirim hâlinde idari para cezası" },
+      { "law": "4857 sayılı İş Kanunu", "article": "m.24/II", "note": "Sigortasız çalıştırma haklı fesih sebebi" }
+    ],
+    "explain": "İşveren, işçiyi işe başlamadan önce SGK'ya bildirmek ve gerçek ücreti üzerinden prim yatırmakla yükümlüdür. Eksik gün veya düşük ücret bildirimi hem işçinin emekliliğini hem tazminat hesabını etkiler.",
+    "deadline": "Hizmet tespiti davası, hizmetin geçtiği yılın sonundan itibaren 5 yıl içinde açılmalıdır.",
+    "where": "SGK'ya şikâyet (e-Devlet) ve İş Mahkemesi'nde hizmet tespiti davası."
+  }
+}
