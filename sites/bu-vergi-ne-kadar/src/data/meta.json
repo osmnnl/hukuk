@@ -1,0 +1,10 @@
+{
+  "name": "Bu Vergi Ne Kadar?",
+  "tagline": "Bu işlemde <em>vergi ne kadar?</em>",
+  "unit": "vergi sorusu",
+  "verdicts": {
+    "a": { "label": "Vergi/harç çıkar", "short": "VERGİ VAR" },
+    "b": { "label": "İstisna — ödemezsin", "short": "İSTİSNA" },
+    "c": { "label": "Şarta bağlı", "short": "ŞARTA BAĞLI" }
+  }
+}

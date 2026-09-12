@@ -1,0 +1,26 @@
+---
+import Base from "../../layouts/Base.astro";
+import { cases, frames, site } from "../../lib/cases";
+---
+<Base title={`Hakkında — ${site.name}`} description="Neden oran ve tutar yazmıyoruz?" path="/hakkinda/">
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <section class="hero" style="padding:36px 0 6px">
+      <p class="kick">Hakkında</p>
+      <h1 style="font-size:clamp(26px,5.2vw,38px)">Neden tutar yazmıyoruz?</h1>
+      <p class="lede">Vergi tarifeleri, istisna tutarları ve oranlar her yıl — bazen yıl içinde —
+      değişiyor. Sabit bir rakam yazmak, bir süre sonra yanlış bilgi vermek olurdu.</p>
+    </section>
+    <section class="sec"><h2>Bunun yerine ne yapıyoruz?</h2>
+      <p>Hangi işlemde hangi verginin doğduğunu, <strong>kimin</strong> ödediğini, <strong>neye göre</strong>
+      hesaplandığını ve <strong>ne zaman</strong> beyan edildiğini anlatıyoruz. Hesaplayıcıda oran alanları
+      düzenlenebilir: güncel oranı doğrulayıp girersiniz, hesabı site yapar.</p></section>
+    <section class="sec"><h2>Güncel oranı nereden bulurum?</h2>
+      <p>Gelir İdaresi Başkanlığı'nın yayımladığı güncel vergi rehberleri ve Resmî Gazete'de yayımlanan
+      tebliğler tek güvenilir kaynaktır. İkinci el bilgiye — bu site dahil — dayanmayın.</p></section>
+    <section class="sec"><h2>Kapsam</h2>
+      <p>{cases.length} soru, {Object.keys(frames).length} başlık: {Object.values(frames).map((f: any) => f.topic).join(", ")}.</p></section>
+    <section class="sec" style="border-bottom:0"><h2>Sınırları</h2>
+      <p>Burada yazanlar <strong>vergi ya da hukuk danışmanlığı değildir</strong>. Beyan süreleri kısadır ve
+      kaçırıldığında ceza doğurur; somut bir işlem öncesinde mali müşavirinize danışın.</p></section>
+  </div>
+</Base>

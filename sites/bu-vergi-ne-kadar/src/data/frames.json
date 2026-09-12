@@ -1,0 +1,80 @@
+{
+  "gelir": {
+    "topic": "Gelir vergisi",
+    "short": "193 sayılı GVK",
+    "basis": [
+      { "law": "193 sayılı GVK", "article": "m.1-2", "note": "Gelirin unsurları ve vergilendirilmesi" },
+      { "law": "193 sayılı GVK", "article": "m.103", "note": "Artan oranlı gelir vergisi tarifesi" },
+      { "law": "193 sayılı GVK", "article": "m.21", "note": "Konut kira gelirinde istisna" },
+      { "law": "193 sayılı GVK", "article": "m.86", "note": "Beyanname verilmeyecek hâller" }
+    ],
+    "explain": "Gelir vergisi artan oranlıdır: kazanç arttıkça uygulanan oran yükselir. Ücret, kira, serbest meslek ve ticari kazanç gibi farklı gelir türleri kendi kuralları içinde vergilenir; bazıları kaynakta kesilir, bazıları beyan edilir.",
+    "deadline": "Yıllık gelir vergisi beyannamesi kural olarak izleyen yılın mart ayında verilir; kira gelirleri de bu beyannameyle bildirilir.",
+    "where": "Gelir İdaresi Başkanlığı, vergi dairesi, Dijital Vergi Dairesi (Hazır Beyan Sistemi)."
+  },
+  "harc": {
+    "topic": "Harçlar ve damga vergisi",
+    "short": "492 sayılı Harçlar K. · 488 sayılı DVK",
+    "basis": [
+      { "law": "492 sayılı Harçlar Kanunu", "article": "m.57 ve (4) sayılı tarife", "note": "Tapu ve kadastro harçları" },
+      { "law": "488 sayılı Damga Vergisi K.", "article": "m.1 ve (1) sayılı tablo", "note": "Sözleşmelerde damga vergisi" },
+      { "law": "492 sayılı Harçlar Kanunu", "article": "m.123", "note": "Harç istisnaları" },
+      { "law": "488 sayılı Damga Vergisi K.", "article": "m.24", "note": "Damga vergisinde müteselsil sorumluluk" }
+    ],
+    "explain": "Harç, bir kamu hizmetinden yararlanmanın bedelidir; damga vergisi ise kâğıdın kendisinden alınır. İkisi de işlem anında doğar ve çoğu zaman taraflarca ödenmeden işlem tamamlanmaz.",
+    "deadline": "Tapu harcı, işlem sırasında ödenir. Damga vergisi, kâğıdın düzenlendiği tarihi izleyen belirli süre içinde beyan edilip ödenir.",
+    "where": "Tapu müdürlüğü, vergi dairesi, anlaşmalı bankalar."
+  },
+  "tasinmaz": {
+    "topic": "Taşınmazda vergiler",
+    "short": "1319 Emlak V. · GVK mük. m.80",
+    "basis": [
+      { "law": "1319 sayılı Emlak Vergisi K.", "article": "m.8", "note": "Bina vergisi oranları; büyükşehirde iki kat uygulama" },
+      { "law": "1319 sayılı Emlak Vergisi K.", "article": "m.30", "note": "Değerli konut vergisi" },
+      { "law": "193 sayılı GVK", "article": "mük. m.80", "note": "Taşınmazın beş yıl içinde satışında değer artışı kazancı" },
+      { "law": "193 sayılı GVK", "article": "m.21", "note": "Konut kira gelirinde istisna tutarı" }
+    ],
+    "explain": "Bir taşınmaz üç ayrı noktada vergilenir: alırken harç, elde tutarken emlak vergisi, satarken belirli şartlarda değer artışı kazancı. Kiraya verilmişse ayrıca gelir vergisi doğar.",
+    "deadline": "Emlak vergisi iki taksitte ödenir: birinci taksit mart-mayıs, ikinci taksit kasım ayında. Taşınmaz satışında beyan, izleyen yılın mart ayındadır.",
+    "where": "Belediye (emlak vergisi), tapu müdürlüğü (harç), vergi dairesi (kazanç beyanı)."
+  },
+  "arac": {
+    "topic": "Araçta vergiler",
+    "short": "197 sayılı MTV Kanunu",
+    "basis": [
+      { "law": "197 sayılı MTV Kanunu", "article": "m.5", "note": "Otomobillerde motor hacmi ve araç değerine göre tarife" },
+      { "law": "197 sayılı MTV Kanunu", "article": "m.9", "note": "Verginin ödenme zamanı: ocak ve temmuz" },
+      { "law": "4760 sayılı ÖTV Kanunu", "article": "m.11", "note": "Araçlarda özel tüketim vergisi matrahı" },
+      { "law": "197 sayılı MTV Kanunu", "article": "m.4", "note": "Muafiyet ve istisnalar" }
+    ],
+    "explain": "Araç alımında ÖTV ve KDV fiyatın içinde ödenir; sahiplik sürdükçe her yıl motorlu taşıtlar vergisi doğar. MTV, aracın yaşı, motor hacmi ve değerine göre belirlenen tarifeye bağlıdır.",
+    "deadline": "Motorlu taşıtlar vergisi her yıl ocak ve temmuz aylarında olmak üzere iki eşit taksitte ödenir.",
+    "where": "Vergi dairesi, Dijital Vergi Dairesi, anlaşmalı bankalar."
+  },
+  "miras": {
+    "topic": "Miras ve bağış",
+    "short": "7338 sayılı VİVK",
+    "basis": [
+      { "law": "7338 sayılı VİVK", "article": "m.1", "note": "Veraset ve intikal vergisinin konusu" },
+      { "law": "7338 sayılı VİVK", "article": "m.9", "note": "Beyanname verme süreleri" },
+      { "law": "7338 sayılı VİVK", "article": "m.4", "note": "İstisnalar ve muafiyetler" },
+      { "law": "7338 sayılı VİVK", "article": "m.19", "note": "Verginin üç yılda, mayıs ve kasım taksitleriyle ödenmesi" }
+    ],
+    "explain": "Miras ve karşılıksız intikaller, artan oranlı bir tarifeye göre vergilendirilir; mirasta oranlar, bağışa göre belirgin biçimde düşüktür. Her mirasçı kendi payı üzerinden vergilenir.",
+    "deadline": "Ölüm Türkiye'de gerçekleşmiş ve mirasçılar Türkiye'deyse beyanname, ölüm tarihinden itibaren dört ay içinde verilir.",
+    "where": "Vergi dairesi (ölenin son ikametgâhının bulunduğu yer)."
+  },
+  "ticaret": {
+    "topic": "Ticaret ve KDV",
+    "short": "3065 sayılı KDV Kanunu",
+    "basis": [
+      { "law": "3065 sayılı KDV Kanunu", "article": "m.1", "note": "Verginin konusunu teşkil eden işlemler" },
+      { "law": "3065 sayılı KDV Kanunu", "article": "m.28", "note": "Oranın Cumhurbaşkanınca belirlenmesi" },
+      { "law": "193 sayılı GVK", "article": "m.37", "note": "Ticari kazanç ve devamlılık ölçütü" },
+      { "law": "213 sayılı VUK", "article": "m.153", "note": "İşe başlamanın bildirilmesi" }
+    ],
+    "explain": "Bir faaliyetin vergilenip vergilenmeyeceğini belirleyen ölçüt genelde devamlılıktır: arada bir yapılan satış ile süreklilik gösteren satış farklı sonuç doğurur. KDV oranları kanunla değil Cumhurbaşkanı kararıyla belirlenir ve değişebilir.",
+    "deadline": "İşe başlama, kanunda öngörülen süre içinde vergi dairesine bildirilmelidir; KDV beyannamesi izleyen ayın belirlenen gününe kadar verilir.",
+    "where": "Vergi dairesi, Dijital Vergi Dairesi, mali müşavir."
+  }
+}

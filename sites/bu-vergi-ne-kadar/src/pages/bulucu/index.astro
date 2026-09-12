@@ -1,0 +1,110 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url } from "../../lib/url";
+
+const islemler = [
+  { id: "ev-al", ad: "Ev veya arsa satın alıyorum", ic: "🏠", kalemler: [
+    { v: "Tapu harcı", kim: "Alıcı ve satıcı ayrı ayrı", ne: "Beyan edilen devir bedeli üzerinden, emlak vergisi değerinden az olmamak üzere", zaman: "İşlem anında", slug: "ev-alirken-tapu-harci" },
+    { v: "Döner sermaye ve hizmet bedeli", kim: "Başvuran", ne: "Tapu müdürlüğünün sabit hizmet bedeli", zaman: "İşlem anında", slug: "ev-alirken-tapu-harci" },
+    { v: "Emlak vergisi (izleyen dönem)", kim: "Yeni malik", ne: "Vergi değeri üzerinden konutta binde 1, büyükşehirde iki kat", zaman: "Mart-mayıs ve kasım taksitleri", slug: "emlak-vergisi" },
+  ]},
+  { id: "ev-sat", ad: "Ev satıyorum", ic: "🔑", kalemler: [
+    { v: "Tapu harcı", kim: "Satıcı (payına düşen)", ne: "Devir bedeli üzerinden", zaman: "İşlem anında", slug: "ev-alirken-tapu-harci" },
+    { v: "Değer artışı kazancı", kim: "Satıcı", ne: "Edinme tarihinden itibaren 5 yıl içinde satışta; miras yoluyla edinilende doğmaz", zaman: "İzleyen yılın mart ayında beyan", slug: "konut-satis-kazanci" },
+  ]},
+  { id: "kiraya-ver", ad: "Evimi kiraya veriyorum", ic: "📄", kalemler: [
+    { v: "Gelir vergisi (kira)", kim: "Ev sahibi", ne: "Konut kirasında kanuni istisnayı aşan kısım beyan edilir", zaman: "İzleyen yılın mart ayında", slug: "kira-geliri-beyani" },
+    { v: "Damga vergisi", kim: "Taraflar (müteselsil)", ne: "Belli parayı ihtiva eden sözleşmelerde nispi oran", zaman: "Kâğıdın düzenlenmesini izleyen süre içinde", slug: "damga-vergisi" },
+    { v: "Emlak vergisi", kim: "Malik", ne: "Kiraya verilmiş olması vergiyi değiştirmez", zaman: "İki taksit", slug: "emlak-vergisi" },
+  ]},
+  { id: "arac-al", ad: "Araç alıyorum", ic: "🚗", kalemler: [
+    { v: "ÖTV ve KDV (sıfır araçta)", kim: "Alıcı (fiyatın içinde)", ne: "Motor hacmi ve vergisiz değere göre kademeli ÖTV, üzerine KDV", zaman: "Satış anında", slug: "arac-alirken-vergi" },
+    { v: "Noter satış işlemi", kim: "Taraflar", ne: "İkinci elde noter ücreti ve harç", zaman: "İşlem anında", slug: "ikinci-el-satis" },
+    { v: "Motorlu taşıtlar vergisi", kim: "Kayıt maliki", ne: "Motor hacmi, yaş ve araç değerine göre tarife", zaman: "Ocak ve temmuz", slug: "mtv" },
+  ]},
+  { id: "miras", ad: "Miras kaldı", ic: "⚱️", kalemler: [
+    { v: "Veraset ve intikal vergisi", kim: "Her mirasçı kendi payı için", ne: "Artan oranlı tarife, kanuni istisna düşülerek", zaman: "Ölümden itibaren 4 ay içinde beyan", slug: "miras-vergisi" },
+    { v: "Tapu harcı (intikal)", kim: "Mirasçılar", ne: "İntikal işleminde kanunda öngörülen oran", zaman: "Tapu işlemi anında", slug: "miras-vergisi" },
+    { v: "İlişik kesme yazısı", kim: "Mirasçılar", ne: "Vergi dairesinden alınmadan tapu devri yapılamaz", zaman: "Devirden önce", slug: "miras-vergisi" },
+  ]},
+  { id: "bagis", ad: "Bağış veya hediye yapıyorum", ic: "🎁", kalemler: [
+    { v: "İntikal vergisi", kim: "Kendisine bağış yapılan", ne: "İvazsız intikallerde oranlar mirasa göre yüksektir", zaman: "Kanunda öngörülen süre içinde beyan", slug: "bagis-vergisi" },
+    { v: "Tapu harcı (taşınmazda)", kim: "Taraflar", ne: "Bağış işleminde ayrı oran uygulanır", zaman: "İşlem anında", slug: "bagis-vergisi" },
+  ]},
+  { id: "eticaret", ad: "İnternetten satış yapıyorum", ic: "📦", kalemler: [
+    { v: "Mükellefiyet tesisi", kim: "Satıcı", ne: "Devamlılık ve kazanç amacı varsa ticari faaliyet sayılır", zaman: "İşe başlamadan önce bildirim", slug: "internetten-satis" },
+    { v: "KDV", kim: "Satıcı hesaplar, alıcı öder", ne: "Oran mal ve hizmete göre değişir", zaman: "Aylık beyan", slug: "kdv-oranlari" },
+    { v: "Gelir vergisi", kim: "Satıcı", ne: "Kazanç üzerinden artan oranlı tarife", zaman: "İzleyen yılın mart ayında", slug: "internetten-satis" },
+  ]},
+  { id: "ikinci-is", ad: "Maaş dışında gelirim var", ic: "💼", kalemler: [
+    { v: "Beyan sınırı kontrolü", kim: "Gelir sahibi", ne: "Gelir türüne göre ayrı sınırlar uygulanır", zaman: "İzleyen yılın mart ayında", slug: "ikinci-isten-gelir" },
+    { v: "Kesilen verginin mahsubu", kim: "Gelir sahibi", ne: "Kaynakta kesilen vergi, beyanda hesaplanandan düşülür", zaman: "Beyan sırasında", slug: "ikinci-isten-gelir" },
+  ]},
+];
+---
+<Base
+  title="Vergi bulucu — bu işlemde hangi vergiler çıkar?"
+  description="Ev alımı, araç, kira, miras, e-ticaret… Yapacağınız işlemde hangi vergi ve harçların doğduğunu, kimin ödediğini ve ne zaman beyan edildiğini görün."
+  path="/bulucu/"
+>
+  <section class="hero" style="padding-bottom:14px">
+    <div class="wrap narrow">
+      <p class="kick">Vergi bulucu · {islemler.length} işlem</p>
+      <h1>Bu işlemde<br />hangi vergiler var?</h1>
+      <p class="lede">Sürpriz vergi diye bir şey yok; önceden bilinmeyen vergi var. İşleminizi seçin, karşılaşacağınız kalemleri baştan görün.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <div class="panel">
+      <div class="opts" id="secenekler">
+        {islemler.map((i) => <button type="button" data-id={i.id}>{i.ic} {i.ad}</button>)}
+      </div>
+
+      <div id="sonuc" hidden style="margin-top:20px">
+        <h2 id="baslik" style="font-size:clamp(19px,4.2vw,25px);margin:0 0 12px"></h2>
+        <div id="kalemler"></div>
+        <button class="btn btn-2" type="button" id="geri" style="margin-top:16px">Başka işlem seç</button>
+      </div>
+    </div>
+
+    <p class="note">Bu liste, işlemde tipik olarak karşılaşılan kalemleri gösterir; istisna ve muafiyetler
+    kişisel duruma göre değişir. Tutar ve oranlar için Gelir İdaresi Başkanlığı'nın güncel yayınlarına bakın.</p>
+  </div>
+
+  <style>
+    .kalem { padding: 14px 0; border-bottom: 1px solid var(--line) }
+    .kalem:last-child { border-bottom: 0 }
+    .kalem h3 { font-size: 16px; margin: 0 0 8px }
+    .kalem dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0; font-size: 13.5px }
+    .kalem dt { color: var(--ink-3) }
+    .kalem dd { margin: 0; color: var(--ink-2); line-height: 1.5 }
+    .kalem a { font-size: 13px; display: inline-block; margin-top: 8px }
+  </style>
+
+  <script is:inline define:vars={{ islemler, base: url("/") }}>
+    const $ = (id) => document.getElementById(id);
+
+    $("secenekler").addEventListener("click", (ev) => {
+      const b = ev.target.closest("button[data-id]");
+      if (!b) return;
+      const i = islemler.find((x) => x.id === b.dataset.id);
+      $("baslik").textContent = i.ad;
+      $("kalemler").innerHTML = i.kalemler.map((k) =>
+        `<div class="kalem"><h3>${k.v}</h3><dl>
+          <dt>Kim öder</dt><dd>${k.kim}</dd>
+          <dt>Neye göre</dt><dd>${k.ne}</dd>
+          <dt>Ne zaman</dt><dd>${k.zaman}</dd>
+        </dl><a href="${base}${k.slug}/">Ayrıntı →</a></div>`
+      ).join("");
+      $("secenekler").hidden = true;
+      $("sonuc").hidden = false;
+      $("sonuc").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+
+    $("geri").addEventListener("click", () => {
+      $("sonuc").hidden = true; $("secenekler").hidden = false;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</Base>

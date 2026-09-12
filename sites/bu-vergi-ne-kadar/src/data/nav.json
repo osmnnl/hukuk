@@ -1,0 +1,6 @@
+[
+  { "href": "/", "label": "Ana sayfa" },
+  { "href": "/liste/", "label": "Tüm vergiler" },
+  { "href": "/bulucu/", "label": "Vergi bulucu" },
+  { "href": "/harc/", "label": "Harç hesabı" }
+]

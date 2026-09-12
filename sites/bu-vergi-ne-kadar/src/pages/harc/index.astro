@@ -1,0 +1,170 @@
+---
+import Base from "../../layouts/Base.astro";
+import { url } from "../../lib/url";
+---
+<Base
+  title="Harç hesabı — tapu harcı, emlak vergisi, damga vergisi"
+  description="Değeri ve oranı girin: tapu harcının iki tarafa düşen payını, emlak vergisi taksitini ve sözleşmenin damga vergisini hesaplayın."
+  path="/harc/"
+>
+  <section class="hero" style="padding-bottom:14px">
+    <div class="wrap narrow">
+      <p class="kick">Harç hesabı</p>
+      <h1>Ne kadar<br />harç çıkar?</h1>
+      <p class="lede">Oranlar kanunda yazar ama değişebilir. Bu yüzden oran alanları düzenlenebilir: doğrulayıp kendiniz girin, hesabı biz yapalım.</p>
+    </div>
+  </section>
+
+  <div class="wrap narrow" style="padding-bottom:36px">
+    <div class="panel">
+      <div class="field">
+        <label for="tur">Ne hesaplayacaksınız?</label>
+        <select id="tur">
+          <option value="tapu">Tapu harcı (taşınmaz devri)</option>
+          <option value="emlak">Emlak vergisi (yıllık)</option>
+          <option value="damga">Damga vergisi (sözleşme)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="deger" id="degerLabel">Satış bedeli (₺)</label>
+        <input id="deger" type="number" min="0" step="1000" value="3000000" />
+        <p class="hint" id="degerHint"></p>
+      </div>
+
+      <div class="field">
+        <label for="oran" id="oranLabel">Oran (binde)</label>
+        <input id="oran" type="number" min="0" step="0.01" value="20" />
+        <p class="hint" id="oranHint"></p>
+      </div>
+
+      <div class="field" id="ekAlan" hidden>
+        <label style="display:flex;gap:9px;align-items:center;cursor:pointer">
+          <input type="checkbox" id="ek" style="width:18px;height:18px;accent-color:var(--accent)" />
+          <span id="ekMetin"></span>
+        </label>
+      </div>
+
+      <button class="btn" type="button" id="hesapla" style="width:100%">Hesapla</button>
+
+      <div id="sonuc" hidden style="margin-top:22px">
+        <div class="total">
+          <p class="lbl" id="lbl"></p>
+          <p class="big num" id="tutar"></p>
+          <p class="sub" id="alt"></p>
+        </div>
+        <div class="lines" id="detay"></div>
+        <div class="tipbox" id="not" style="margin-top:14px"></div>
+      </div>
+    </div>
+
+    <section class="sec" style="margin-top:26px">
+      <h2>Oranlar nereden doğrulanır?</h2>
+      <p>Tapu harcı oranı Harçlar Kanunu'na bağlı tarifede, emlak vergisi oranları Emlak Vergisi
+      Kanunu'nda, damga vergisi oranları ise Damga Vergisi Kanunu'na ekli tabloda yer alır. Bu oranlar
+      Cumhurbaşkanı kararı veya kanun değişikliğiyle güncellenebildiği için, işlem öncesinde
+      <strong>Gelir İdaresi Başkanlığı'nın güncel yayınından</strong> teyit edin.</p>
+    </section>
+    <p class="note">Hesap, girdiğiniz değer ve orana göre yapılır; istisna, muafiyet ve indirimler hesaba
+    katılmaz. Sonuç bağlayıcı değildir, kesin tutar için vergi dairesine veya mali müşavire başvurun.</p>
+  </div>
+
+  <script is:inline>
+    const $ = (id) => document.getElementById(id);
+    const tl = (n) => n.toLocaleString("tr-TR", { maximumFractionDigits: 2 }) + " ₺";
+
+    const tanim = {
+      tapu: {
+        degerLabel: "Satış bedeli (₺)",
+        degerHint: "Beyan edilen devir bedeli — emlak vergisi değerinden düşük olamaz.",
+        oranLabel: "Harç oranı (binde, her bir taraf için)",
+        oranHint: "Harçlar Kanunu'na bağlı (4) sayılı tarifede yer alır; alıcı ve satıcıdan ayrı ayrı alınır.",
+        varsayilanOran: 20,
+        ek: null,
+      },
+      emlak: {
+        degerLabel: "Bina/arsa vergi değeri (₺)",
+        degerHint: "Belediyenin belirlediği vergi değeri — piyasa fiyatı değil.",
+        oranLabel: "Oran (binde)",
+        oranHint: "Emlak Vergisi Kanunu: mesken binde 1, diğer bina binde 2, arsa binde 3, arazi binde 1.",
+        varsayilanOran: 1,
+        ek: "Büyükşehir belediyesi sınırları içinde (oran iki kat uygulanır)",
+      },
+      damga: {
+        degerLabel: "Sözleşmedeki tutar (₺)",
+        degerHint: "Belli parayı ihtiva eden kâğıtlarda vergi bu tutar üzerinden hesaplanır.",
+        oranLabel: "Oran (binde)",
+        oranHint: "Damga Vergisi Kanunu'na ekli (1) sayılı tabloda kâğıt türüne göre belirlenir.",
+        varsayilanOran: 9.48,
+        ek: "İki nüsha düzenlenecek (her nüsha ayrı vergiye tabidir)",
+      },
+    };
+
+    function turDegisti() {
+      const t = tanim[$("tur").value];
+      $("degerLabel").textContent = t.degerLabel;
+      $("degerHint").textContent = t.degerHint;
+      $("oranLabel").textContent = t.oranLabel;
+      $("oranHint").textContent = t.oranHint;
+      $("oran").value = t.varsayilanOran;
+      $("ekAlan").hidden = !t.ek;
+      if (t.ek) $("ekMetin").textContent = t.ek;
+      $("ek").checked = false;
+      $("sonuc").hidden = true;
+    }
+
+    function hesapla() {
+      const tur = $("tur").value;
+      const d = +$("deger").value || 0;
+      const o = (+$("oran").value || 0) / 1000;
+      if (!d) { $("deger").focus(); return; }
+      const ek = $("ek").checked;
+
+      if (tur === "tapu") {
+        const taraf = d * o;
+        $("lbl").textContent = "Toplam tapu harcı";
+        $("tutar").textContent = tl(taraf * 2);
+        $("alt").textContent = "alıcı ve satıcı payları birlikte";
+        $("detay").innerHTML = [
+          ["Alıcı payı", tl(taraf)],
+          ["Satıcı payı", tl(taraf)],
+          ["Matrah", tl(d)],
+          ["Uygulanan oran", `binde ${$("oran").value} (her taraf)`],
+        ].map(([k, v]) => `<div class="line"><span class="k">${k}</span><span class="v">${v}</span></div>`).join("");
+        $("not").innerHTML = "<b>Not:</b> Harcın tamamının alıcı tarafından ödenmesi taraflar arasında kararlaştırılabilir; bu anlaşma idareye karşı sorumluluğu ortadan kaldırmaz. Ayrıca döner sermaye hizmet bedeli bu hesaba dâhil değildir.";
+      } else if (tur === "emlak") {
+        const oran = ek ? o * 2 : o;
+        const yillik = d * oran;
+        $("lbl").textContent = "Yıllık emlak vergisi";
+        $("tutar").textContent = tl(yillik);
+        $("alt").textContent = "iki eşit taksitte ödenir";
+        $("detay").innerHTML = [
+          ["Vergi değeri", tl(d)],
+          ["Uygulanan oran", `binde ${(oran * 1000).toLocaleString("tr-TR", { maximumFractionDigits: 2 })}${ek ? " (büyükşehir, iki kat)" : ""}`],
+          ["Birinci taksit (mart-mayıs)", tl(yillik / 2)],
+          ["İkinci taksit (kasım)", tl(yillik / 2)],
+        ].map(([k, v]) => `<div class="line"><span class="k">${k}</span><span class="v">${v}</span></div>`).join("");
+        $("not").innerHTML = "<b>Not:</b> Tek konutu olan emekli, engelli, gazi ve şehit yakınları için indirimli (sıfır) oran uygulanabilir; başvuru gerekir, kendiliğinden işlemez.";
+      } else {
+        const nushaSayisi = ek ? 2 : 1;
+        const birim = d * o;
+        $("lbl").textContent = "Damga vergisi";
+        $("tutar").textContent = tl(birim * nushaSayisi);
+        $("alt").textContent = nushaSayisi > 1 ? "iki nüsha için toplam" : "tek nüsha için";
+        $("detay").innerHTML = [
+          ["Sözleşme tutarı", tl(d)],
+          ["Uygulanan oran", `binde ${$("oran").value}`],
+          ["Nüsha başına", tl(birim)],
+          ["Nüsha sayısı", String(nushaSayisi)],
+        ].map(([k, v]) => `<div class="line"><span class="k">${k}</span><span class="v">${v}</span></div>`).join("");
+        $("not").innerHTML = "<b>Not:</b> Damga vergisinde taraflar müteselsilen sorumludur: idare, vergiyi imzalayanlardan herhangi birinden tamamen isteyebilir. Ayrıca bazı kâğıtlar için kanunda azami tutar sınırı öngörülmüştür.";
+      }
+      $("sonuc").hidden = false;
+      $("sonuc").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    $("tur").addEventListener("change", turDegisti);
+    $("hesapla").addEventListener("click", hesapla);
+    turDegisti();
+  </script>
+</Base>
